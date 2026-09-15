@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TimeLeftNetwork</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233ba9ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23000000' stroke='%233ba9ff'/%3E%3Cpolyline points='12 6 12 12 16 14' stroke='%2333d17a'/%3E%3C/svg%3E">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.0.4/tesseract.min.js"></script>
 <style>
   :root{
     --bg:#000000;
@@ -30,226 +29,151 @@
     align-items:center;
     padding:30px 16px 60px;
   }
-  h1{
-    font-size:22px;
-    font-weight:600;
-    margin:10px 0 4px;
-    text-align:center;
-  }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top:10px;
-  }
+  h1{font-size:22px;font-weight:600;margin:10px 0 4px;text-align:center;}
+  .brand{display:flex;align-items:center;gap:10px;margin-top:10px;}
   .brand h1{margin:0;}
   .brand-accent{color:var(--accent2);}
-  p.subtitle{
-    color:var(--muted);
-    font-size:14px;
-    margin:0 0 24px;
-    text-align:center;
-    max-width:480px;
-  }
+  p.subtitle{color:var(--muted);font-size:14px;margin:0 0 24px;text-align:center;max-width:520px;}
   .upload-box{
-    width:100%;
-    max-width:520px;
-    background:var(--card);
-    border:2px dashed #262626;
-    border-radius:var(--radius);
-    padding:30px 20px;
-    text-align:center;
-    cursor:pointer;
-    transition:.2s;
-    margin-bottom:20px;
+    width:100%;max-width:520px;background:var(--card);
+    border:2px dashed #262626;border-radius:var(--radius);
+    padding:30px 20px;text-align:center;cursor:pointer;
+    transition:.2s;margin-bottom:20px;
   }
-  .upload-box:hover{
-    border-color:var(--accent);
-    background:#0d0d0d;
-  }
-  .upload-box.dragover{
-    border-color:var(--accent2);
-    background:#0a120d;
-  }
+  .upload-box:hover{border-color:var(--accent);background:#0d0d0d;}
+  .upload-box.dragover{border-color:var(--accent2);background:#0a120d;}
   .upload-box input{display:none;}
   .upload-icon{font-size:38px;margin-bottom:8px;}
   .upload-text{font-size:15px;color:var(--muted);}
   .upload-text b{color:var(--text);}
-  .upload-sub{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:4px;
-    opacity:.8;
-  }
-  .upload-sub b{color:var(--muted);}
+  .upload-sub{font-size:12px;color:var(--muted);margin-top:4px;opacity:.8;}
   .choose-btn{
-    margin-top:14px;
-    background:var(--accent);
-    color:#fff;
-    border:none;
-    padding:10px 22px;
-    border-radius:30px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s;
+    margin-top:14px;background:var(--accent);color:#fff;border:none;
+    padding:10px 22px;border-radius:30px;font-size:13px;font-weight:600;
+    cursor:pointer;transition:.2s;
   }
-  .choose-btn:hover{
-    background:#2a8fe0;
-  }
-
-  #preview{
-    max-width:100%;
-    max-height:220px;
-    border-radius:10px;
-    margin-top:16px;
-    display:none;
-    box-shadow:0 4px 20px rgba(0,0,0,.4);
-  }
-
-  .status{
-    width:100%;
-    max-width:520px;
-    text-align:center;
-    color:var(--muted);
-    font-size:14px;
-    min-height:20px;
-    margin-bottom:10px;
-  }
-
+  .choose-btn:hover{background:#2a8fe0;}
+  #preview{max-width:100%;max-height:220px;border-radius:10px;margin-top:16px;display:none;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+  .status{width:100%;max-width:520px;text-align:center;color:var(--muted);font-size:14px;min-height:20px;margin-bottom:10px;}
   .progress-wrap{
-    width:100%;
-    max-width:520px;
-    height:6px;
-    background:#1a1a1a;
-    border-radius:4px;
-    overflow:hidden;
-    margin-bottom:26px;
-    display:none;
+    width:100%;max-width:520px;height:6px;background:#1a1a1a;
+    border-radius:4px;overflow:hidden;margin-bottom:26px;display:none;
   }
   .progress-bar{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));
     transition:width .25s ease;
   }
-
-  .results{
-    display:none;
-    width:100%;
-    max-width:560px;
-    flex-direction:column;
-    gap:16px;
-    animation:fadeIn .4s ease;
+  .progress-bar.indeterminate{
+    width:40% !important;
+    animation: slide 1.3s ease-in-out infinite;
   }
+  @keyframes slide{
+    0%{margin-left:-40%;}
+    100%{margin-left:100%;}
+  }
+  .results{display:none;width:100%;max-width:560px;flex-direction:column;gap:16px;animation:fadeIn .4s ease;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
   .big-card{
     background:linear-gradient(145deg,var(--card2),var(--card));
-    border-radius:var(--radius);
-    padding:26px 24px;
-    text-align:center;
-    box-shadow:0 8px 30px rgba(0,0,0,.35);
-    border:1px solid #1f1f1f;
+    border-radius:var(--radius);padding:26px 24px;text-align:center;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);border:1px solid #1f1f1f;
   }
-  .big-card .label{
-    font-size:13px;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:1px;
-    margin-bottom:8px;
-  }
-  .big-card .value{
-    font-size:46px;
-    font-weight:700;
-    color:var(--accent2);
-    line-height:1.1;
-  }
+  .big-card .label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .big-card .value{font-size:46px;font-weight:700;color:var(--accent2);line-height:1.1;}
   .big-card .value.remaining{color:var(--accent);}
-  .big-card .sub{
-    font-size:13px;
-    color:var(--muted);
-    margin-top:6px;
-  }
-
-  .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-  }
-  .mini-card{
-    background:var(--card);
-    border:1px solid #1f1f1f;
-    border-radius:12px;
-    padding:16px;
-    text-align:center;
-  }
+  .big-card .sub{font-size:13px;color:var(--muted);margin-top:6px;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mini-card{background:var(--card);border:1px solid #1f1f1f;border-radius:12px;padding:16px;text-align:center;}
   .mini-card .l{font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
   .mini-card .v{font-size:20px;font-weight:600;}
-
-  .details{
-    background:var(--card);
-    border-radius:12px;
-    border:1px solid #1f1f1f;
-    padding:16px 18px;
-    font-size:13px;
-    color:var(--muted);
-    line-height:1.7;
-  }
+  .details{background:var(--card);border-radius:12px;border:1px solid #1f1f1f;padding:16px 18px;font-size:13px;color:var(--muted);line-height:1.7;}
   .details b{color:var(--text);}
-  .details .row{
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid #1a1a1a;
-    padding:6px 0;
-  }
+  .details .row{display:flex;justify-content:space-between;border-bottom:1px solid #1a1a1a;padding:6px 0;gap:10px;}
   .details .row:last-child{border-bottom:none;}
-
   .ocr-raw{
-    background:#0d1117;
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:12px;
-    color:#7d8899;
-    font-family:monospace;
-    white-space:pre-wrap;
-    word-break:break-word;
-    max-height:160px;
-    overflow-y:auto;
+    background:#0d1117;border-radius:10px;padding:12px 14px;font-size:12px;
+    color:#7d8899;font-family:monospace;white-space:pre-wrap;
+    word-break:break-word;max-height:200px;overflow-y:auto;
   }
-
   .reset-btn{
-    margin-top:6px;
-    align-self:center;
-    background:transparent;
-    border:1px solid #262626;
-    color:var(--muted);
-    padding:10px 20px;
-    border-radius:30px;
-    cursor:pointer;
-    font-size:13px;
-    transition:.2s;
+    margin-top:6px;align-self:center;background:transparent;border:1px solid #262626;
+    color:var(--muted);padding:10px 20px;border-radius:30px;cursor:pointer;font-size:13px;transition:.2s;
   }
-  .reset-btn:hover{
-    border-color:var(--danger);
-    color:var(--danger);
+  .reset-btn:hover{border-color:var(--danger);color:var(--danger);}
+  .error-box{
+    display:none;max-width:520px;width:100%;background:#2a1418;border:1px solid #5c2a30;
+    color:#ff9b9b;border-radius:10px;padding:14px 16px;font-size:13px;margin-bottom:16px;
   }
 
-  .error-box{
-    display:none;
-    max-width:520px;
-    width:100%;
-    background:#2a1418;
-    border:1px solid #5c2a30;
-    color:#ff9b9b;
-    border-radius:10px;
-    padding:14px 16px;
-    font-size:13px;
-    margin-bottom:16px;
+  /* --- API key modal --- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.85);
+    backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;
+    z-index:999;padding:20px;
   }
+  .modal-overlay.active{display:flex;}
+  .modal{
+    background:var(--card2);border:1px solid #1f1f1f;border-radius:18px;
+    padding:30px 26px;max-width:460px;width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.7);
+    animation:fadeIn .3s ease;
+  }
+  .modal h2{margin:0 0 8px;font-size:19px;font-weight:600;}
+  .modal p{color:var(--muted);font-size:13px;margin:0 0 18px;line-height:1.6;}
+  .modal p a{color:var(--accent);text-decoration:none;}
+  .modal p a:hover{text-decoration:underline;}
+  .modal input{
+    width:100%;padding:12px 14px;border-radius:10px;border:1px solid #262626;
+    background:#0a0a0a;color:var(--text);font-size:14px;font-family:monospace;
+    outline:none;transition:.2s;
+  }
+  .modal input:focus{border-color:var(--accent);}
+  .modal-btns{display:flex;gap:10px;margin-top:16px;}
+  .modal-btns button{
+    flex:1;padding:11px;border-radius:10px;font-size:13px;font-weight:600;
+    cursor:pointer;transition:.2s;border:none;
+  }
+  .modal-btns .primary{background:var(--accent);color:#fff;}
+  .modal-btns .primary:hover{background:#2a8fe0;}
+  .modal-btns .ghost{background:transparent;color:var(--muted);border:1px solid #262626;}
+  .modal-btns .ghost:hover{border-color:var(--danger);color:var(--danger);}
+  .api-status{
+    font-size:12px;color:var(--muted);text-align:center;margin-top:12px;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .api-status .dot{
+    width:7px;height:7px;border-radius:50%;background:var(--accent2);
+    box-shadow:0 0 8px var(--accent2);
+  }
+  .api-status .dot.off{background:var(--danger);box-shadow:0 0 8px var(--danger);}
+  .change-key{
+    background:none;border:none;color:var(--muted);font-size:12px;
+    cursor:pointer;text-decoration:underline;padding:0;margin-left:4px;
+  }
+  .change-key:hover{color:var(--accent);}
 </style>
 </head>
 <body>
+
+  <!-- API KEY MODAL -->
+  <div class="modal-overlay" id="apiModal">
+    <div class="modal">
+      <h2>🔑 Groq API kalitini kiriting</h2>
+      <p>
+        Bu dastur rasmdagi ma'lumotlarni o'qish uchun <b>Groq Vision AI</b>dan foydalanadi.
+        Bepul API kalitni <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> sahifasidan oling.
+        Kalit faqat brauzeringizda (<code>localStorage</code>) saqlanadi.
+      </p>
+      <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off" spellcheck="false">
+      <div class="modal-btns">
+        <button type="button" class="ghost" id="apiCancelBtn" style="display:none;">Bekor qilish</button>
+        <button type="button" class="primary" id="apiSaveBtn">Saqlash va davom etish</button>
+      </div>
+      <div class="api-status" id="apiStatus" style="display:none;">
+        <span class="dot"></span><span id="apiStatusText">Tekshirilmoqda...</span>
+      </div>
+    </div>
+  </div>
 
   <div class="brand">
     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -258,7 +182,7 @@
     </svg>
     <h1>TimeLeft<span class="brand-accent">Network</span></h1>
   </div>
-  <p class="subtitle">Ekran suratini (screenshot) yuklang — dastur undagi tezlik va progress ma'lumotlarini OCR orqali o'qib, o'tgan va qolgan vaqtni hisoblab beradi.</p>
+  <p class="subtitle">Ekran suratini (screenshot) yuklang — <b>Groq Vision AI</b> undagi tezlik va progress ma'lumotlarini o'qib, o'tgan va qolgan vaqtni hisoblab beradi.</p>
 
   <div class="upload-box" id="dropZone">
     <input type="file" id="fileInput" accept="image/*">
@@ -268,7 +192,7 @@
     <button type="button" class="choose-btn" id="chooseBtn">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Fayl tanlash
     </button>
-    <img id="preview">
+    <img id="preview" alt="preview">
   </div>
 
   <div class="error-box" id="errorBox"></div>
@@ -277,7 +201,6 @@
   <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
 
   <div class="results" id="results">
-
     <div class="big-card">
       <div class="label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><path d="M5 22h14M5 2h14M17 2v4.172a2 2 0 0 1-.586 1.414L13 11l3.414 3.414A2 2 0 0 1 17 15.828V20M7 2v4.172a2 2 0 0 0 .586 1.414L11 11l-3.414 3.414A2 2 0 0 0 7 15.828V20"/></svg>Qolgan taxminiy vaqt</div>
       <div class="value remaining" id="etaValue">--</div>
@@ -291,35 +214,29 @@
     </div>
 
     <div class="grid">
-      <div class="mini-card">
-        <div class="l">Yuklab olindi</div>
-        <div class="v" id="downloadedVal">--</div>
-      </div>
-      <div class="mini-card">
-        <div class="l">Jami hajm</div>
-        <div class="v" id="totalVal">--</div>
-      </div>
-      <div class="mini-card">
-        <div class="l">Foiz</div>
-        <div class="v" id="percentVal">--</div>
-      </div>
-      <div class="mini-card">
-        <div class="l">Tezlik</div>
-        <div class="v" id="speedVal">--</div>
-      </div>
+      <div class="mini-card"><div class="l">Yuklab olindi</div><div class="v" id="downloadedVal">--</div></div>
+      <div class="mini-card"><div class="l">Jami hajm</div><div class="v" id="totalVal">--</div></div>
+      <div class="mini-card"><div class="l">Foiz</div><div class="v" id="percentVal">--</div></div>
+      <div class="mini-card"><div class="l">Tezlik</div><div class="v" id="speedVal">--</div></div>
     </div>
 
     <div class="details">
       <div class="row"><span>Aniqlangan qolgan hajm</span><b id="detRemainSize">--</b></div>
       <div class="row"><span>Formula (qolgan vaqt)</span><b>qolgan hajm ÷ tezlik</b></div>
       <div class="row"><span>Formula (o'tgan vaqt)</span><b>yuklangan hajm ÷ tezlik</b></div>
-      <div class="row"><span>OCR ishonchliligi</span><b id="detConfidence">--</b></div>
+      <div class="row"><span>AI model</span><b id="detModel">--</b></div>
     </div>
 
     <details>
-      <summary style="cursor:pointer;color:var(--muted);font-size:13px;">OCR orqali o'qilgan xom matn</summary>
+      <summary style="cursor:pointer;color:var(--muted);font-size:13px;">AI javobi (xom JSON)</summary>
       <div class="ocr-raw" id="rawText" style="margin-top:8px;"></div>
     </details>
+
+    <div class="api-status">
+      <span class="dot" id="apiDot"></span>
+      <span id="apiFooterStatus">API kalit saqlangan</span>
+      <button type="button" class="change-key" id="changeKeyBtn">o'zgartirish</button>
+    </div>
 
     <button class="reset-btn" id="resetBtn">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px;"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Boshqa rasm yuklash
@@ -327,16 +244,120 @@
   </div>
 
 <script>
-const dropZone = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
-const status = document.getElementById('status');
-const progressWrap = document.getElementById('progressWrap');
-const progressBar = document.getElementById('progressBar');
-const results = document.getElementById('results');
-const errorBox = document.getElementById('errorBox');
-const resetBtn = document.getElementById('resetBtn');
+/* ============================================================
+   GROQ VISION API
+   ============================================================ */
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_VISION_MODEL = 'meta-llama/llama-4-scout-17b-16e-instruct';
+const API_KEY_STORAGE = 'tln_groq_api_key';
 
+const dropZone     = document.getElementById('dropZone');
+const fileInput    = document.getElementById('fileInput');
+const preview      = document.getElementById('preview');
+const statusEl     = document.getElementById('status');
+const progressWrap = document.getElementById('progressWrap');
+const progressBar  = document.getElementById('progressBar');
+const results      = document.getElementById('results');
+const errorBox     = document.getElementById('errorBox');
+const resetBtn     = document.getElementById('resetBtn');
+
+/* ---- API key management ---- */
+function getApiKey(){
+  return localStorage.getItem(API_KEY_STORAGE) || '';
+}
+function setApiKey(key){
+  localStorage.setItem(API_KEY_STORAGE, key);
+}
+function clearApiKey(){
+  localStorage.removeItem(API_KEY_STORAGE);
+}
+
+const apiModal        = document.getElementById('apiModal');
+const apiKeyInput     = document.getElementById('apiKeyInput');
+const apiSaveBtn      = document.getElementById('apiSaveBtn');
+const apiCancelBtn    = document.getElementById('apiCancelBtn');
+const apiStatus       = document.getElementById('apiStatus');
+const apiStatusText   = document.getElementById('apiStatusText');
+const apiDot          = document.getElementById('apiDot');
+const apiFooterStatus = document.getElementById('apiFooterStatus');
+const changeKeyBtn    = document.getElementById('changeKeyBtn');
+
+function openApiModal(isFirstTime){
+  apiModal.classList.add('active');
+  apiKeyInput.value = getApiKey();
+  apiCancelBtn.style.display = isFirstTime ? 'none' : 'block';
+  apiStatus.style.display = 'none';
+  setTimeout(() => apiKeyInput.focus(), 80);
+}
+function closeApiModal(){
+  apiModal.classList.remove('active');
+  apiKeyInput.value = '';
+  apiStatus.style.display = 'none';
+}
+function refreshFooter(){
+  const has = !!getApiKey();
+  apiDot.classList.toggle('off', !has);
+  apiFooterStatus.textContent = has ? 'API kalit saqlangan' : 'API kalit yo\'q';
+}
+
+async function validateApiKey(key){
+  // Kichik test so'rovi - modelni tekshirish
+  const res = await fetch(GROQ_API_URL, {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':'Bearer ' + key
+    },
+    body: JSON.stringify({
+      model: GROQ_VISION_MODEL,
+      messages: [{ role:'user', content:'ping' }],
+      max_tokens: 5
+    })
+  });
+  if(!res.ok){
+    const err = await res.text().catch(() => '');
+    throw new Error('HTTP ' + res.status + (err ? ' — ' + err.slice(0,180) : ''));
+  }
+  return true;
+}
+
+apiSaveBtn.addEventListener('click', async () => {
+  const key = apiKeyInput.value.trim();
+  if(!key || !key.startsWith('gsk_')){
+    apiStatus.style.display = 'flex';
+    apiDot.classList.add('off');
+    apiStatusText.textContent = 'Kalit "gsk_" bilan boshlanishi kerak.';
+    return;
+  }
+  apiSaveBtn.disabled = true;
+  apiCancelBtn.disabled = true;
+  apiStatus.style.display = 'flex';
+  apiDot.classList.remove('off');
+  apiStatusText.textContent = 'Tekshirilmoqda...';
+
+  try{
+    await validateApiKey(key);
+    setApiKey(key);
+    apiDot.classList.remove('off');
+    apiStatusText.textContent = '✓ Kalit to\'g\'ri. Saqlandi.';
+    refreshFooter();
+    setTimeout(closeApiModal, 500);
+  }catch(e){
+    apiDot.classList.add('off');
+    apiStatusText.textContent = '✗ Xatolik: ' + e.message;
+  }finally{
+    apiSaveBtn.disabled = false;
+    apiCancelBtn.disabled = false;
+  }
+});
+
+apiKeyInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter') apiSaveBtn.click();
+});
+
+changeKeyBtn.addEventListener('click', () => openApiModal(false));
+
+/* ---- File handling ---- */
 dropZone.addEventListener('click', () => fileInput.click());
 document.getElementById('chooseBtn').addEventListener('click', e => {
   e.stopPropagation();
@@ -366,140 +387,178 @@ document.addEventListener('paste', e => {
 resetBtn.addEventListener('click', () => {
   results.style.display = 'none';
   errorBox.style.display = 'none';
-  status.textContent = '';
+  statusEl.textContent = '';
   progressWrap.style.display = 'none';
   preview.style.display = 'none';
   fileInput.value = '';
 });
-
-function handleFile(file){
-  if(!file.type.startsWith('image/')){
-    showError('Iltimos, rasm faylini tanlang (PNG yoki JPG).');
-    return;
-  }
-  errorBox.style.display = 'none';
-  results.style.display = 'none';
-
-  const url = URL.createObjectURL(file);
-  preview.src = url;
-  preview.style.display = 'block';
-
-  runOCR(url);
-}
 
 function showError(msg){
   errorBox.textContent = 'Xatolik: ' + msg;
   errorBox.style.display = 'block';
 }
 
-async function runOCR(imageUrl){
-  progressWrap.style.display = 'block';
-  progressBar.style.width = '0%';
-  status.textContent = 'OCR ishga tushmoqda...';
-
-  try{
-    const result = await Tesseract.recognize(imageUrl, 'eng', {
-      logger: m => {
-        if(m.status && typeof m.progress === 'number'){
-          progressBar.style.width = Math.round(m.progress*100) + '%';
-          const stages = {
-            'loading tesseract core': 'Tesseract yuklanmoqda...',
-            'initializing tesseract': 'Tayyorlanmoqda...',
-            'loading language traineddata': 'Til modeli yuklanmoqda...',
-            'initializing api': 'API ishga tushmoqda...',
-            'recognizing text': 'Matn aniqlanmoqda...'
-          };
-          status.textContent = (stages[m.status] || m.status) + ' (' + Math.round(m.progress*100) + '%)';
-        }
-      }
-    });
-
-    const text = result.data.text;
-    const confidence = result.data.confidence;
-    document.getElementById('rawText').textContent = text || '(matn topilmadi)';
-    document.getElementById('detConfidence').textContent = confidence ? confidence.toFixed(1)+'%' : '--';
-
-    status.textContent = 'Tahlil qilinmoqda...';
-    analyzeText(text);
-
-  }catch(err){
-    console.error(err);
-    showError('OCR jarayonida xatolik yuz berdi: ' + err.message);
-    status.textContent = '';
-    progressWrap.style.display = 'none';
-  }
+function fileToDataURL(file){
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(new Error('Faylni o\'qishda xatolik'));
+    r.readAsDataURL(file);
+  });
 }
 
-function toGB(val, unit){
-  unit = unit.toLowerCase();
-  if(unit === 'mb') return val/1024;
-  return val; // gb
-}
-
-function analyzeText(text){
-  const clean = text.replace(/,/g, '');
-  const lines = clean.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-
-  // --- Speed extraction ---
-  // Prefer a line that looks like the live "Network" speed rather than "Peak"
-  let speedMbps = null;
-  const networkLine = lines.find(l => /network/i.test(l) && /(mbps|mb\/s|kbps|gbps)/i.test(l));
-  const speedSearchTarget = networkLine || clean;
-  const speedMatches = [...speedSearchTarget.matchAll(/(\d+(?:\.\d+)?)\s*(mbps|mb\/s|kbps|gbps)/gi)];
-  if(speedMatches.length){
-    let val = parseFloat(speedMatches[0][1]);
-    const unit = speedMatches[0][2].toLowerCase();
-    if(unit === 'kbps') val = val/1000;
-    if(unit === 'gbps') val = val*1000;
-    speedMbps = val; // in Mbps
+async function handleFile(file){
+  if(!file.type.startsWith('image/')){
+    showError('Iltimos, rasm faylini tanlang (PNG yoki JPG).');
+    return;
   }
-
-  // --- Size-pair extraction (widened separator tolerance) ---
-  // Handles "7.3 GB / 55.6 GB", "7.3GB155.6GB", "7.3 GB l 55.6 GB", missing separator, etc.
-  const sizePairRegex = /(\d+(?:\.\d+)?)\s*(gb|mb)\s*[\/\|\\lI:]?\s*(\d+(?:\.\d+)?)\s*(gb|mb)/i;
-
-  let downloadedGB = null, totalGB = null;
-
-  // 1) Prefer a line that explicitly mentions downloading/progress context
-  const sizeLine = lines.find(l => sizePairRegex.test(l) && /(download|yukla|data)/i.test(l));
-  // 2) Otherwise take the first line anywhere that matches the pattern
-  const fallbackSizeLine = lines.find(l => sizePairRegex.test(l));
-  const sizePairMatch = (sizeLine || fallbackSizeLine || clean).match(sizePairRegex);
-
-  if(sizePairMatch){
-    downloadedGB = toGB(parseFloat(sizePairMatch[1]), sizePairMatch[2]);
-    totalGB = toGB(parseFloat(sizePairMatch[3]), sizePairMatch[4]);
-  }
-
-  // --- Percent extraction ---
-  // Prefer a line that looks like an install/progress percentage
-  let percent = null;
-  const percentLine = lines.find(l => /%/.test(l) && /(install|progress|complete|tayyor)/i.test(l));
-  const percentSearchTarget = percentLine || clean;
-  const percentMatches = [...percentSearchTarget.matchAll(/(\d{1,3})\s*%/g)];
-  if(percentMatches.length){
-    for(const m of percentMatches){
-      const p = parseInt(m[1]);
-      if(p >= 0 && p <= 100){ percent = p; break; }
-    }
-  }
-
-  if(downloadedGB !== null && totalGB !== null && percent === null){
-    percent = Math.round((downloadedGB/totalGB)*100);
-  }
-  if(downloadedGB === null && totalGB !== null && percent !== null){
-    downloadedGB = (totalGB * percent / 100);
-  }
-
-  if(speedMbps === null || (downloadedGB === null && percent === null)){
-    showError('Rasmdan tezlik yoki hajm ma\'lumotini aniqlab bo\'lmadi. Yaqinroq va aniqroq skrinshot yuklab ko\'ring.');
-    status.textContent = '';
-    progressWrap.style.display = 'none';
+  if(!getApiKey()){
+    openApiModal(true);
     return;
   }
 
-  const speedMBps = speedMbps / 8;
-  const speedGBps = speedMBps / 1024;
+  errorBox.style.display = 'none';
+  results.style.display = 'none';
+
+  let dataUrl;
+  try{
+    dataUrl = await fileToDataURL(file);
+  }catch(e){
+    showError(e.message);
+    return;
+  }
+  preview.src = dataUrl;
+  preview.style.display = 'block';
+
+  await analyzeWithVision(dataUrl);
+}
+
+/* ---- Groq Vision request ---- */
+async function analyzeWithVision(dataUrl){
+  progressWrap.style.display = 'block';
+  progressBar.classList.add('indeterminate');
+  statusEl.textContent = 'Groq Vision AI rasmni tahlil qilmoqda...';
+
+  const systemPrompt = `You are a precise OCR + data extraction assistant. You will receive a screenshot of a download/install progress screen (like a game launcher, Steam, Epic, browser download, etc.). Extract the following numeric fields and return ONLY a JSON object — no markdown, no commentary.
+
+JSON schema:
+{
+  "speed_mbps": number or null,       // current download speed in Mbps (convert MB/s -> Mbps by *8; if the screenshot shows Mbps use as-is; if it shows KB/s convert to Mbps by /125)
+  "downloaded_gb": number or null,    // already downloaded amount in GB (convert MB -> GB by /1024)
+  "total_gb": number or null,         // total size in GB (convert MB -> GB by /1024)
+  "percent": number or null,          // progress percentage 0-100 (integer)
+  "notes": string                     // brief description of what you read (1 short sentence)
+}
+
+Rules:
+- If a value is not visible, set it to null. Do NOT guess.
+- For speed, prefer the LIVE "Network" / "Download" speed, NOT "Peak" or "Disk".
+- Return ONLY valid JSON. No markdown fences. No extra text.`;
+
+  const body = {
+    model: GROQ_VISION_MODEL,
+    messages: [
+      { role:'system', content: systemPrompt },
+      {
+        role:'user',
+        content: [
+          { type:'text', text:'Extract the download speed, downloaded size, total size and percent from this screenshot. Return only JSON.' },
+          { type:'image_url', image_url: { url: dataUrl } }
+        ]
+      }
+    ],
+    temperature: 0.1,
+    max_tokens: 400,
+    response_format: { type:'json_object' }
+  };
+
+  try{
+    const res = await fetch(GROQ_API_URL, {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer ' + getApiKey()
+      },
+      body: JSON.stringify(body)
+    });
+
+    if(!res.ok){
+      const errText = await res.text().catch(() => '');
+      if(res.status === 401){
+        clearApiKey();
+        refreshFooter();
+        progressWrap.style.display = 'none';
+        progressBar.classList.remove('indeterminate');
+        statusEl.textContent = '';
+        showError('API kalit qabul qilinmadi. Qaytadan kiriting.');
+        openApiModal(true);
+        return;
+      }
+      throw new Error('Groq API xatosi: HTTP ' + res.status + (errText ? ' — ' + errText.slice(0,200) : ''));
+    }
+
+    const data = await res.json();
+    const content = data?.choices?.[0]?.message?.content || '';
+
+    document.getElementById('rawText').textContent = content;
+    document.getElementById('detModel').textContent = GROQ_VISION_MODEL;
+
+    let parsed;
+    try{
+      parsed = JSON.parse(content);
+    }catch(e){
+      // Ehtimol model ```json ... ``` bilan o'ragan
+      const m = content.match(/\{[\s\S]*\}/);
+      if(m){
+        parsed = JSON.parse(m[0]);
+      }else{
+        throw new Error('AI javobini JSON sifatida o\'qib bo\'lmadi.');
+      }
+    }
+
+    statusEl.textContent = 'Hisoblanmoqda...';
+    computeAndDisplay(parsed);
+
+  }catch(err){
+    console.error(err);
+    showError(err.message || 'Vision API bilan bog\'lanishda xatolik.');
+    statusEl.textContent = '';
+    progressWrap.style.display = 'none';
+    progressBar.classList.remove('indeterminate');
+  }
+}
+
+/* ---- Computation & display ---- */
+function toNum(v){
+  if(v === null || v === undefined || v === '') return null;
+  const n = typeof v === 'number' ? v : parseFloat(v);
+  return isNaN(n) ? null : n;
+}
+
+function computeAndDisplay(raw){
+  const speedMbps   = toNum(raw.speed_mbps);
+  let downloadedGB  = toNum(raw.downloaded_gb);
+  let totalGB       = toNum(raw.total_gb);
+  let percent       = toNum(raw.percent);
+
+  if(percent !== null) percent = Math.max(0, Math.min(100, Math.round(percent)));
+
+  if(downloadedGB === null && totalGB !== null && percent !== null){
+    downloadedGB = totalGB * percent / 100;
+  }
+  if(percent === null && downloadedGB !== null && totalGB !== null && totalGB > 0){
+    percent = Math.round(downloadedGB / totalGB * 100);
+  }
+
+  if(!speedMbps || (downloadedGB === null && percent === null)){
+    showError('Rasmdan tezlik yoki hajm ma\'lumotini aniqlab bo\'lmadi. Yaqinroq va aniqroq skrinshot yuklab ko\'ring.');
+    statusEl.textContent = '';
+    progressWrap.style.display = 'none';
+    progressBar.classList.remove('indeterminate');
+    return;
+  }
+
+  const speedGBps = (speedMbps / 8) / 1024;
 
   let remainingGB = null;
   if(totalGB !== null && downloadedGB !== null){
@@ -508,20 +567,29 @@ function analyzeText(text){
     remainingGB = totalGB * (1 - percent/100);
   }
 
-  let elapsedSeconds = null;
-  if(downloadedGB !== null && speedGBps > 0){
-    elapsedSeconds = downloadedGB / speedGBps;
-  }
+  const elapsedSeconds   = (downloadedGB !== null && speedGBps > 0) ? downloadedGB / speedGBps : null;
+  const remainingSeconds = (remainingGB  !== null && speedGBps > 0) ? remainingGB  / speedGBps : null;
 
-  let remainingSeconds = null;
-  if(remainingGB !== null && speedGBps > 0){
-    remainingSeconds = remainingGB / speedGBps;
-  }
+  progressWrap.style.display = 'none';
+  progressBar.classList.remove('indeterminate');
+  statusEl.textContent = '';
+  results.style.display = 'flex';
 
-  displayResults({
-    speedMbps, downloadedGB, totalGB, percent, remainingGB,
-    elapsedSeconds, remainingSeconds
-  });
+  document.getElementById('etaValue').textContent = formatTime(remainingSeconds);
+  document.getElementById('etaSub').textContent = remainingGB !== null
+    ? formatSize(remainingGB) + ' qoldi, ' + speedMbps.toFixed(1) + ' Mbps tezlikda'
+    : 'Hajm ma\'lumoti yetarli emas';
+
+  document.getElementById('elapsedValue').textContent = formatTime(elapsedSeconds);
+  document.getElementById('elapsedSub').textContent = downloadedGB !== null
+    ? formatSize(downloadedGB) + ' shu tezlikda yuklangan deb taxmin qilindi'
+    : '';
+
+  document.getElementById('downloadedVal').textContent = downloadedGB !== null ? formatSize(downloadedGB) : '--';
+  document.getElementById('totalVal').textContent      = totalGB      !== null ? formatSize(totalGB)      : '--';
+  document.getElementById('percentVal').textContent    = percent      !== null ? percent + '%'            : '--';
+  document.getElementById('speedVal').textContent      = speedMbps.toFixed(1) + ' Mbps';
+  document.getElementById('detRemainSize').textContent = remainingGB  !== null ? formatSize(remainingGB)  : '--';
 }
 
 function formatTime(seconds){
@@ -544,26 +612,13 @@ function formatSize(gb){
   return gb.toFixed(2) + ' GB';
 }
 
-function displayResults(d){
-  progressWrap.style.display = 'none';
-  status.textContent = '';
-  results.style.display = 'flex';
-
-  document.getElementById('etaValue').textContent = formatTime(d.remainingSeconds);
-  document.getElementById('etaSub').textContent = d.remainingGB !== null
-    ? formatSize(d.remainingGB) + ' qoldi, ' + d.speedMbps.toFixed(1) + ' Mbps tezlikda'
-    : 'Hajm ma\'lumoti yetarli emas';
-
-  document.getElementById('elapsedValue').textContent = formatTime(d.elapsedSeconds);
-  document.getElementById('elapsedSub').textContent = d.downloadedGB !== null
-    ? formatSize(d.downloadedGB) + ' shu tezlikda yuklangan deb taxmin qilindi'
-    : '';
-
-  document.getElementById('downloadedVal').textContent = d.downloadedGB !== null ? formatSize(d.downloadedGB) : '--';
-  document.getElementById('totalVal').textContent = d.totalGB !== null ? formatSize(d.totalGB) : '--';
-  document.getElementById('percentVal').textContent = d.percent !== null ? d.percent + '%' : '--';
-  document.getElementById('speedVal').textContent = d.speedMbps.toFixed(1) + ' Mbps';
-  document.getElementById('detRemainSize').textContent = d.remainingGB !== null ? formatSize(d.remainingGB) : '--';
+/* ---- Init ---- */
+refreshFooter();
+if(!getApiKey()){
+  // Birinchi kirishda modalni ochish
+  window.addEventListener('load', () => {
+    setTimeout(() => openApiModal(true), 400);
+  });
 }
 </script>
 
