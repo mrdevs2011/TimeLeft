@@ -1455,7 +1455,7 @@ function renderSession(session, opts){
       } else {
         const fmt = formatTime(rem);
         etaEl.textContent = fmt;
-        document.title = '⏱ ' + fmt + ' — ' + DEFAULT_TITLE;
+        document.title = fmt + ' — ' + DEFAULT_TITLE;
       }
     } else {
       etaEl.textContent = '--';
