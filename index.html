@@ -32,17 +32,12 @@
   }
 
   .app{
-    display:flex;
-    flex-direction:column;
-    height:100vh;
-    height:100dvh;
-    max-height:100vh;
-    max-height:100dvh;
+    display:flex;flex-direction:column;
+    height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
     padding:16px;
     padding-top:calc(16px + env(safe-area-inset-top));
     padding-bottom:calc(16px + env(safe-area-inset-bottom));
-    gap:12px;
-    overflow:hidden;
+    gap:12px;overflow:hidden;
   }
 
   .header{flex-shrink:0;text-align:center;padding-bottom:2px;}
@@ -54,69 +49,45 @@
   /* PROJECT BAR */
   .project-bar{
     display:flex;align-items:center;gap:8px;
-    padding:6px 10px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    flex-shrink:0;
-    font-size:12px;
-    overflow-x:auto;
-    overflow-y:hidden;
+    padding:6px 10px;background:var(--card);
+    border:1px solid var(--border);border-radius:10px;
+    flex-shrink:0;font-size:12px;
+    overflow-x:auto;overflow-y:hidden;
   }
   .project-bar::-webkit-scrollbar{height:3px;}
   .project-bar::-webkit-scrollbar-thumb{background:#222;border-radius:2px;}
   .project-bar .pb-label{
     color:var(--muted);font-size:10.5px;
     text-transform:uppercase;letter-spacing:.5px;
-    white-space:nowrap;
-    display:flex;align-items:center;gap:5px;
-    padding-right:6px;
-    border-right:1px solid var(--border);
+    white-space:nowrap;display:flex;align-items:center;gap:5px;
+    padding-right:6px;border-right:1px solid var(--border);
   }
   .project-bar .pb-label svg{color:var(--accent);}
   .project-tab{
     display:inline-flex;align-items:center;gap:5px;
-    padding:4px 10px;
-    border-radius:6px;
-    background:transparent;
-    color:var(--muted);
-    border:1px solid transparent;
-    cursor:pointer;
-    font-size:11.5px;
-    white-space:nowrap;
-    transition:.15s;
-    font-family:inherit;
-    flex-shrink:0;
+    padding:4px 10px;border-radius:6px;background:transparent;
+    color:var(--muted);border:1px solid transparent;cursor:pointer;
+    font-size:11.5px;white-space:nowrap;transition:.15s;
+    font-family:inherit;flex-shrink:0;
   }
   .project-tab:hover{background:#0f0f0f;color:var(--text);}
   .project-tab.active{
-    background:rgba(59,169,255,.12);
-    color:var(--accent);
+    background:rgba(59,169,255,.12);color:var(--accent);
     border-color:rgba(59,169,255,.35);
   }
   .project-tab .pt-del{
-    opacity:.5;
-    display:none;
-    padding:0;margin:0;
-    background:none;border:none;
-    color:inherit;cursor:pointer;
-    display:inline-flex;align-items:center;
+    opacity:.5;padding:0;margin:0;background:none;border:none;
+    color:inherit;cursor:pointer;display:inline-flex;align-items:center;
   }
   .project-tab.active .pt-del{display:inline-flex;}
   .project-tab .pt-del:hover{opacity:1;color:var(--danger);}
   .project-add{
     display:inline-flex;align-items:center;gap:4px;
-    padding:4px 10px;
-    border-radius:6px;
-    background:rgba(51,209,122,.1);
-    color:var(--accent2);
+    padding:4px 10px;border-radius:6px;
+    background:rgba(51,209,122,.1);color:var(--accent2);
     border:1px dashed rgba(51,209,122,.35);
-    cursor:pointer;
-    font-size:11.5px;
-    white-space:nowrap;
-    transition:.15s;
-    font-family:inherit;
-    flex-shrink:0;
+    cursor:pointer;font-size:11.5px;white-space:nowrap;
+    transition:.15s;font-family:inherit;flex-shrink:0;
   }
   .project-add:hover{background:rgba(51,209,122,.18);}
 
@@ -126,9 +97,7 @@
     .main{
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
       grid-template-rows: auto 1fr;
-      grid-template-areas:
-        "upload  results"
-        "history results";
+      grid-template-areas: "upload results" "history results";
       align-items:stretch;
     }
     .upload-wrap{grid-area:upload;min-height:0;}
@@ -141,28 +110,18 @@
     .main{
       grid-template-columns:1fr;
       grid-template-areas:"upload" "results" "history";
-      grid-template-rows:auto;
-      overflow:visible;
-      gap:12px;
+      grid-template-rows:auto;overflow:visible;gap:12px;
     }
     .upload-wrap,.history-wrap,.results-wrap{min-height:0;}
   }
 
   .upload-box{
-    background:var(--card);
-    border:2px dashed #262626;
-    border-radius:var(--radius);
-    padding:20px 16px;
-    text-align:center;
-    cursor:pointer;
+    background:var(--card);border:2px dashed #262626;border-radius:var(--radius);
+    padding:20px 16px;text-align:center;cursor:pointer;
     transition:border-color .2s, background .2s, transform .15s;
-    height:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    overflow:hidden;
+    height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
   }
   .upload-box:hover{border-color:var(--accent);background:#0d0d0d;}
   .upload-box:active{transform:scale(.997);}
@@ -174,26 +133,18 @@
   .upload-text b{color:var(--text);font-weight:600;}
   .upload-sub{font-size:11.5px;color:var(--muted);margin-top:3px;opacity:.75;}
   .choose-btn{
-    margin-top:12px;
-    background:var(--accent);color:#fff;border:none;
-    padding:9px 20px;border-radius:30px;
-    font-size:12.5px;font-weight:600;
+    margin-top:12px;background:var(--accent);color:#fff;border:none;
+    padding:9px 20px;border-radius:30px;font-size:12.5px;font-weight:600;
     cursor:pointer;transition:background .2s;
-    display:inline-flex;align-items:center;gap:6px;
-    font-family:inherit;
+    display:inline-flex;align-items:center;gap:6px;font-family:inherit;
   }
   .choose-btn:hover{background:#2a8fe0;}
   .choose-btn:active{transform:scale(.97);}
   #preview{
-    max-width:100%;max-height:100%;
-    width:auto;height:auto;
-    object-fit:contain;
-    border-radius:10px;
-    margin-top:8px;
-    display:none;
-    box-shadow:0 4px 20px rgba(0,0,0,.5);
-    flex:1;
-    min-height:0;
+    max-width:100%;max-height:100%;width:auto;height:auto;
+    object-fit:contain;border-radius:10px;margin-top:8px;
+    display:none;box-shadow:0 4px 20px rgba(0,0,0,.5);
+    flex:1;min-height:0;
   }
   .upload-box.has-image #preview{display:block;}
   .upload-box.has-image .upload-icon,
@@ -202,32 +153,24 @@
   .upload-box.has-image .choose-btn{margin-top:0;margin-bottom:8px;flex-shrink:0;}
 
   .session-badge{
-    display:none;
-    align-items:center;gap:6px;
-    padding:6px 10px;
-    background:rgba(59,169,255,.1);
-    border:1px solid rgba(59,169,255,.3);
-    border-radius:8px;
-    font-size:11px;
-    color:var(--accent);
-    margin-top:8px;
-    flex-shrink:0;
+    display:none;align-items:center;gap:6px;padding:6px 10px;
+    background:rgba(59,169,255,.1);border:1px solid rgba(59,169,255,.3);
+    border-radius:8px;font-size:11px;color:var(--accent);
+    margin-top:8px;flex-shrink:0;
   }
   .session-badge.show{display:flex;}
   .session-badge.cached{
-    background:rgba(51,209,122,.1);
-    border-color:rgba(51,209,122,.3);
+    background:rgba(51,209,122,.1);border-color:rgba(51,209,122,.3);
     color:var(--accent2);
   }
   .session-badge button{
-    margin-left:auto;
-    background:none;border:none;color:var(--muted);
+    margin-left:auto;background:none;border:none;color:var(--muted);
     cursor:pointer;font-size:11px;padding:2px 6px;
     border-radius:4px;font-family:inherit;
   }
   .session-badge button:hover{color:var(--danger);}
 
-  .status{text-align:center;color:var(--muted);font-size:12.5px;min-height:0;flex-shrink:0;transition:min-height .2s;}
+  .status{text-align:center;color:var(--muted);font-size:12.5px;min-height:0;flex-shrink:0;}
   .status:not(:empty){min-height:16px;padding:4px 0;}
   .status.cached{color:var(--accent2);}
   .progress-wrap{height:4px;background:#1a1a1a;border-radius:4px;overflow:hidden;display:none;flex-shrink:0;}
@@ -253,12 +196,9 @@
 
   .empty-state{
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    flex:1;color:var(--muted);text-align:center;
-    padding:20px;gap:10px;
-    border:1px dashed var(--border);
-    border-radius:var(--radius);
-    background:var(--card);
-    min-height:200px;
+    flex:1;color:var(--muted);text-align:center;padding:20px;gap:10px;
+    border:1px dashed var(--border);border-radius:var(--radius);
+    background:var(--card);min-height:200px;
   }
   .empty-state svg{opacity:.35;}
   .empty-state p{font-size:12.5px;margin:0;line-height:1.5;}
@@ -309,6 +249,7 @@
     border-radius:var(--radius);
     padding:12px 14px;
     flex-shrink:0;
+    position:relative;   /* tooltip uchun */
   }
   .chart-head{
     display:flex;align-items:center;justify-content:space-between;
@@ -316,63 +257,58 @@
   }
   .chart-head h3{
     font-size:12.5px;font-weight:600;margin:0;
-    display:flex;align-items:center;gap:6px;
-    color:var(--text);
+    display:flex;align-items:center;gap:6px;color:var(--text);
   }
   .chart-head h3 svg{color:var(--accent);}
-  .chart-legend{
-    display:flex;gap:8px;flex-wrap:wrap;
-    font-size:10px;color:var(--muted);
-  }
+  .chart-legend{display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:var(--muted);}
   .chart-legend .cl{display:inline-flex;align-items:center;gap:4px;}
   .chart-legend .cl::before{content:'';display:inline-block;width:10px;height:2px;border-radius:1px;}
   .chart-legend .cl-1::before{background:#33d17a;}
   .chart-legend .cl-2::before{background:#3ba9ff;}
   .chart-legend .cl-3::before{background:#f5c247;}
   .chart-legend .cl-4::before{background:#ff5c5c;}
+
   .chart-wrap{
     position:relative;
     width:100%;
     height:160px;
     cursor:crosshair;
-    overflow:hidden;
-    border-radius:8px;
+    /* MUHIM: tooltip tashqariga chiqishi uchun overflow:visible */
+    overflow:visible;
   }
   #trendChart{width:100%;height:100%;display:block;}
 
-  /* CHART TOOLTIP */
+  /* CHART TOOLTIP — endi position absolute, chart-card ichida */
   .chart-tooltip{
     position:absolute;
     pointer-events:none;
-    background:rgba(10,10,10,.97);
+    background:rgba(10,10,10,.98);
     border:1px solid #2a2a2a;
     border-radius:8px;
     padding:8px 10px;
     font-size:11px;
     color:var(--text);
-    box-shadow:0 8px 24px rgba(0,0,0,.6);
+    box-shadow:0 12px 32px rgba(0,0,0,.75);
     opacity:0;
-    transform:translateY(-100%);
-    transition:opacity .12s;
-    z-index:10;
+    transform:translateY(-4px);
+    transition:opacity .12s, transform .12s;
+    z-index:1000;                /* butun card ustidan */
     white-space:nowrap;
     line-height:1.5;
     font-variant-numeric:tabular-nums;
-    backdrop-filter:blur(4px);
-    max-width:calc(100% - 12px);
+    backdrop-filter:blur(6px);
+    max-width:calc(100% - 20px);
+    /* Hech qachon konteynerdan chiqmasligi uchun */
+    will-change:left, top;
   }
-  .chart-tooltip.show{opacity:1;}
+  .chart-tooltip.show{opacity:1;transform:translateY(0);}
   .chart-tooltip .ct-time{
-    font-weight:600;
-    color:var(--accent);
-    margin-bottom:4px;
-    padding-bottom:3px;
-    border-bottom:1px solid #222;
-    font-size:11.5px;
+    font-weight:600;color:var(--accent);
+    margin-bottom:4px;padding-bottom:3px;
+    border-bottom:1px solid #222;font-size:11.5px;
   }
   .chart-tooltip .ct-row{
-    display:flex;align-items:center;gap:6px;
-    color:var(--muted);
+    display:flex;align-items:center;gap:6px;color:var(--muted);
   }
   .chart-tooltip .ct-row .dot{
     width:6px;height:6px;border-radius:50%;flex-shrink:0;
@@ -381,28 +317,18 @@
 
   /* AI SUMMARY */
   .ai-summary{
-    margin-top:10px;
-    padding:10px 12px;
+    margin-top:10px;padding:10px 12px;
     background:linear-gradient(135deg, rgba(59,169,255,.06), rgba(51,209,122,.04));
     border:1px solid rgba(59,169,255,.2);
-    border-radius:10px;
-    font-size:12px;
-    color:var(--text);
-    line-height:1.55;
+    border-radius:10px;font-size:12px;
+    color:var(--text);line-height:1.55;
     position:relative;
   }
-  .ai-summary.loading{
-    color:var(--muted);
-    font-style:italic;
-  }
+  .ai-summary.loading{color:var(--muted);font-style:italic;}
   .ai-summary .as-head{
     display:flex;align-items:center;gap:6px;
-    font-size:10.5px;
-    color:var(--accent);
-    text-transform:uppercase;
-    letter-spacing:.6px;
-    margin-bottom:6px;
-    font-weight:600;
+    font-size:10.5px;color:var(--accent);text-transform:uppercase;
+    letter-spacing:.6px;margin-bottom:6px;font-weight:600;
   }
   .ai-summary .as-head svg{flex-shrink:0;}
   .ai-summary .as-body{color:var(--text);}
@@ -488,7 +414,6 @@
   .history-item:hover .hi-arrow{opacity:1;color:var(--accent);}
   .history-item .hi-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;border-radius:4px;flex-shrink:0;}
   .history-item .hi-del:hover{color:var(--danger);}
-  .history-empty{color:var(--muted);font-size:12px;text-align:center;padding:12px 0;}
 
   .modal-overlay{
     position:fixed;inset:0;background:rgba(0,0,0,.85);
@@ -701,6 +626,7 @@
           </div>
           <div class="chart-wrap" id="chartWrap">
             <canvas id="trendChart"></canvas>
+            <!-- Tooltip endi chart-wrap ichida, lekin overflow:visible bilan -->
             <div class="chart-tooltip" id="chartTooltip"></div>
           </div>
           <div class="ai-summary loading" id="aiSummary">
@@ -841,7 +767,7 @@ const apiFooterStatus = document.getElementById('apiFooterStatus');
 const changeKeyBtn  = document.getElementById('changeKeyBtn');
 
 /* ============================================================
-   GLOBAL STATE
+   GLOBAL
    ============================================================ */
 let countdownInterval = null;
 let currentSession = null;
@@ -852,6 +778,8 @@ let chartResizeTimer = null;
 let chartData = [];
 let hoveredIndex = -1;
 let aiSummaryAbort = null;
+/* Nuqta pozitsiyalari (hover uchun) */
+let chartPointPositions = [];
 
 /* ============================================================
    INDEXEDDB
@@ -1207,9 +1135,6 @@ document.addEventListener('paste', e => {
   }
 });
 
-/* ============================================================
-   ERROR
-   ============================================================ */
 function showError(msg, retryFn){
   errorBox.innerHTML = '';
   const text = document.createElement('div');
@@ -1226,9 +1151,6 @@ function showError(msg, retryFn){
 }
 function clearError(){ errorBox.classList.remove('show'); }
 
-/* ============================================================
-   FILE → DATA URL
-   ============================================================ */
 function fileToDataURL(file){
   return new Promise((resolve, reject) => {
     const r = new FileReader();
@@ -1400,9 +1322,6 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
   }
 }
 
-/* ============================================================
-   SESSION CREATE
-   ============================================================ */
 async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache){
   const speedMbps   = toNum(parsed.speed_mbps);
   let downloadedGB  = toNum(parsed.downloaded_gb);
@@ -1575,7 +1494,6 @@ function formatTime(seconds){
   if(hrs > 0) return hrs + ' soat ' + String(min).padStart(2,'0') + ' daq ' + String(sec).padStart(2,'0') + ' son';
   return min + ' daq ' + String(sec).padStart(2,'0') + ' son';
 }
-/* Tooltip uchun qisqa format */
 function formatTimeShort(seconds){
   if(seconds === null || seconds === undefined || isNaN(seconds) || seconds < 0) return '--';
   const s = Math.floor(seconds);
@@ -1655,6 +1573,9 @@ function drawChart(recent){
 
   const stepX = n > 1 ? chartW / (n - 1) : 0;
 
+  /* Nuqta pozitsiyalarini saqlash */
+  chartPointPositions = [];
+
   ctx.strokeStyle = '#161616';
   ctx.lineWidth = 1;
   for(let i = 0; i <= 4; i++){
@@ -1677,26 +1598,33 @@ function drawChart(recent){
     ctx.fillText(hh + ':' + mm, x, PAD.top + chartH + 4);
   });
 
-  function drawSeries(values, color, fillGrad){
+  function drawSeries(values, color, key){
     const r = getRange(values);
     const pts = values.map((v, i) => ({
       x: PAD.left + stepX * i,
       y: PAD.top + chartH - ((v - r.min) / (r.max - r.min)) * chartH
     }));
 
-    if(fillGrad && pts.length > 1){
-      const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
-      grad.addColorStop(0, fillGrad + '20');
-      grad.addColorStop(1, fillGrad + '00');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.moveTo(pts[0].x, PAD.top + chartH);
-      pts.forEach(p => ctx.lineTo(p.x, p.y));
-      ctx.lineTo(pts[pts.length-1].x, PAD.top + chartH);
-      ctx.closePath();
-      ctx.fill();
+    // Nuqta pozitsiyalarini yig'ish (birinchi seriya uchun)
+    if(key === 'downloaded'){
+      pts.forEach((p, i) => {
+        chartPointPositions[i] = { x: p.x, y: p.y };
+      });
     }
 
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
+    grad.addColorStop(0, color + '20');
+    grad.addColorStop(1, color + '00');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, PAD.top + chartH);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length-1].x, PAD.top + chartH);
+    ctx.closePath();
+    ctx.fill();
+
+    // Chiziq
     ctx.strokeStyle = color;
     ctx.lineWidth = 1.8;
     ctx.lineJoin = 'round';
@@ -1708,6 +1636,7 @@ function drawChart(recent){
     });
     ctx.stroke();
 
+    // Nuqtalar
     pts.forEach((p, i) => {
       const isHover = i === hoveredIndex;
       const r1 = isHover ? 7 : 5;
@@ -1733,14 +1662,15 @@ function drawChart(recent){
     });
   }
 
-  drawSeries(series.downloaded, '#33d17a', '#33d17a');
-  drawSeries(series.speed,      '#3ba9ff', '#3ba9ff');
-  drawSeries(series.percent,    '#f5c247', '#f5c247');
-  drawSeries(series.etaMin,     '#ff5c5c', '#ff5c5c');
+  drawSeries(series.downloaded, '#33d17a', 'downloaded');
+  drawSeries(series.speed,      '#3ba9ff', 'speed');
+  drawSeries(series.percent,    '#f5c247', 'percent');
+  drawSeries(series.etaMin,     '#ff5c5c', 'etaMin');
 
+  // Hover vertikal chiziq
   if(hoveredIndex >= 0 && hoveredIndex < n){
     const x = PAD.left + stepX * hoveredIndex;
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
     ctx.lineWidth = 1;
     ctx.setLineDash([3,3]);
     ctx.beginPath();
@@ -1752,35 +1682,35 @@ function drawChart(recent){
 }
 
 /* ============================================================
-   CHART HOVER — tooltip chetdan chiqmaydi
+   CHART HOVER
    ============================================================ */
 chartWrap.addEventListener('mousemove', e => {
-  if(!chartData.length) return;
+  if(!chartData.length || !chartPointPositions.length) return;
+
   const rect = chartWrap.getBoundingClientRect();
   const x = e.clientX - rect.left;
-  const W = rect.width;
-  const PAD = { left: 34, right: 12 };
+  const y = e.clientY - rect.top;
 
-  const chartW = W - PAD.left - PAD.right;
-  const n = chartData.length;
-  if(n < 2) return;
-  const stepX = chartW / (n - 1);
-
+  // Eng yaqin nuqtani topish (masofa bo'yicha)
   let closestIdx = 0;
   let minDist = Infinity;
-  for(let i = 0; i < n; i++){
-    const px = PAD.left + stepX * i;
-    const dist = Math.abs(px - x);
+  for(let i = 0; i < chartPointPositions.length; i++){
+    const p = chartPointPositions[i];
+    if(!p) continue;
+    const dx = p.x - x;
+    const dy = p.y - y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
     if(dist < minDist){
       minDist = dist;
       closestIdx = i;
     }
   }
 
-  const px = PAD.left + stepX * closestIdx;
-  if(minDist < 40){
+  // Nuqta yaqinida bo'lsa (50px radius) — tooltip ko'rsatish
+  if(minDist < 50){
     hoveredIndex = closestIdx;
-    showTooltip(closestIdx, px, chartData[closestIdx]);
+    const p = chartPointPositions[closestIdx];
+    showTooltip(p.x, p.y, chartData[closestIdx]);
     drawChart(chartData);
   } else {
     hoveredIndex = -1;
@@ -1795,7 +1725,7 @@ chartWrap.addEventListener('mouseleave', () => {
   if(chartData.length) drawChart(chartData);
 });
 
-function showTooltip(idx, x, session){
+function showTooltip(px, py, session){
   const d = session.data;
   const t = new Date(session.ts);
   const hh = String(t.getHours()).padStart(2,'0');
@@ -1812,16 +1742,25 @@ function showTooltip(idx, x, session){
     <div class="ct-row"><span class="dot" style="background:#ff5c5c"></span>Qolgan <b>${eta}</b></div>
   `;
 
-  // Avval ko'rsatamiz, keyin o'lchamlarni o'lchaymiz
+  // Ko'rsatish va o'lchash
   chartTooltip.classList.add('show');
   const tipRect = chartTooltip.getBoundingClientRect();
   const wrapRect = chartWrap.getBoundingClientRect();
 
   const tipW = tipRect.width;
+  const tipH = tipRect.height;
   const wrapW = wrapRect.width;
+  const wrapH = wrapRect.height;
 
-  // Ideal: nuqta markazida (yarim eni chapga, yarim eni o'ngga)
-  let left = x - tipW / 2;
+  // Standart: nuqtadan chapga yarim eni
+  let left = px - tipW / 2;
+  // Standart: nuqtadan yuqorida, tooltip height + 12px bo'sh joy
+  let top = py - tipH - 12;
+
+  // Agar tepadan chiqib ketsa — pastga tushirish
+  if(top < 4){
+    top = py + 14;
+  }
 
   // Chetdan chiqmaslik uchun clamp
   const PADDING = 6;
@@ -1829,7 +1768,7 @@ function showTooltip(idx, x, session){
   if(left + tipW > wrapW - PADDING) left = wrapW - tipW - PADDING;
 
   chartTooltip.style.left = left + 'px';
-  chartTooltip.style.top = '8px';
+  chartTooltip.style.top = top + 'px';
 }
 
 function hideTooltip(){
@@ -1914,13 +1853,11 @@ Vazifa: O'zbek tilida 2-3 ta gapda xulosa yoz. Faqat quyidagi jihatlarga e'tibor
 QOIDALAR:
 - Faqat o'zbek tilida yoz
 - 2-3 ta gap, ortiq emas
-- Raqamlarni aniq keltir (masalan "34.7 dan 31.5 Mbps ga pasaydi")
-- Umumiy gaplar yozma ("yaxshi ketyapti" kabi) — aniq kuzatishlar yoz
-- Agar tezlik o'sayotgan bo'lsa — maqtash, pasayotgan bo'lsa — sababini taxmin qilish
+- Raqamlarni aniq keltir
 - HTML ishlatish mumkin: <b>qalin</b>, <span class="ok">yaxshi</span>, <span class="warn">ogohlantirish</span>, <span class="danger">yomon</span>
-- Faqat 1 ta xulosa — takrorlama
+- Faqat 1 ta xulosa
 
-Javob (faqat matn, JSON emas):`;
+Javob (faqat matn):`;
 
   const body = {
     model: GROQ_TEXT_MODEL,
