@@ -30,7 +30,6 @@
     -moz-osx-font-smoothing:grayscale;
   }
 
-  /* ============ APP SHELL ============ */
   .app{
     display:flex;
     flex-direction:column;
@@ -45,33 +44,14 @@
     overflow:hidden;
   }
 
-  /* ============ HEADER ============ */
-  .header{
-    flex-shrink:0;
-    text-align:center;
-    padding-bottom:4px;
-  }
-  .brand{
-    display:inline-flex;align-items:center;gap:9px;
-    margin:0 0 4px;
-  }
+  .header{flex-shrink:0;text-align:center;padding-bottom:4px;}
+  .brand{display:inline-flex;align-items:center;gap:9px;margin:0 0 4px;}
   .brand h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.2px;}
   .brand-accent{color:var(--accent2);}
-  .subtitle{
-    color:var(--muted);font-size:12px;margin:0;
-    line-height:1.4;max-width:520px;margin-inline:auto;
-  }
+  .subtitle{color:var(--muted);font-size:12px;margin:0;line-height:1.4;max-width:520px;margin-inline:auto;}
 
-  /* ============ MAIN GRID ============ */
-  .main{
-    display:grid;
-    flex:1;
-    min-height:0;
-    gap:14px;
-    overflow:hidden;
-  }
+  .main{display:grid;flex:1;min-height:0;gap:14px;overflow:hidden;}
 
-  /* Desktop ≥1024px: 2 columns, no scroll */
   @media(min-width:1024px){
     .main{
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
@@ -86,21 +66,11 @@
     .results-wrap{grid-area:results;min-height:0;display:flex;flex-direction:column;}
   }
 
-  /* Tablet / Mobile: 1 column, scroll */
   @media(max-width:1023px){
-    .app{
-      height:auto;
-      min-height:100vh;
-      min-height:100dvh;
-      max-height:none;
-      overflow:visible;
-    }
+    .app{height:auto;min-height:100vh;min-height:100dvh;max-height:none;overflow:visible;}
     .main{
       grid-template-columns:1fr;
-      grid-template-areas:
-        "upload"
-        "results"
-        "history";
+      grid-template-areas:"upload" "results" "history";
       grid-template-rows:auto;
       overflow:visible;
       gap:12px;
@@ -108,7 +78,6 @@
     .upload-wrap,.history-wrap,.results-wrap{min-height:0;}
   }
 
-  /* ============ UPLOAD ============ */
   .upload-box{
     background:var(--card);
     border:2px dashed #262626;
@@ -162,57 +131,55 @@
   .upload-box.has-image .upload-sub{display:none;}
   .upload-box.has-image .choose-btn{margin-top:0;margin-bottom:8px;flex-shrink:0;}
 
-  /* ============ STATUS / PROGRESS ============ */
-  .status{
-    text-align:center;color:var(--muted);font-size:12.5px;
-    min-height:0;flex-shrink:0;
-    transition:min-height .2s;
+  .session-badge{
+    display:none;
+    align-items:center;gap:6px;
+    padding:6px 10px;
+    background:rgba(59,169,255,.1);
+    border:1px solid rgba(59,169,255,.3);
+    border-radius:8px;
+    font-size:11px;
+    color:var(--accent);
+    margin-top:8px;
+    flex-shrink:0;
   }
+  .session-badge.show{display:flex;}
+  .session-badge.cached{
+    background:rgba(51,209,122,.1);
+    border-color:rgba(51,209,122,.3);
+    color:var(--accent2);
+  }
+  .session-badge button{
+    margin-left:auto;
+    background:none;border:none;color:var(--muted);
+    cursor:pointer;font-size:11px;padding:2px 6px;
+    border-radius:4px;font-family:inherit;
+  }
+  .session-badge button:hover{color:var(--danger);}
+
+  .status{text-align:center;color:var(--muted);font-size:12.5px;min-height:0;flex-shrink:0;transition:min-height .2s;}
   .status:not(:empty){min-height:16px;padding:4px 0;}
-  .progress-wrap{
-    height:4px;background:#1a1a1a;border-radius:4px;
-    overflow:hidden;display:none;flex-shrink:0;
-  }
+  .status.cached{color:var(--accent2);}
+  .progress-wrap{height:4px;background:#1a1a1a;border-radius:4px;overflow:hidden;display:none;flex-shrink:0;}
   .progress-wrap.show{display:block;}
-  .progress-bar{
-    height:100%;width:0%;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    transition:width .3s ease;
-  }
-  .progress-bar.indeterminate{
-    width:40%!important;
-    animation:slide 1.3s ease-in-out infinite;
-  }
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s ease;}
+  .progress-bar.indeterminate{width:40%!important;animation:slide 1.3s ease-in-out infinite;}
   @keyframes slide{0%{margin-left:-40%;}100%{margin-left:100%;}}
 
-  /* ============ ERROR ============ */
   .error-box{
-    display:none;
-    background:#2a1418;border:1px solid #5c2a30;
-    color:#ff9b9b;border-radius:10px;
-    padding:10px 12px;font-size:12px;
-    line-height:1.5;flex-shrink:0;
-    margin-top:8px;
+    display:none;background:#2a1418;border:1px solid #5c2a30;
+    color:#ff9b9b;border-radius:10px;padding:10px 12px;
+    font-size:12px;line-height:1.5;flex-shrink:0;margin-top:8px;
   }
   .error-box.show{display:block;}
   .error-box .retry-btn{
-    margin-top:6px;
-    background:transparent;border:1px solid #5c2a30;
-    color:#ff9b9b;padding:5px 12px;
-    border-radius:20px;cursor:pointer;
-    font-size:11px;
-    display:inline-flex;align-items:center;gap:5px;
-    font-family:inherit;
+    margin-top:6px;background:transparent;border:1px solid #5c2a30;
+    color:#ff9b9b;padding:5px 12px;border-radius:20px;cursor:pointer;
+    font-size:11px;display:inline-flex;align-items:center;gap:5px;font-family:inherit;
   }
   .error-box .retry-btn:hover{background:#3a1c20;}
 
-  /* ============ RESULTS ============ */
-  .results-wrap{
-    display:flex;
-    flex-direction:column;
-    min-height:0;
-    gap:12px;
-  }
+  .results-wrap{display:flex;flex-direction:column;min-height:0;gap:12px;}
 
   .empty-state{
     display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -226,13 +193,7 @@
   .empty-state svg{opacity:.35;}
   .empty-state p{font-size:12.5px;margin:0;line-height:1.5;}
 
-  .results-section{
-    display:none;
-    flex-direction:column;
-    gap:12px;
-    min-height:0;
-    flex:1;
-  }
+  .results-section{display:none;flex-direction:column;gap:12px;min-height:0;flex:1;}
   .results-section.visible{display:flex;}
   .results-section.visible ~ .empty-state{display:none;}
 
@@ -245,107 +206,62 @@
 
   .big-card{
     background:linear-gradient(145deg,var(--card2),var(--card));
-    border-radius:var(--radius);
-    padding:18px 20px;
-    text-align:center;
-    border:1px solid var(--border);
-    position:relative;
-    overflow:hidden;
-    flex-shrink:0;
+    border-radius:var(--radius);padding:18px 20px;text-align:center;
+    border:1px solid var(--border);position:relative;overflow:hidden;flex-shrink:0;
   }
   .big-card::before{
     content:'';position:absolute;inset:0;
     background:radial-gradient(circle at top right, rgba(59,169,255,.08), transparent 60%);
     pointer-events:none;
   }
-  .big-card.accent2::before{
-    background:radial-gradient(circle at top right, rgba(51,209,122,.08), transparent 60%);
-  }
+  .big-card.accent2::before{background:radial-gradient(circle at top right, rgba(51,209,122,.08), transparent 60%);}
   .big-card .label{
-    font-size:10.5px;color:var(--muted);
-    text-transform:uppercase;letter-spacing:1px;
-    margin-bottom:6px;
+    font-size:10.5px;color:var(--muted);text-transform:uppercase;
+    letter-spacing:1px;margin-bottom:6px;
     display:flex;align-items:center;justify-content:center;gap:5px;
   }
   .big-card .value{
-    font-size:36px;font-weight:700;
-    color:var(--accent2);line-height:1.1;
-    font-variant-numeric:tabular-nums;
-    letter-spacing:-.5px;
+    font-size:30px;font-weight:700;color:var(--accent2);line-height:1.1;
+    font-variant-numeric:tabular-nums;letter-spacing:-.5px;
   }
   .big-card .value.remaining{color:var(--accent);}
   .big-card .sub{font-size:11.5px;color:var(--muted);margin-top:5px;}
 
-  .mini-row{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:8px;
-    flex-shrink:0;
-  }
-  .mini-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:10px;padding:11px 6px;text-align:center;
-  }
-  .mini-card .l{
-    font-size:9.5px;color:var(--muted);margin-bottom:3px;
-    text-transform:uppercase;letter-spacing:.5px;
-  }
-  .mini-card .v{
-    font-size:14px;font-weight:600;
-    font-variant-numeric:tabular-nums;
-  }
+  .mini-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0;}
+  .mini-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 6px;text-align:center;}
+  .mini-card .l{font-size:9.5px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+  .mini-card .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 
-  .details-collapsed{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:10px;overflow:hidden;flex-shrink:0;
-  }
+  .details-collapsed{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-shrink:0;}
   .details-collapsed summary{
-    padding:11px 14px;cursor:pointer;color:var(--muted);
-    font-size:12.5px;list-style:none;
-    display:flex;align-items:center;gap:7px;
-    user-select:none;
+    padding:11px 14px;cursor:pointer;color:var(--muted);font-size:12.5px;
+    list-style:none;display:flex;align-items:center;gap:7px;user-select:none;
   }
   .details-collapsed summary::-webkit-details-marker{display:none;}
   .details-collapsed summary::after{
-    content:'';margin-left:auto;
-    width:7px;height:7px;border-right:1.5px solid var(--muted);
-    border-bottom:1.5px solid var(--muted);
-    transform:rotate(45deg);transition:transform .2s;
-    margin-top:-3px;
+    content:'';margin-left:auto;width:7px;height:7px;
+    border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
+    transform:rotate(45deg);transition:transform .2s;margin-top:-3px;
   }
-  .details-collapsed[open] summary::after{
-    transform:rotate(-135deg);margin-top:3px;
-  }
+  .details-collapsed[open] summary::after{transform:rotate(-135deg);margin-top:3px;}
   .details-collapsed summary:hover{color:var(--text);}
-  .details-body{
-    padding:0 14px 12px;font-size:12px;color:var(--muted);line-height:1.7;
-  }
-  .details-body .row{
-    display:flex;justify-content:space-between;gap:10px;
-    border-bottom:1px solid #171717;padding:5px 0;
-  }
+  .details-body{padding:0 14px 12px;font-size:12px;color:var(--muted);line-height:1.7;}
+  .details-body .row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #171717;padding:5px 0;}
   .details-body .row:last-child{border-bottom:none;}
   .details-body b{color:var(--text);font-weight:500;}
   .ocr-raw{
-    background:#0d1117;border-radius:8px;
-    padding:10px 12px;font-size:11px;
-    color:#7d8899;font-family:ui-monospace,Menlo,monospace;
-    white-space:pre-wrap;word-break:break-word;
-    max-height:160px;overflow-y:auto;margin-top:8px;
+    background:#0d1117;border-radius:8px;padding:10px 12px;font-size:11px;
+    color:#7d8899;font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap;
+    word-break:break-word;max-height:160px;overflow-y:auto;margin-top:8px;
   }
   .ocr-raw::-webkit-scrollbar{width:4px;}
   .ocr-raw::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:2px;}
 
-  .actions{
-    display:grid;grid-template-columns:1fr 1fr;gap:8px;
-    flex-shrink:0;
-  }
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;}
   .btn{
-    background:transparent;border:1px solid #262626;
-    color:var(--muted);padding:10px 14px;
-    border-radius:30px;cursor:pointer;font-size:12.5px;
-    transition:all .2s;
-    display:inline-flex;align-items:center;justify-content:center;
+    background:transparent;border:1px solid #262626;color:var(--muted);
+    padding:10px 14px;border-radius:30px;cursor:pointer;font-size:12.5px;
+    transition:all .2s;display:inline-flex;align-items:center;justify-content:center;
     gap:6px;font-family:inherit;min-height:40px;
   }
   .btn:hover{border-color:var(--accent);color:var(--accent);}
@@ -353,81 +269,53 @@
   .btn.danger:hover{border-color:var(--danger);color:var(--danger);}
 
   .api-footer{
-    display:flex;align-items:center;justify-content:center;
-    gap:6px;font-size:11px;color:var(--muted);
-    flex-wrap:wrap;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    font-size:11px;color:var(--muted);flex-wrap:wrap;flex-shrink:0;
   }
-  .api-footer .dot{
-    width:6px;height:6px;border-radius:50%;
-    background:var(--accent2);
-    box-shadow:0 0 6px var(--accent2);flex-shrink:0;
-  }
-  .api-footer .dot.off{
-    background:var(--danger);box-shadow:0 0 6px var(--danger);
-  }
-  .api-footer button{
-    background:none;border:none;color:var(--muted);
-    font-size:11px;cursor:pointer;
-    text-decoration:underline;padding:0 2px;
-    font-family:inherit;
-  }
+  .api-footer .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);box-shadow:0 0 6px var(--accent2);flex-shrink:0;}
+  .api-footer .dot.off{background:var(--danger);box-shadow:0 0 6px var(--danger);}
+  .api-footer button{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline;padding:0 2px;font-family:inherit;}
   .api-footer button:hover{color:var(--accent);}
 
-  /* ============ HISTORY ============ */
   .history-wrap{display:flex;flex-direction:column;justify-content:flex-end;}
   .history-section{display:none;}
   .history-section.visible{display:block;}
-  .history-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:12px 14px;
-  }
-  .history-head{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:6px;
-  }
-  .history-head h3{
-    font-size:12.5px;font-weight:600;margin:0;
-    display:flex;align-items:center;gap:6px;
-  }
-  .history-clear{
-    background:none;border:none;color:var(--muted);
-    font-size:11px;cursor:pointer;padding:2px 6px;
-    border-radius:6px;font-family:inherit;
-  }
+  .history-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;}
+  .history-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .history-head h3{font-size:12.5px;font-weight:600;margin:0;display:flex;align-items:center;gap:6px;}
+  .history-clear{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;padding:2px 6px;border-radius:6px;font-family:inherit;}
   .history-clear:hover{color:var(--danger);}
   .history-item{
     display:flex;align-items:center;gap:10px;
-    padding:7px 6px;border-bottom:1px solid #171717;
-    font-size:12px;cursor:pointer;border-radius:6px;
-    transition:background .15s;
-    margin:0 -6px;
+    padding:7px 6px;border-bottom:1px solid #171717;font-size:12px;
+    cursor:pointer;border-radius:6px;transition:background .15s;margin:0 -6px;
   }
   .history-item:last-child{border-bottom:none;}
   .history-item:hover{background:#0f0f0f;}
   .history-item:active{background:#161616;}
-  .history-item .hi-time{
-    color:var(--muted);font-size:10.5px;
-    min-width:42px;flex-shrink:0;
+  .history-item.active{
+    background:rgba(59,169,255,.08);
+    border-left:2px solid var(--accent);
+    padding-left:8px;
   }
+  .history-item .hi-time{color:var(--muted);font-size:10.5px;min-width:42px;flex-shrink:0;}
   .history-item .hi-info{flex:1;color:var(--text);line-height:1.4;}
   .history-item .hi-info b{color:var(--accent2);font-weight:600;}
-  .history-item .hi-arrow{
-    color:var(--muted);flex-shrink:0;opacity:.5;
-    display:flex;align-items:center;
+  .history-item .hi-tag{
+    display:inline-block;
+    padding:1px 5px;
+    border-radius:4px;
+    font-size:9.5px;
+    background:rgba(51,209,122,.15);
+    color:var(--accent2);
+    margin-left:4px;
   }
+  .history-item .hi-arrow{color:var(--muted);flex-shrink:0;opacity:.5;display:flex;align-items:center;}
   .history-item:hover .hi-arrow{opacity:1;color:var(--accent);}
-  .history-item .hi-del{
-    background:none;border:none;color:var(--muted);
-    cursor:pointer;padding:4px;display:flex;
-    border-radius:4px;flex-shrink:0;
-  }
+  .history-item .hi-del{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex;border-radius:4px;flex-shrink:0;}
   .history-item .hi-del:hover{color:var(--danger);}
-  .history-empty{
-    color:var(--muted);font-size:12px;
-    text-align:center;padding:12px 0;
-  }
+  .history-empty{color:var(--muted);font-size:12px;text-align:center;padding:12px 0;}
 
-  /* ============ MODAL ============ */
   .modal-overlay{
     position:fixed;inset:0;background:rgba(0,0,0,.85);
     backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -436,173 +324,58 @@
   }
   .modal-overlay.active{display:flex;}
   .modal{
-    background:var(--card2);border:1px solid var(--border);
-    border-radius:16px;padding:24px 22px;
-    max-width:440px;width:100%;
+    background:var(--card2);border:1px solid var(--border);border-radius:16px;
+    padding:24px 22px;max-width:440px;width:100%;
     box-shadow:0 20px 60px rgba(0,0,0,.7);
     animation:fadeIn .3s ease;margin:auto;
   }
-  @keyframes fadeIn{
-    from{opacity:0;transform:translateY(8px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-  .modal h2{
-    margin:0 0 8px;font-size:17px;font-weight:600;
-    display:flex;align-items:center;gap:8px;
-  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .modal h2{margin:0 0 8px;font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;}
   .modal h2 svg{color:var(--accent);flex-shrink:0;}
-  .modal p{
-    color:var(--muted);font-size:12.5px;
-    margin:0 0 16px;line-height:1.6;
-  }
+  .modal p{color:var(--muted);font-size:12.5px;margin:0 0 16px;line-height:1.6;}
   .modal p a{color:var(--accent);text-decoration:none;}
   .modal p a:hover{text-decoration:underline;}
-  .modal code{
-    background:#0a0a0a;padding:1px 5px;
-    border-radius:4px;font-size:11.5px;
-    color:var(--accent2);
-  }
+  .modal code{background:#0a0a0a;padding:1px 5px;border-radius:4px;font-size:11.5px;color:var(--accent2);}
   .modal input{
-    width:100%;padding:11px 13px;
-    border-radius:9px;border:1px solid #262626;
-    background:#0a0a0a;color:var(--text);
-    font-size:13px;
-    font-family:ui-monospace,Menlo,monospace;
-    outline:none;transition:border-color .2s;
+    width:100%;padding:11px 13px;border-radius:9px;border:1px solid #262626;
+    background:#0a0a0a;color:var(--text);font-size:13px;
+    font-family:ui-monospace,Menlo,monospace;outline:none;transition:border-color .2s;
   }
   .modal input:focus{border-color:var(--accent);}
   .modal-btns{display:flex;gap:8px;margin-top:14px;}
   .modal-btns button{
-    flex:1;padding:10px;border-radius:9px;
-    font-size:12.5px;font-weight:600;
-    cursor:pointer;transition:all .2s;
-    border:none;font-family:inherit;
-    min-height:40px;
+    flex:1;padding:10px;border-radius:9px;font-size:12.5px;font-weight:600;
+    cursor:pointer;transition:all .2s;border:none;font-family:inherit;min-height:40px;
   }
   .modal-btns .primary{background:var(--accent);color:#fff;}
   .modal-btns .primary:hover{background:#2a8fe0;}
   .modal-btns .primary:disabled{opacity:.5;cursor:not-allowed;}
-  .modal-btns .ghost{
-    background:transparent;color:var(--muted);
-    border:1px solid #262626;
-  }
+  .modal-btns .ghost{background:transparent;color:var(--muted);border:1px solid #262626;}
   .modal-btns .ghost:hover{border-color:var(--danger);color:var(--danger);}
-  .api-status{
-    font-size:11.5px;color:var(--muted);
-    text-align:center;margin-top:10px;
-    display:none;align-items:center;
-    justify-content:center;gap:6px;
-  }
+  .api-status{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;display:none;align-items:center;justify-content:center;gap:6px;}
   .api-status.show{display:flex;}
-  .api-status .dot{
-    width:6px;height:6px;border-radius:50%;
-    background:var(--accent2);
-    box-shadow:0 0 6px var(--accent2);flex-shrink:0;
-  }
-  .api-status .dot.off{
-    background:var(--danger);box-shadow:0 0 6px var(--danger);
-  }
+  .api-status .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);box-shadow:0 0 6px var(--accent2);flex-shrink:0;}
+  .api-status .dot.off{background:var(--danger);box-shadow:0 0 6px var(--danger);}
 
-  /* ============ HISTORY DETAIL MODAL ============ */
-  .history-modal-content{
-    max-width:520px;max-height:90vh;overflow-y:auto;
-    padding:22px 20px;
-  }
-  .history-modal-content::-webkit-scrollbar{width:5px;}
-  .history-modal-content::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:3px;}
-  .history-modal-head{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:6px;gap:10px;
-  }
-  .history-modal-head h2{
-    font-size:16px;font-weight:600;margin:0;
-    display:flex;align-items:center;gap:7px;
-  }
-  .history-modal-head h2 svg{color:var(--accent);}
-  .history-modal-close{
-    background:none;border:none;color:var(--muted);
-    cursor:pointer;padding:6px;border-radius:6px;
-    display:flex;flex-shrink:0;
-  }
-  .history-modal-close:hover{color:var(--danger);background:#1a1a1a;}
-  .history-modal-time{
-    font-size:11.5px;color:var(--muted);margin-bottom:14px;
-    display:flex;align-items:center;gap:6px;
-    padding-bottom:12px;border-bottom:1px solid var(--border);
-  }
-  .history-modal-grid{
-    display:grid;grid-template-columns:1fr 1fr;
-    gap:10px;margin-bottom:10px;
-  }
-  .history-modal-grid .hm-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:10px;padding:12px;text-align:center;
-    position:relative;overflow:hidden;
-  }
-  .history-modal-grid .hm-card.wide{grid-column:1/-1;padding:16px 14px;}
-  .history-modal-grid .hm-card.wide::before{
-    content:'';position:absolute;inset:0;
-    background:radial-gradient(circle at top right, rgba(59,169,255,.07), transparent 60%);
-    pointer-events:none;
-  }
-  .history-modal-grid .hm-card.wide.green::before{
-    background:radial-gradient(circle at top right, rgba(51,209,122,.07), transparent 60%);
-  }
-  .history-modal-grid .hm-label{
-    font-size:10px;color:var(--muted);text-transform:uppercase;
-    letter-spacing:.8px;margin-bottom:4px;
-  }
-  .history-modal-grid .hm-value{
-    font-size:16px;font-weight:700;
-    font-variant-numeric:tabular-nums;color:var(--text);
-  }
-  .history-modal-grid .hm-value.blue{color:var(--accent);font-size:24px;letter-spacing:-.5px;}
-  .history-modal-grid .hm-value.green{color:var(--accent2);font-size:24px;letter-spacing:-.5px;}
-  .history-modal-grid .hm-sub{font-size:10.5px;color:var(--muted);margin-top:3px;}
-  .history-modal-info{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:10px;padding:12px 14px;
-    font-size:12px;color:var(--muted);line-height:1.7;
-    margin-bottom:10px;
-  }
-  .history-modal-info .row{
-    display:flex;justify-content:space-between;gap:10px;
-    border-bottom:1px solid #171717;padding:4px 0;
-  }
-  .history-modal-info .row:last-child{border-bottom:none;}
-  .history-modal-info b{color:var(--text);font-weight:500;}
-  .history-modal-raw{
-    background:#0d1117;border-radius:8px;padding:10px 12px;font-size:11px;
-    color:#7d8899;font-family:ui-monospace,Menlo,monospace;
-    white-space:pre-wrap;word-break:break-word;
-    max-height:150px;overflow-y:auto;
-  }
-  .history-modal-raw::-webkit-scrollbar{width:4px;}
-  .history-modal-raw::-webkit-scrollbar-thumb{background:#1a1a1a;border-radius:2px;}
-
-  /* ============ MOBILE ============ */
   @media(max-width:639px){
     .app{padding:12px;gap:10px;height:auto;min-height:100dvh;}
     .brand h1{font-size:17px;}
     .subtitle{font-size:11.5px;}
     .big-card{padding:14px 16px;}
-    .big-card .value{font-size:28px;}
+    .big-card .value{font-size:20px;}
     .mini-row{grid-template-columns:repeat(2,1fr);}
     .main{gap:10px;}
     .upload-box{padding:16px 12px;min-height:180px;}
     .upload-icon svg{width:28px;height:28px;}
     .history-item .hi-time{min-width:38px;font-size:10px;}
     .history-item{font-size:11.5px;padding:6px 6px;}
-    .history-modal-grid .hm-value.blue,
-    .history-modal-grid .hm-value.green{font-size:20px;}
-    .history-modal-grid .hm-card.wide{padding:14px 12px;}
     .empty-state{min-height:160px;}
   }
   @media(max-width:380px){
     .app{padding:10px;gap:8px;}
     .brand h1{font-size:15px;}
     .brand svg{width:24px;height:24px;}
-    .big-card .value{font-size:24px;}
+    .big-card .value{font-size:17px;}
     .big-card{padding:12px 14px;}
     .mini-card .v{font-size:12.5px;}
     .mini-card .l{font-size:9px;}
@@ -610,7 +383,6 @@
     .actions{grid-template-columns:1fr;}
   }
 
-  /* Desktop juda past balandlik uchun */
   @media(min-width:1024px) and (max-height:640px){
     .app{height:auto;min-height:100vh;overflow:visible;}
     .main{overflow:visible;}
@@ -621,7 +393,6 @@
 </head>
 <body>
 
-<!-- ============ API MODAL ============ -->
 <div class="modal-overlay" id="apiModal">
   <div class="modal">
     <h2>
@@ -644,58 +415,6 @@
   </div>
 </div>
 
-<!-- ============ HISTORY DETAIL MODAL ============ -->
-<div class="modal-overlay" id="historyModal">
-  <div class="modal history-modal-content">
-    <div class="history-modal-head">
-      <h2>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
-        Tahlil tafsiloti
-      </h2>
-      <button type="button" class="history-modal-close" id="historyModalClose" title="Yopish">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-
-    <div class="history-modal-time" id="historyModalTime"></div>
-
-    <div class="history-modal-grid">
-      <div class="hm-card wide">
-        <div class="hm-label">Qolgan vaqt</div>
-        <div class="hm-value blue" id="hmEta">--</div>
-        <div class="hm-sub" id="hmEtaSub"></div>
-      </div>
-      <div class="hm-card wide green">
-        <div class="hm-label">O'tgan vaqt</div>
-        <div class="hm-value green" id="hmElapsed">--</div>
-        <div class="hm-sub" id="hmElapsedSub"></div>
-      </div>
-      <div class="hm-card"><div class="hm-label">Yuklandi</div><div class="hm-value" id="hmDownloaded">--</div></div>
-      <div class="hm-card"><div class="hm-label">Jami</div><div class="hm-value" id="hmTotal">--</div></div>
-      <div class="hm-card"><div class="hm-label">Foiz</div><div class="hm-value" id="hmPercent">--</div></div>
-      <div class="hm-card"><div class="hm-label">Tezlik</div><div class="hm-value" id="hmSpeed">--</div></div>
-    </div>
-
-    <div class="history-modal-info">
-      <div class="row"><span>Qolgan hajm</span><b id="hmRemainSize">--</b></div>
-      <div class="row"><span>O'rnatish foizi</span><b id="hmInstallPct">--</b></div>
-      <div class="row"><span>AI model</span><b id="hmModel">--</b></div>
-      <div class="row"><span>Javob vaqti</span><b id="hmLatency">--</b></div>
-    </div>
-
-    <details class="details-collapsed" id="hmRawWrap" style="display:none;">
-      <summary>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        AI xom javobi
-      </summary>
-      <div class="details-body">
-        <div class="history-modal-raw" id="hmRaw"></div>
-      </div>
-    </details>
-  </div>
-</div>
-
-<!-- ============ APP ============ -->
 <div class="app">
 
   <header class="header">
@@ -711,7 +430,6 @@
 
   <div class="main">
 
-    <!-- UPLOAD -->
     <div class="upload-wrap">
       <div class="upload-box" id="dropZone">
         <input type="file" id="fileInput" accept="image/*">
@@ -730,12 +448,18 @@
         </button>
         <img id="preview" alt="preview">
       </div>
+
+      <div class="session-badge" id="sessionBadge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        <span id="sessionBadgeText">Tarixdan yuklandi</span>
+        <button type="button" id="sessionBadgeClose">yopish</button>
+      </div>
+
       <div class="error-box" id="errorBox"></div>
       <div class="status" id="status"></div>
       <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
     </div>
 
-    <!-- RESULTS -->
     <div class="results-wrap">
       <div class="results-section" id="results">
 
@@ -775,6 +499,7 @@
             <div class="row"><span>Formula (qolgan)</span><b>hajm ÷ tezlik</b></div>
             <div class="row"><span>AI model</span><b id="detModel">--</b></div>
             <div class="row"><span>Javob vaqti</span><b id="detLatency">--</b></div>
+            <div class="row"><span>Manba</span><b id="detSource">--</b></div>
           </div>
         </details>
 
@@ -815,7 +540,6 @@
       </div>
     </div>
 
-    <!-- HISTORY -->
     <div class="history-wrap">
       <div class="history-section" id="historySection">
         <div class="history-card">
@@ -841,8 +565,12 @@
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_VISION_MODEL = 'qwen/qwen3.8-27b';
 const API_KEY_STORAGE = 'tln_groq_api_key';
-const HISTORY_STORAGE = 'tln_history';
-const HISTORY_MAX = 5;
+const SESSION_ACTIVE_KEY = 'tln_active_session';
+const DEFAULT_TITLE = 'TimeLeftNetwork';
+const DB_NAME = 'TimeLeftNetworkDB';
+const DB_VERSION = 1;
+const STORE_SESSIONS = 'sessions';
+const HISTORY_MAX = 20;
 
 /* ============================================================
    DOM
@@ -861,29 +589,10 @@ const refreshBtn   = document.getElementById('refreshBtn');
 const historySection = document.getElementById('historySection');
 const historyList  = document.getElementById('historyList');
 const historyClear = document.getElementById('historyClear');
+const sessionBadge = document.getElementById('sessionBadge');
+const sessionBadgeText = document.getElementById('sessionBadgeText');
+const sessionBadgeClose = document.getElementById('sessionBadgeClose');
 
-/* history modal */
-const historyModal        = document.getElementById('historyModal');
-const historyModalClose   = document.getElementById('historyModalClose');
-const historyModalTime    = document.getElementById('historyModalTime');
-const hmEta               = document.getElementById('hmEta');
-const hmEtaSub            = document.getElementById('hmEtaSub');
-const hmElapsed           = document.getElementById('hmElapsed');
-const hmElapsedSub        = document.getElementById('hmElapsedSub');
-const hmDownloaded        = document.getElementById('hmDownloaded');
-const hmTotal             = document.getElementById('hmTotal');
-const hmPercent           = document.getElementById('hmPercent');
-const hmSpeed             = document.getElementById('hmSpeed');
-const hmRemainSize        = document.getElementById('hmRemainSize');
-const hmInstallPct        = document.getElementById('hmInstallPct');
-const hmModel             = document.getElementById('hmModel');
-const hmLatency           = document.getElementById('hmLatency');
-const hmRawWrap           = document.getElementById('hmRawWrap');
-const hmRaw               = document.getElementById('hmRaw');
-
-/* ============================================================
-   API KEY
-   ============================================================ */
 const apiModal      = document.getElementById('apiModal');
 const apiKeyInput   = document.getElementById('apiKeyInput');
 const apiSaveBtn    = document.getElementById('apiSaveBtn');
@@ -894,6 +603,128 @@ const apiDot        = document.getElementById('apiDot');
 const apiFooterStatus = document.getElementById('apiFooterStatus');
 const changeKeyBtn  = document.getElementById('changeKeyBtn');
 
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+let countdownInterval = null;
+let currentSession = null;
+let db = null;
+
+/* ============================================================
+   INDEXEDDB
+   ============================================================ */
+function openDB(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if(!d.objectStoreNames.contains(STORE_SESSIONS)){
+        const store = d.createObjectStore(STORE_SESSIONS, { keyPath: 'id' });
+        store.createIndex('ts', 'ts', { unique: false });
+        store.createIndex('imageHash', 'imageHash', { unique: false });
+      }
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbPut(session){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+    tx.objectStore(STORE_SESSIONS).put(session);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function dbGet(id){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readonly');
+    const req = tx.objectStore(STORE_SESSIONS).get(id);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbGetAll(){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readonly');
+    const req = tx.objectStore(STORE_SESSIONS).getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbGetByHash(hash){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readonly');
+    const idx = tx.objectStore(STORE_SESSIONS).index('imageHash');
+    const req = idx.get(hash);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbDelete(id){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+    tx.objectStore(STORE_SESSIONS).delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function dbClear(){
+  return new Promise((resolve, reject) => {
+    if(!db){ reject(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+    tx.objectStore(STORE_SESSIONS).clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function pruneOldSessions(){
+  try{
+    const all = await dbGetAll();
+    if(all.length <= HISTORY_MAX) return;
+    all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
+    const toDelete = all.slice(HISTORY_MAX);
+    for(const s of toDelete){
+      await dbDelete(s.id);
+    }
+  }catch(e){ console.warn('prune error', e); }
+}
+
+/* ============================================================
+   ACTIVE SESSION
+   ============================================================ */
+function setActiveSessionId(id){ try{ localStorage.setItem(SESSION_ACTIVE_KEY, id); }catch(e){} }
+function getActiveSessionId(){ try{ return localStorage.getItem(SESSION_ACTIVE_KEY) || null; }catch(e){ return null; } }
+function clearActiveSessionId(){ try{ localStorage.removeItem(SESSION_ACTIVE_KEY); }catch(e){} }
+
+/* ============================================================
+   HASH
+   ============================================================ */
+async function hashImage(dataUrl){
+  const commaIdx = dataUrl.indexOf(',');
+  const base64 = commaIdx >= 0 ? dataUrl.slice(commaIdx + 1) : dataUrl;
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const buf = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ============================================================
+   API KEY
+   ============================================================ */
 function getApiKey(){ return localStorage.getItem(API_KEY_STORAGE) || ''; }
 function setApiKey(k){ localStorage.setItem(API_KEY_STORAGE, k); }
 function clearApiKey(){ localStorage.removeItem(API_KEY_STORAGE); }
@@ -960,75 +791,6 @@ apiKeyInput.addEventListener('keydown', e => { if(e.key === 'Enter') apiSaveBtn.
 changeKeyBtn.addEventListener('click', () => openApiModal(false));
 
 /* ============================================================
-   HISTORY MODAL
-   ============================================================ */
-historyModalClose.addEventListener('click', () => historyModal.classList.remove('active'));
-historyModal.addEventListener('click', e => {
-  if(e.target === historyModal) historyModal.classList.remove('active');
-});
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape' && historyModal.classList.contains('active')){
-    historyModal.classList.remove('active');
-  }
-});
-
-function showHistoryDetail(item){
-  const time = new Date(item.ts);
-  const y = time.getFullYear();
-  const mo = String(time.getMonth()+1).padStart(2,'0');
-  const d = String(time.getDate()).padStart(2,'0');
-  const hh = String(time.getHours()).padStart(2,'0');
-  const mm = String(time.getMinutes()).padStart(2,'0');
-  const ss = String(time.getSeconds()).padStart(2,'0');
-
-  historyModalTime.innerHTML = `
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    ${y}-${mo}-${d} &nbsp;•&nbsp; ${hh}:${mm}:${ss}
-  `;
-
-  if(item.remainingSeconds !== null && item.remainingSeconds !== undefined){
-    hmEta.textContent = formatTime(item.remainingSeconds);
-    hmEtaSub.textContent = (item.remainingGB !== null && item.remainingGB !== undefined)
-      ? formatSize(item.remainingGB) + ' qoldi, ' + (item.speedMbps || 0).toFixed(1) + ' Mbps tezlikda'
-      : '';
-  } else {
-    hmEta.textContent = '--'; hmEtaSub.textContent = '';
-  }
-
-  if(item.elapsedSeconds !== null && item.elapsedSeconds !== undefined){
-    hmElapsed.textContent = formatTime(item.elapsedSeconds);
-    hmElapsedSub.textContent = (item.downloadedGB !== null && item.downloadedGB !== undefined)
-      ? formatSize(item.downloadedGB) + ' shu tezlikda yuklangan'
-      : '';
-  } else if(item.downloadedGB !== null && item.downloadedGB !== undefined && item.speedMbps){
-    const speedGBps = (item.speedMbps / 8) / 1024;
-    const sec = item.downloadedGB / speedGBps;
-    hmElapsed.textContent = formatTime(sec);
-    hmElapsedSub.textContent = formatSize(item.downloadedGB) + ' yuklangan';
-  } else {
-    hmElapsed.textContent = '--'; hmElapsedSub.textContent = '';
-  }
-
-  hmDownloaded.textContent = (item.downloadedGB !== null && item.downloadedGB !== undefined) ? formatSize(item.downloadedGB) : '--';
-  hmTotal.textContent      = (item.totalGB      !== null && item.totalGB      !== undefined) ? formatSize(item.totalGB)      : '--';
-  hmPercent.textContent    = (item.percent      !== null && item.percent      !== undefined) ? item.percent + '%'            : '--';
-  hmSpeed.textContent      = (item.speedMbps) ? item.speedMbps.toFixed(1) + ' Mbps' : '--';
-  hmRemainSize.textContent = (item.remainingGB !== null && item.remainingGB !== undefined) ? formatSize(item.remainingGB) : '--';
-  hmInstallPct.textContent = (item.installPct  !== null && item.installPct  !== undefined) ? item.installPct + '%'         : '--';
-  hmModel.textContent      = item.model  || '--';
-  hmLatency.textContent    = item.latency || '--';
-
-  if(item.rawJson){
-    hmRaw.textContent = item.rawJson;
-    hmRawWrap.style.display = '';
-  } else {
-    hmRawWrap.style.display = 'none';
-  }
-
-  historyModal.classList.add('active');
-}
-
-/* ============================================================
    FILE HANDLING
    ============================================================ */
 dropZone.addEventListener('click', () => fileInput.click());
@@ -1089,8 +851,6 @@ function fileToDataURL(file){
   });
 }
 
-let currentDataUrl = null;
-
 async function handleFile(file){
   if(!file.type.startsWith('image/')){
     showError('Iltimos, rasm faylini tanlang (PNG yoki JPG).');
@@ -1104,24 +864,84 @@ async function handleFile(file){
   results.classList.remove('visible');
   if(emptyState) emptyState.style.display = '';
 
+  let dataUrl;
   try{
-    currentDataUrl = await fileToDataURL(file);
+    dataUrl = await fileToDataURL(file);
   }catch(e){
     showError(e.message);
     return;
   }
-  preview.src = currentDataUrl;
-  dropZone.classList.add('has-image');
 
-  await analyzeWithVision(currentDataUrl);
+  // 1. Rasmning hash'ini hisoblash
+  let imgHash = null;
+  try{
+    imgHash = await hashImage(dataUrl);
+  }catch(e){
+    console.warn('Hash xatosi:', e);
+  }
+
+  // 2. Keshni tekshirish (IndexedDB'dan bir xil rasm qidirish)
+  if(imgHash && db){
+    try{
+      const existing = await dbGetByHash(imgHash);
+      if(existing){
+        // ⚡️ TOPILDI! Model'ga yubormaymiz
+        statusEl.classList.add('cached');
+        statusEl.textContent = 'Keshdan olindi (0 ms)';
+        setTimeout(() => {
+          statusEl.textContent = '';
+          statusEl.classList.remove('cached');
+        }, 2500);
+
+        // Eski tarix yozuvini o'chirish
+        await dbDelete(existing.id);
+
+        // Yangi sessiya yaratish — BUGUNGI vaqt bilan
+        const newSession = {
+          id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          ts: Date.now(),                                       // yangi vaqt
+          startedAt: Date.now(),                                // countdown bugundan
+          imageDataUrl: dataUrl,                                // yangi rasm
+          imageHash: imgHash,
+          rawJson: existing.rawJson,                            // eski AI javobi
+          latency: '0 s (kesh)',
+          fromCache: true,
+          data: JSON.parse(JSON.stringify(existing.data))      // eski hisoblangan ma'lumotlar
+        };
+
+        await dbPut(newSession);
+        await pruneOldSessions();
+
+        setActiveSessionId(newSession.id);
+        currentSession = newSession;
+
+        // Badge ko'rsatish
+        sessionBadge.classList.add('show', 'cached');
+        sessionBadgeText.textContent = 'Keshdan olindi — bugungi vaqtga o\'tkazildi';
+        setTimeout(() => {
+          sessionBadge.classList.remove('cached');
+        }, 3000);
+
+        renderSession(newSession, { showBadge: false });
+        await renderHistory();
+        return;
+      }
+    }catch(e){
+      console.warn('Kesh qidirishda xatolik:', e);
+    }
+  }
+
+  // 3. Keshda topilmadi — API'ga yuborish
+  await analyzeWithVision(dataUrl, imgHash);
 }
 
 /* ============================================================
    GROQ VISION API
    ============================================================ */
-async function analyzeWithVision(dataUrl){
+async function analyzeWithVision(dataUrl, imgHash){
   progressWrap.classList.add('show');
   progressBar.classList.add('indeterminate');
+  statusEl.classList.remove('cached');
   statusEl.textContent = 'Vision AI rasmni tahlil qilmoqda...';
 
   const systemPrompt = `You are a precise OCR + data extraction assistant. Extract numeric fields from a download/install progress screenshot. Return ONLY valid JSON.
@@ -1182,10 +1002,6 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
     const content = data?.choices?.[0]?.message?.content || '';
     const latency = ((performance.now() - t0) / 1000).toFixed(2) + ' s';
 
-    document.getElementById('rawText').textContent = content;
-    document.getElementById('detModel').textContent = GROQ_VISION_MODEL;
-    document.getElementById('detLatency').textContent = latency;
-
     let parsed;
     try{ parsed = JSON.parse(content); }
     catch(e){
@@ -1194,8 +1010,8 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
       if(!parsed) throw new Error('AI javobini JSON sifatida o\'qib bo\'lmadi.');
     }
 
-    statusEl.textContent = 'Hisoblanmoqda...';
-    computeAndDisplay(parsed, { rawJson: content, latency });
+    statusEl.textContent = 'Saqlanmoqda...';
+    await createAndStoreSession(parsed, dataUrl, imgHash, content, latency, false);
 
   }catch(err){
     console.error(err);
@@ -1203,32 +1019,22 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
     progressBar.classList.remove('indeterminate');
     statusEl.textContent = '';
     showError(err.message || 'Vision API xatosi.', () => {
-      if(currentDataUrl) analyzeWithVision(currentDataUrl);
+      if(dataUrl) analyzeWithVision(dataUrl, imgHash);
     });
   }
 }
 
 /* ============================================================
-   COMPUTE & DISPLAY
+   SESSION YARATISH VA SAQLASH
    ============================================================ */
-function toNum(v){
-  if(v === null || v === undefined || v === '') return null;
-  const n = typeof v === 'number' ? v : parseFloat(v);
-  return isNaN(n) ? null : n;
-}
-
-let countdownInterval = null;
-
-function computeAndDisplay(raw, meta){
-  meta = meta || {};
-  const speedMbps   = toNum(raw.speed_mbps);
-  let downloadedGB  = toNum(raw.downloaded_gb);
-  let totalGB       = toNum(raw.total_gb);
-  let percent       = toNum(raw.percent);
-  const installPct  = toNum(raw.install_percent);
+async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache){
+  const speedMbps   = toNum(parsed.speed_mbps);
+  let downloadedGB  = toNum(parsed.downloaded_gb);
+  let totalGB       = toNum(parsed.total_gb);
+  let percent       = toNum(parsed.percent);
+  const installPct  = toNum(parsed.install_percent);
 
   if(percent !== null) percent = Math.max(0, Math.min(100, Math.round(percent)));
-
   if(downloadedGB === null && totalGB !== null && percent !== null){
     downloadedGB = totalGB * percent / 100;
   }
@@ -1245,7 +1051,6 @@ function computeAndDisplay(raw, meta){
   }
 
   const speedGBps = (speedMbps / 8) / 1024;
-
   let remainingGB = null;
   if(totalGB !== null && downloadedGB !== null){
     remainingGB = Math.max(totalGB - downloadedGB, 0);
@@ -1256,75 +1061,156 @@ function computeAndDisplay(raw, meta){
   const elapsedSeconds   = (downloadedGB !== null && speedGBps > 0) ? downloadedGB / speedGBps : null;
   const remainingSeconds = (remainingGB  !== null && speedGBps > 0) ? remainingGB  / speedGBps : null;
 
+  const session = {
+    id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+    ts: Date.now(),
+    startedAt: Date.now(),
+    imageDataUrl,
+    imageHash: imgHash || null,
+    rawJson,
+    latency,
+    fromCache: !!fromCache,
+    data: {
+      speedMbps,
+      downloadedGB,
+      totalGB,
+      percent,
+      installPct,
+      remainingGB,
+      elapsedSeconds,
+      remainingSeconds,
+      model: GROQ_VISION_MODEL
+    }
+  };
+
+  try{
+    await dbPut(session);
+    await pruneOldSessions();
+  }catch(e){
+    console.warn('Session saqlashda xatolik:', e);
+  }
+
+  setActiveSessionId(session.id);
+  currentSession = session;
+
   progressWrap.classList.remove('show');
   progressBar.classList.remove('indeterminate');
   statusEl.textContent = '';
-  results.classList.add('visible');
-  if(emptyState) emptyState.style.display = 'none';
+  renderSession(session, { showBadge: false });
 
-  if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
-  const etaEl = document.getElementById('etaValue');
-  const etaSubEl = document.getElementById('etaSub');
+  await renderHistory();
+}
 
-  if(remainingSeconds !== null){
-    let t = remainingSeconds;
-    etaEl.textContent = formatTime(t);
-    etaSubEl.textContent = formatSize(remainingGB) + ' qoldi, ' + speedMbps.toFixed(1) + ' Mbps tezlikda';
-    countdownInterval = setInterval(() => {
-      t--;
-      if(t <= 0){
-        etaEl.textContent = 'Tugadi';
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-        return;
-      }
-      etaEl.textContent = formatTime(t);
-    }, 1000);
-  } else {
-    etaEl.textContent = '--';
-    etaSubEl.textContent = 'Hajm ma\'lumoti yetarli emas';
+/* ============================================================
+   SESSION RENDER
+   ============================================================ */
+function renderSession(session, opts){
+  opts = opts || {};
+
+  if(countdownInterval){
+    clearInterval(countdownInterval);
+    countdownInterval = null;
   }
 
-  document.getElementById('elapsedValue').textContent = formatTime(elapsedSeconds);
-  document.getElementById('elapsedSub').textContent = downloadedGB !== null
-    ? formatSize(downloadedGB) + ' shu tezlikda yuklangan deb taxmin qilindi'
+  const d = session.data;
+
+  // Rasm
+  if(session.imageDataUrl){
+    preview.src = session.imageDataUrl;
+    dropZone.classList.add('has-image');
+  }
+
+  // Badge
+  if(opts.showBadge){
+    sessionBadge.classList.add('show');
+    const t = new Date(session.ts);
+    const hh = String(t.getHours()).padStart(2,'0');
+    const mm = String(t.getMinutes()).padStart(2,'0');
+    sessionBadgeText.textContent = 'Tarixdan: ' + hh + ':' + mm + ' dagi tahlil';
+  } else if(!opts.keepBadge){
+    sessionBadge.classList.remove('show');
+  }
+
+  // Statik ma'lumotlar
+  document.getElementById('downloadedVal').textContent = d.downloadedGB !== null ? formatSize(d.downloadedGB) : '--';
+  document.getElementById('totalVal').textContent      = d.totalGB      !== null ? formatSize(d.totalGB)      : '--';
+  document.getElementById('percentVal').textContent    = d.percent      !== null ? d.percent + '%'            : '--';
+  document.getElementById('speedVal').textContent      = d.speedMbps ? d.speedMbps.toFixed(1) + ' Mbps' : '--';
+  document.getElementById('detRemainSize').textContent = d.remainingGB  !== null ? formatSize(d.remainingGB)  : '--';
+  document.getElementById('detInstallPct').textContent = d.installPct   !== null ? d.installPct + '%'         : '--';
+  document.getElementById('detModel').textContent      = d.model || GROQ_VISION_MODEL;
+  document.getElementById('detLatency').textContent    = session.latency || '--';
+  document.getElementById('detSource').textContent     = session.fromCache ? 'Kesh' : (opts.showBadge ? 'IndexedDB' : 'API');
+  if(session.rawJson){
+    document.getElementById('rawText').textContent = session.rawJson;
+  }
+
+  // Realtime countdown
+  const etaEl        = document.getElementById('etaValue');
+  const etaSubEl     = document.getElementById('etaSub');
+  const elapsedEl    = document.getElementById('elapsedValue');
+  const elapsedSubEl = document.getElementById('elapsedSub');
+
+  etaSubEl.textContent = (d.remainingGB !== null)
+    ? formatSize(d.remainingGB) + ' qoldi, ' + d.speedMbps.toFixed(1) + ' Mbps tezlikda'
+    : 'Hajm ma\'lumoti yetarli emas';
+  elapsedSubEl.textContent = (d.downloadedGB !== null)
+    ? formatSize(d.downloadedGB) + ' shu tezlikda yuklangan deb taxmin qilindi'
     : '';
 
-  document.getElementById('downloadedVal').textContent = downloadedGB !== null ? formatSize(downloadedGB) : '--';
-  document.getElementById('totalVal').textContent      = totalGB      !== null ? formatSize(totalGB)      : '--';
-  document.getElementById('percentVal').textContent    = percent      !== null ? percent + '%'            : '--';
-  document.getElementById('speedVal').textContent      = speedMbps.toFixed(1) + ' Mbps';
-  document.getElementById('detRemainSize').textContent = remainingGB  !== null ? formatSize(remainingGB)  : '--';
-  document.getElementById('detInstallPct').textContent = installPct   !== null ? installPct + '%'         : '--';
+  function tick(){
+    const realElapsedSec = Math.max(0, Math.floor((Date.now() - session.startedAt) / 1000));
 
-  saveHistory({
-    ts: Date.now(),
-    speedMbps,
-    downloadedGB,
-    totalGB,
-    percent,
-    installPct,
-    remainingGB,
-    elapsedSeconds,
-    remainingSeconds,
-    model: GROQ_VISION_MODEL,
-    latency: meta.latency || null,
-    rawJson: meta.rawJson || null
-  });
+    if(d.remainingSeconds !== null && d.remainingSeconds > 0){
+      const rem = d.remainingSeconds - realElapsedSec;
+      if(rem <= 0){
+        etaEl.textContent = 'Tugadi';
+        etaSubEl.textContent = 'Yuklab olish tugagan bo\'lishi mumkin';
+        document.title = '✓ Tugadi — ' + DEFAULT_TITLE;
+      } else {
+        const fmt = formatTime(rem);
+        etaEl.textContent = fmt;
+        document.title = '⏱ ' + fmt + ' — ' + DEFAULT_TITLE;
+      }
+    } else {
+      etaEl.textContent = '--';
+      document.title = DEFAULT_TITLE;
+    }
+
+    if(d.elapsedSeconds !== null){
+      elapsedEl.textContent = formatTime(d.elapsedSeconds + realElapsedSec);
+    } else {
+      elapsedEl.textContent = '--';
+    }
+  }
+
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+
+  results.classList.add('visible');
+  if(emptyState) emptyState.style.display = 'none';
+}
+
+/* ============================================================
+   FORMATTERS
+   ============================================================ */
+function toNum(v){
+  if(v === null || v === undefined || v === '') return null;
+  const n = typeof v === 'number' ? v : parseFloat(v);
+  return isNaN(n) ? null : n;
 }
 
 function formatTime(seconds){
   if(seconds === null || seconds === undefined || isNaN(seconds) || seconds < 0) return '--';
-  if(seconds < 60) return Math.round(seconds) + ' soniya';
-  const totalMin = seconds/60;
-  if(totalMin < 60){
-    const min = Math.floor(totalMin);
-    const sec = Math.round(seconds - min*60);
-    return min + ' daqiqa' + (sec>0 ? ' '+sec+' soniya' : '');
+  const s = Math.floor(seconds);
+  if(s < 60) return s + ' soniya';
+  const hrs = Math.floor(s / 3600);
+  const min = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if(hrs > 0){
+    return hrs + ' soat ' + String(min).padStart(2,'0') + ' daq ' + String(sec).padStart(2,'0') + ' son';
   }
-  const hrs = Math.floor(totalMin/60);
-  const min = Math.round(totalMin - hrs*60);
-  return hrs + ' soat' + (min>0 ? ' '+min+' daqiqa' : '');
+  return min + ' daq ' + String(sec).padStart(2,'0') + ' son';
 }
 
 function formatSize(gb){
@@ -1336,39 +1222,28 @@ function formatSize(gb){
 /* ============================================================
    HISTORY
    ============================================================ */
-function getHistory(){
-  try{ return JSON.parse(localStorage.getItem(HISTORY_STORAGE) || '[]'); }
-  catch(e){ return []; }
-}
-function saveHistory(entry){
-  const arr = getHistory();
-  arr.unshift(entry);
-  if(arr.length > HISTORY_MAX) arr.length = HISTORY_MAX;
-  localStorage.setItem(HISTORY_STORAGE, JSON.stringify(arr));
-  renderHistory();
-}
-function deleteHistoryItem(ts, ev){
-  if(ev){ ev.stopPropagation(); }
-  const arr = getHistory().filter(x => x.ts !== ts);
-  localStorage.setItem(HISTORY_STORAGE, JSON.stringify(arr));
-  renderHistory();
-}
-function clearHistory(){
-  localStorage.removeItem(HISTORY_STORAGE);
-  renderHistory();
-}
-function renderHistory(){
-  const arr = getHistory();
-  if(!arr.length){
+async function renderHistory(){
+  let all;
+  try{
+    all = await dbGetAll();
+  }catch(e){
+    all = [];
+  }
+  all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
+
+  if(!all.length){
     historySection.classList.remove('visible');
     return;
   }
   historySection.classList.add('visible');
   historyList.innerHTML = '';
-  arr.forEach(item => {
+
+  const activeId = currentSession ? currentSession.id : null;
+
+  all.forEach(item => {
     const el = document.createElement('div');
-    el.className = 'history-item';
-    el.onclick = () => showHistoryDetail(item);
+    el.className = 'history-item' + (item.id === activeId ? ' active' : '');
+    el.onclick = () => loadSessionFromHistory(item);
 
     const time = new Date(item.ts);
     const hh = String(time.getHours()).padStart(2,'0');
@@ -1380,12 +1255,14 @@ function renderHistory(){
 
     const info = document.createElement('div');
     info.className = 'hi-info';
-    const eta = item.remainingSeconds !== null && item.remainingSeconds !== undefined
-      ? formatTime(item.remainingSeconds) : '--';
-    const dl = item.downloadedGB !== null && item.downloadedGB !== undefined
-      ? formatSize(item.downloadedGB) : '--';
-    const sp = item.speedMbps ? item.speedMbps.toFixed(1) + ' Mbps' : '--';
-    info.innerHTML = `<b>${eta}</b> · ${dl} · ${sp}`;
+    const d = item.data || {};
+    const eta = d.remainingSeconds !== null && d.remainingSeconds !== undefined
+      ? formatTime(d.remainingSeconds) : '--';
+    const dl = d.downloadedGB !== null && d.downloadedGB !== undefined
+      ? formatSize(d.downloadedGB) : '--';
+    const sp = d.speedMbps ? d.speedMbps.toFixed(1) + ' Mbps' : '--';
+    const cacheTag = item.fromCache ? ' <span class="hi-tag">kesh</span>' : '';
+    info.innerHTML = `<b>${eta}</b> · ${dl} · ${sp}${cacheTag}`;
 
     const arrow = document.createElement('div');
     arrow.className = 'hi-arrow';
@@ -1395,7 +1272,14 @@ function renderHistory(){
     del.className = 'hi-del';
     del.title = 'O\'chirish';
     del.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    del.onclick = (ev) => deleteHistoryItem(item.ts, ev);
+    del.onclick = async (ev) => {
+      ev.stopPropagation();
+      await dbDelete(item.id);
+      if(currentSession && currentSession.id === item.id){
+        resetBtn.click();
+      }
+      await renderHistory();
+    };
 
     el.appendChild(timeEl);
     el.appendChild(info);
@@ -1405,43 +1289,117 @@ function renderHistory(){
   });
 }
 
-historyClear.addEventListener('click', clearHistory);
+async function loadSessionFromHistory(item){
+  let full;
+  try{
+    full = await dbGet(item.id);
+  }catch(e){
+    full = null;
+  }
+  if(!full){
+    showError('Sessiya topilmadi.');
+    return;
+  }
+
+  setActiveSessionId(full.id);
+  currentSession = full;
+
+  renderSession(full, { showBadge: true });
+  await renderHistory();
+}
 
 /* ============================================================
    BUTTONS
    ============================================================ */
 resetBtn.addEventListener('click', () => {
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
+  document.title = DEFAULT_TITLE;
+  clearActiveSessionId();
+  currentSession = null;
   results.classList.remove('visible');
   if(emptyState) emptyState.style.display = '';
   clearError();
   statusEl.textContent = '';
+  statusEl.classList.remove('cached');
   progressWrap.classList.remove('show');
   preview.src = '';
   preview.style.display = 'none';
   dropZone.classList.remove('has-image');
+  sessionBadge.classList.remove('show', 'cached');
   fileInput.value = '';
-  currentDataUrl = null;
+  renderHistory();
 });
 
 refreshBtn.addEventListener('click', () => {
-  if(!currentDataUrl){
+  if(!currentSession || !currentSession.imageDataUrl){
     showError('Yangilash uchun avval rasm yuklang.');
     return;
   }
   clearError();
   results.classList.remove('visible');
-  analyzeWithVision(currentDataUrl);
+  analyzeWithVision(currentSession.imageDataUrl, currentSession.imageHash || null);
+});
+
+historyClear.addEventListener('click', async () => {
+  if(!confirm('Barcha tahlillarni o\'chirishni tasdiqlaysizmi?')) return;
+  try{
+    await dbClear();
+  }catch(e){}
+  clearActiveSessionId();
+  currentSession = null;
+  results.classList.remove('visible');
+  if(emptyState) emptyState.style.display = '';
+  preview.src = '';
+  preview.style.display = 'none';
+  dropZone.classList.remove('has-image');
+  sessionBadge.classList.remove('show', 'cached');
+  document.title = DEFAULT_TITLE;
+  if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
+  await renderHistory();
+});
+
+sessionBadgeClose.addEventListener('click', () => {
+  sessionBadge.classList.remove('show', 'cached');
 });
 
 /* ============================================================
    INIT
    ============================================================ */
-refreshFooter();
-renderHistory();
-if(!getApiKey()){
-  window.addEventListener('load', () => setTimeout(() => openApiModal(true), 300));
+async function init(){
+  try{
+    db = await openDB();
+  }catch(e){
+    console.error('IndexedDB ochilmadi:', e);
+    showError('Brauzer IndexedDB\'ni qo\'llab-quvvatlamayapti. Ma\'lumotlar saqlanmaydi.');
+  }
+
+  refreshFooter();
+  await renderHistory();
+
+  const activeId = getActiveSessionId();
+  if(activeId && db){
+    try{
+      const session = await dbGet(activeId);
+      if(session){
+        const ageHours = (Date.now() - session.startedAt) / 1000 / 3600;
+        if(ageHours < 24){
+          currentSession = session;
+          renderSession(session, { showBadge: false });
+        } else {
+          clearActiveSessionId();
+        }
+      } else {
+        clearActiveSessionId();
+      }
+    }catch(e){ console.warn('restore error', e); }
+  }
+
+  if(!getApiKey()){
+    window.addEventListener('load', () => setTimeout(() => openApiModal(true), 300));
+  }
 }
+
+init();
 </script>
 
 </body>
