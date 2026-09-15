@@ -294,6 +294,7 @@
   .ai-summary .as-body .warn{color:var(--warn);font-weight:600;}
   .ai-summary .as-body .danger{color:var(--danger);font-weight:600;}
   .ai-summary .as-body .ok{color:var(--accent2);font-weight:600;}
+  .ai-summary .as-body a{color:var(--accent);text-decoration:underline;cursor:pointer;}
 
   .details-collapsed{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-shrink:0;}
   .details-collapsed summary{
@@ -394,7 +395,6 @@
   .modal > p a:hover{text-decoration:underline;}
   .modal code{background:#0a0a0a;padding:1px 5px;border-radius:4px;font-size:11.5px;color:var(--accent2);}
 
-  /* ============ API KEY MANAGER ============ */
   .key-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
   .key-item{
     display:flex;align-items:center;gap:8px;
@@ -408,22 +408,13 @@
     border-color:rgba(51,209,122,.4);
     background:rgba(51,209,122,.05);
   }
-  .key-item.empty{
-    opacity:.5;
-    border-style:dashed;
-  }
+  .key-item.empty{opacity:.5;border-style:dashed;}
   .key-item input[type="radio"]{
-    appearance:none;
-    -webkit-appearance:none;
-    width:16px;height:16px;
-    border-radius:50%;
-    border:2px solid #3a3a3a;
-    background:transparent;
-    cursor:pointer;
-    transition:.15s;
-    position:relative;
-    flex-shrink:0;
-    margin:0;
+    appearance:none;-webkit-appearance:none;
+    width:16px;height:16px;border-radius:50%;
+    border:2px solid #3a3a3a;background:transparent;
+    cursor:pointer;transition:.15s;
+    position:relative;flex-shrink:0;margin:0;
   }
   .key-item input[type="radio"]:checked{
     border-color:var(--accent2);
@@ -431,63 +422,38 @@
     box-shadow:0 0 8px rgba(51,209,122,.5);
   }
   .key-item input[type="radio"]:checked::after{
-    content:'';
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    width:6px;height:6px;
-    border-radius:50%;
-    background:#000;
+    content:'';position:absolute;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    width:6px;height:6px;border-radius:50%;background:#000;
   }
-  .key-item input[type="radio"]:disabled{
-    opacity:.3;
-    cursor:not-allowed;
-  }
+  .key-item input[type="radio"]:disabled{opacity:.3;cursor:not-allowed;}
   .key-input{
-    flex:1;
-    padding:8px 10px;
-    border-radius:7px;
-    border:1px solid #262626;
-    background:var(--card2);
-    color:var(--text);
-    font-size:12px;
+    flex:1;padding:8px 10px;border-radius:7px;
+    border:1px solid #262626;background:var(--card2);
+    color:var(--text);font-size:12px;
     font-family:ui-monospace,Menlo,monospace;
-    outline:none;
-    transition:border-color .2s;
-    min-width:0;
+    outline:none;transition:border-color .2s;min-width:0;
   }
   .key-input:focus{border-color:var(--accent);}
   .key-input::placeholder{color:#3a3a3a;}
   .key-del{
-    background:none;
-    border:none;
-    color:var(--muted);
-    cursor:pointer;
-    padding:4px;
-    display:flex;
-    border-radius:4px;
-    flex-shrink:0;
+    background:none;border:none;color:var(--muted);
+    cursor:pointer;padding:4px;display:flex;
+    border-radius:4px;flex-shrink:0;
   }
   .key-del:hover{color:var(--danger);background:#1a1010;}
   .key-del:disabled{opacity:.2;cursor:not-allowed;}
   .key-hint{
-    font-size:10.5px;
-    color:var(--muted);
-    margin-top:8px;
-    text-align:center;
-    line-height:1.4;
+    font-size:10.5px;color:var(--muted);
+    margin-top:8px;text-align:center;line-height:1.4;
   }
   .key-active-info{
-    display:none;
-    padding:8px 10px;
+    display:none;padding:8px 10px;
     background:rgba(51,209,122,.08);
     border:1px solid rgba(51,209,122,.25);
-    border-radius:8px;
-    font-size:11.5px;
-    color:var(--accent2);
-    margin-top:10px;
-    align-items:center;
-    gap:6px;
+    border-radius:8px;font-size:11.5px;
+    color:var(--accent2);margin-top:10px;
+    align-items:center;gap:6px;
   }
   .key-active-info.show{display:flex;}
   .key-active-info svg{flex-shrink:0;}
@@ -544,7 +510,6 @@
 </head>
 <body>
 
-<!-- ============ API KEY MODAL ============ -->
 <div class="modal-overlay" id="apiModal">
   <div class="modal">
     <h2>
@@ -774,13 +739,22 @@
    ============================================================ */
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
+
+/* Vision — sizning hisobingizda mavjud modellar
+   qwen3.8-27b ni 3 marta urinish uchun takrorlaymiz (faqat 503 bo'lganda) */
 const GROQ_VISION_MODELS = [
-  'qwen/qwen3.8-27b',
-  'qwen/qwen3.6-27b',
-  'meta-llama/llama-4-scout-17b-16e-instruct'
+  'qwen/qwen3.8-27b'
 ];
-const GROQ_TEXT_MODEL = 'qwen/qwen3.8-27b';
-const API_KEYS_STORAGE = 'tln_api_keys';        // [{ id, key, active }]
+
+/* Text — mavjud modellar (AI Summary uchun) */
+const GROQ_TEXT_MODELS = [
+  'openai/gpt-oss-120b',
+  'openai/gpt-oss-20b',
+  'allam-2-7b',
+  'qwen/qwen3.8-27b'
+];
+
+const API_KEYS_STORAGE = 'tln_api_keys';
 const DEFAULT_TITLE = 'TimeLeftNetwork';
 const DB_NAME = 'TimeLeftNetworkDB';
 const DB_VERSION = 2;
@@ -788,6 +762,7 @@ const STORE_PROJECTS = 'projects';
 const STORE_SESSIONS = 'sessions';
 const HISTORY_MAX = 50;
 const MAX_KEYS = 2;
+const VISION_MAX_RETRIES = 3;
 
 /* ============================================================
    DOM
@@ -848,9 +823,7 @@ let chartData = [];
 let hoveredIndex = -1;
 let chartPointPositions = [];
 let aiSummaryAbort = null;
-let faviconInterval = null;
 let faviconAngle = 0;
-/* Modaldagi vaqtinchalik holat */
 let draftKeys = [];
 
 /* ============================================================
@@ -983,28 +956,20 @@ function getActiveKey(){
   const active = keys.find(k => k.active);
   return active ? active.key : (keys[0] ? keys[0].key : '');
 }
-function hasActiveKey(){
-  return !!getActiveKey();
-}
-function makeKeyId(){
-  return 'k_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-}
+function hasActiveKey(){ return !!getActiveKey(); }
+function makeKeyId(){ return 'k_' + Date.now() + '_' + Math.random().toString(36).slice(2,6); }
 
-/* Draft — modalda vaqtinchalik */
 function initDraftKeys(){
   const keys = loadKeys();
   draftKeys = keys.map(k => ({ id: k.id, key: k.key, active: !!k.active }));
-  // Bo'sh slotlar bilan to'ldirish
   while(draftKeys.length < MAX_KEYS){
     draftKeys.push({ id: makeKeyId(), key: '', active: false });
   }
-  // Faqat bitta faol bo'lishi kafolati
   let foundActive = false;
   draftKeys.forEach(k => {
     if(k.active && !foundActive){ foundActive = true; }
     else if(k.active && foundActive){ k.active = false; }
   });
-  // Agar hech biri faol bo'lmasa va kamida bitta kalit bo'lsa
   if(!foundActive){
     const firstFilled = draftKeys.find(k => k.key);
     if(firstFilled) firstFilled.active = true;
@@ -1013,13 +978,10 @@ function initDraftKeys(){
 
 function renderKeyList(){
   keyListEl.innerHTML = '';
-
   draftKeys.forEach((k, idx) => {
     const item = document.createElement('div');
     item.className = 'key-item' + (k.active ? ' active' : '') + (k.key ? '' : ' empty');
-    item.dataset.idx = idx;
 
-    // Radio checkbox
     const radio = document.createElement('input');
     radio.type = 'radio';
     radio.name = 'activeKey';
@@ -1031,7 +993,6 @@ function renderKeyList(){
     };
     item.appendChild(radio);
 
-    // Input
     const input = document.createElement('input');
     input.type = 'password';
     input.className = 'key-input';
@@ -1043,21 +1004,17 @@ function renderKeyList(){
       const val = input.value.trim();
       const wasEmpty = !k.key;
       k.key = val;
-      // Agar birinchi marta to'ldirilsa va hech kim faol bo'lmasa — faollashtirish
       if(wasEmpty && val && !draftKeys.some(x => x.active)){
         k.active = true;
       }
-      // Radio holatini yangilash (keyingi render)
       updateActiveInfo();
     };
     input.onblur = () => {
-      // Bo'sh bo'lsa — active false
       if(!k.key) k.active = false;
       renderKeyList();
     };
     item.appendChild(input);
 
-    // Delete button
     const del = document.createElement('button');
     del.className = 'key-del';
     del.type = 'button';
@@ -1067,16 +1024,13 @@ function renderKeyList(){
     del.onclick = () => {
       k.key = '';
       k.active = false;
-      // Boshqasini faollashtirish
       const firstFilled = draftKeys.find(x => x.key);
       if(firstFilled) firstFilled.active = true;
       renderKeyList();
     };
     item.appendChild(del);
-
     keyListEl.appendChild(item);
   });
-
   updateActiveInfo();
 }
 
@@ -1130,17 +1084,13 @@ async function validateKey(key){
 }
 
 apiSaveBtn.addEventListener('click', async () => {
-  // Draft'dan faqat to'ldirilgan kalitlarni olish
   const filledKeys = draftKeys.filter(k => k.key.trim());
-
   if(!filledKeys.length){
     apiStatus.classList.add('show');
     apiDot.classList.add('off');
     apiStatusText.textContent = 'Kamida 1 ta kalit kiritilishi kerak.';
     return;
   }
-
-  // Format tekshiruvi
   for(const k of filledKeys){
     if(!k.key.startsWith('gsk_')){
       apiStatus.classList.add('show');
@@ -1149,8 +1099,6 @@ apiSaveBtn.addEventListener('click', async () => {
       return;
     }
   }
-
-  // Faol kalitni aniqlash
   let activeKey = filledKeys.find(k => k.active);
   if(!activeKey) activeKey = filledKeys[0];
   filledKeys.forEach(k => { k.active = (k === activeKey); });
@@ -1200,7 +1148,7 @@ async function fetchWithRetry(url, options, maxRetries, onRetry){
     try{
       const res = await fetch(url, options);
       if(res.status === 503 || res.status === 429){
-        if(attempt === maxRetries - 1) return res; // oxirgi urinish — qaytaramiz
+        if(attempt === maxRetries - 1) return res;
         const waitTime = Math.pow(2, attempt) * 1000;
         if(onRetry) onRetry(attempt + 1, maxRetries, waitTime);
         await new Promise(r => setTimeout(r, waitTime));
@@ -1327,6 +1275,7 @@ async function switchProject(projectId){
   dropZone.classList.remove('has-image');
   sessionBadge.classList.remove('show', 'cached');
   statusEl.textContent = '';
+  statusEl.classList.remove('cached', 'retry');
   errorBox.classList.remove('show');
   document.title = DEFAULT_TITLE;
   updateFavicon('idle');
@@ -1344,7 +1293,7 @@ async function switchProject(projectId){
 }
 
 /* ============================================================
-   SESSION ACTIVE ID
+   SESSION ACTIVE
    ============================================================ */
 function setActiveSessionId(id){
   if(!currentProjectId) return;
@@ -1367,8 +1316,7 @@ function updateFavicon(state, isDone){
     faviconAngle = (faviconAngle + 30) % 360;
   }
   const color = isDone ? '#33d17a' : '#3ba9ff';
-  const handColor = isDone ? '#33d17a' : '#33d17a';
-
+  const handColor = '#33d17a';
   const rad = (faviconAngle - 90) * Math.PI / 180;
   const handX = (16 + Math.cos(rad) * 6).toFixed(2);
   const handY = (18 + Math.sin(rad) * 6).toFixed(2);
@@ -1521,7 +1469,7 @@ async function handleFile(file){
 }
 
 /* ============================================================
-   GROQ VISION — MULTI MODEL FALLBACK
+   GROQ VISION — RETRY + FALLBACK
    ============================================================ */
 async function analyzeWithVision(dataUrl, imgHash){
   progressWrap.classList.add('show');
@@ -1549,6 +1497,7 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
 
   let lastError = null;
   let usedModel = null;
+  let sawAuthError = false;
 
   for(const model of GROQ_VISION_MODELS){
     const body = {
@@ -1578,7 +1527,7 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
           },
           body: JSON.stringify(body)
         },
-        3,
+        VISION_MAX_RETRIES,
         (attempt, max, wait) => {
           statusEl.classList.add('retry');
           statusEl.textContent = `Server band (${modelShort}). ${wait/1000}s kutib qayta urinish (${attempt}/${max})...`;
@@ -1588,15 +1537,11 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
       if(!res.ok){
         const errText = await res.text().catch(() => '');
 
-        // 401 — kalit xato, boshqa modelni sinash befoyda
+        // 401 — kalit muammosi
         if(res.status === 401){
-          progressWrap.classList.remove('show');
-          progressBar.classList.remove('indeterminate');
-          statusEl.textContent = '';
-          statusEl.classList.remove('retry');
-          showError('Faol API kalit qabul qilinmadi. Iltimos, boshqa kalitni faollashtiring.', () => openApiModal(true), true);
-          openApiModal(false);
-          return;
+          sawAuthError = true;
+          lastError = new Error(`${modelShort}: HTTP 401`);
+          continue; // keyingi model — lekin u ham 401 bo'ladi, lekin baribir urinamiz
         }
 
         // 503/404/429 — keyingi modelga o'tish
@@ -1639,12 +1584,19 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
   progressBar.classList.remove('indeterminate');
   statusEl.textContent = '';
   statusEl.classList.remove('retry');
-  showError(
-    'Barcha AI modellari band. 30 soniyadan keyin qayta urinib ko\'ring.\n' +
-    (lastError ? lastError.message : ''),
-    () => { if(dataUrl) analyzeWithVision(dataUrl, imgHash); },
-    true
-  );
+
+  if(sawAuthError){
+    showError('Faol API kalit qabul qilinmadi. Iltimos, boshqa kalitni faollashtiring yoki yangi kalit oling.',
+      () => openApiModal(false), true);
+    openApiModal(false);
+  } else {
+    showError(
+      'Barcha AI modellari band. Iltimos, 30 soniyadan keyin qayta urinib ko\'ring.\n' +
+      (lastError ? lastError.message : ''),
+      () => { if(dataUrl) analyzeWithVision(dataUrl, imgHash); },
+      true
+    );
+  }
 }
 
 /* ============================================================
@@ -2046,7 +1998,6 @@ function showTooltip(px, py, session){
   chartTooltip.classList.add('show');
   const tipRect = chartTooltip.getBoundingClientRect();
   const wrapRect = chartWrap.getBoundingClientRect();
-
   const tipW = tipRect.width, tipH = tipRect.height;
   const wrapW = wrapRect.width;
 
@@ -2064,7 +2015,7 @@ function showTooltip(px, py, session){
 function hideTooltip(){ chartTooltip.classList.remove('show'); }
 
 /* ============================================================
-   AI SUMMARY
+   AI SUMMARY — FALLBACK MODELS
    ============================================================ */
 async function renderAISummary(recent){
   if(!recent || recent.length < 2){
@@ -2089,7 +2040,20 @@ async function renderAISummary(recent){
   }catch(e){
     if(e.name === 'AbortError') return;
     console.warn('AI summary xatosi:', e);
-    aiSummaryBody.innerHTML = localVerdict;
+
+    if(e.message && e.message.includes('401')){
+      aiSummaryBody.innerHTML =
+        '<span class="danger">⚠ Faol API kalit qabul qilinmadi</span> — iltimos, ' +
+        '<a href="#" id="aiSummaryChangeKey">kalitni almashtiring</a>.';
+      setTimeout(() => {
+        const link = document.getElementById('aiSummaryChangeKey');
+        if(link){
+          link.onclick = (ev) => { ev.preventDefault(); openApiModal(false); };
+        }
+      }, 50);
+    } else {
+      aiSummaryBody.innerHTML = localVerdict;
+    }
     aiSummary.classList.remove('loading');
   }
 }
@@ -2141,26 +2105,60 @@ QOIDALAR:
 
 Javob (faqat matn):`;
 
-  const body = {
-    model: GROQ_TEXT_MODEL,
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 0.4,
-    max_tokens: 300
-  };
+  let lastError = null;
+  let sawAuthError = false;
 
-  const res = await fetch(GROQ_API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + getActiveKey()
-    },
-    body: JSON.stringify(body),
-    signal
-  });
+  for(const model of GROQ_TEXT_MODELS){
+    const body = {
+      model,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.4,
+      max_tokens: 300
+    };
 
-  if(!res.ok) throw new Error('AI summary HTTP ' + res.status);
-  const data = await res.json();
-  return (data?.choices?.[0]?.message?.content || '').trim();
+    try{
+      const res = await fetchWithRetry(
+        GROQ_API_URL,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getActiveKey()
+          },
+          body: JSON.stringify(body),
+          signal
+        },
+        2,
+        (attempt, max, wait) => {
+          aiSummaryBody.textContent = `${model.split('/').pop()} band. ${wait/1000}s kutish (${attempt}/${max})...`;
+        }
+      );
+
+      if(!res.ok){
+        const errText = await res.text().catch(() => '');
+        if(res.status === 401){
+          sawAuthError = true;
+          throw new Error('HTTP 401 — API kalit qabul qilinmadi');
+        }
+        lastError = new Error(`${model}: HTTP ${res.status}`);
+        continue;
+      }
+
+      const data = await res.json();
+      return (data?.choices?.[0]?.message?.content || '').trim();
+
+    }catch(e){
+      if(e.message && e.message.includes('401')){
+        sawAuthError = true;
+        throw e;
+      }
+      if(e.name === 'AbortError') throw e;
+      lastError = e;
+    }
+  }
+
+  if(sawAuthError) throw new Error('HTTP 401 — API kalit qabul qilinmadi');
+  throw lastError || new Error('Barcha text modellari band');
 }
 
 function sanitizeAIHtml(text){
@@ -2356,7 +2354,6 @@ async function init(){
   await tryRestoreActiveSession();
   await renderTrendChart();
 
-  // Kalit yo'q bo'lsa modal
   if(!hasActiveKey()){
     window.addEventListener('load', () => setTimeout(() => openApiModal(true), 300));
   }
