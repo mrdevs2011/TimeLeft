@@ -5,32 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>TimeLeftNetwork</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233ba9ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23000000' stroke='%233ba9ff'/%3E%3Cpolyline points='12 6 12 12 16 14' stroke='%2333d17a'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000' rx='6'/%3E%3Ccircle cx='16' cy='18' r='11' fill='%23000' stroke='%233ba9ff' stroke-width='2.5'/%3E%3Cline x1='16' y1='11' x2='16' y2='18' stroke='%2333d17a' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='18' x2='20' y2='21' stroke='%2333d17a' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='11' y1='4' x2='21' y2='4' stroke='%233ba9ff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='16' y1='4' x2='16' y2='8' stroke='%233ba9ff' stroke-width='2.5' stroke-linecap='round'/%3E%3Cline x1='26' y1='8' x2='27.5' y2='9.5' stroke='%233ba9ff' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
   :root{
-    --bg:#000;
-    --card:#0a0a0a;
-    --card2:#121212;
-    --accent:#3ba9ff;
-    --accent2:#33d17a;
-    --warn:#f5c247;
-    --text:#e6edf3;
-    --muted:#8b96a5;
-    --danger:#ff5c5c;
-    --border:#1f1f1f;
-    --radius:14px;
+    --bg:#000;--card:#0a0a0a;--card2:#121212;
+    --accent:#3ba9ff;--accent2:#33d17a;--warn:#f5c247;
+    --text:#e6edf3;--muted:#8b96a5;--danger:#ff5c5c;
+    --border:#1f1f1f;--radius:14px;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{height:100%;margin:0;padding:0;}
   body{
     font-family:'Segoe UI',Roboto,-apple-system,BlinkMacSystemFont,Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
+    background:var(--bg);color:var(--text);overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   }
-
   .app{
     display:flex;flex-direction:column;
     height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;
@@ -39,14 +28,12 @@
     padding-bottom:calc(16px + env(safe-area-inset-bottom));
     gap:12px;overflow:hidden;
   }
-
   .header{flex-shrink:0;text-align:center;padding-bottom:2px;}
   .brand{display:inline-flex;align-items:center;gap:9px;margin:0 0 4px;}
   .brand h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.2px;}
   .brand-accent{color:var(--accent2);}
   .subtitle{color:var(--muted);font-size:12px;margin:0;line-height:1.4;max-width:520px;margin-inline:auto;}
 
-  /* PROJECT BAR */
   .project-bar{
     display:flex;align-items:center;gap:8px;
     padding:6px 10px;background:var(--card);
@@ -57,8 +44,7 @@
   .project-bar::-webkit-scrollbar{height:3px;}
   .project-bar::-webkit-scrollbar-thumb{background:#222;border-radius:2px;}
   .project-bar .pb-label{
-    color:var(--muted);font-size:10.5px;
-    text-transform:uppercase;letter-spacing:.5px;
+    color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;
     white-space:nowrap;display:flex;align-items:center;gap:5px;
     padding-right:6px;border-right:1px solid var(--border);
   }
@@ -67,8 +53,7 @@
     display:inline-flex;align-items:center;gap:5px;
     padding:4px 10px;border-radius:6px;background:transparent;
     color:var(--muted);border:1px solid transparent;cursor:pointer;
-    font-size:11.5px;white-space:nowrap;transition:.15s;
-    font-family:inherit;flex-shrink:0;
+    font-size:11.5px;white-space:nowrap;transition:.15s;font-family:inherit;flex-shrink:0;
   }
   .project-tab:hover{background:#0f0f0f;color:var(--text);}
   .project-tab.active{
@@ -92,7 +77,6 @@
   .project-add:hover{background:rgba(51,209,122,.18);}
 
   .main{display:grid;flex:1;min-height:0;gap:14px;overflow:hidden;}
-
   @media(min-width:1024px){
     .main{
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
@@ -104,7 +88,6 @@
     .history-wrap{grid-area:history;min-height:0;align-self:end;}
     .results-wrap{grid-area:results;min-height:0;display:flex;flex-direction:column;}
   }
-
   @media(max-width:1023px){
     .app{height:auto;min-height:100vh;min-height:100dvh;max-height:none;overflow:visible;}
     .main{
@@ -173,6 +156,7 @@
   .status{text-align:center;color:var(--muted);font-size:12.5px;min-height:0;flex-shrink:0;}
   .status:not(:empty){min-height:16px;padding:4px 0;}
   .status.cached{color:var(--accent2);}
+  .status.retry{color:var(--warn);}
   .progress-wrap{height:4px;background:#1a1a1a;border-radius:4px;overflow:hidden;display:none;flex-shrink:0;}
   .progress-wrap.show{display:block;}
   .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s ease;}
@@ -183,17 +167,19 @@
     display:none;background:#2a1418;border:1px solid #5c2a30;
     color:#ff9b9b;border-radius:10px;padding:10px 12px;
     font-size:12px;line-height:1.5;flex-shrink:0;margin-top:8px;
+    white-space:pre-line;
   }
   .error-box.show{display:block;}
+  .error-box.warn{background:#2a2414;border-color:#5c4a2a;color:#ffd88b;}
   .error-box .retry-btn{
-    margin-top:6px;background:transparent;border:1px solid #5c2a30;
-    color:#ff9b9b;padding:5px 12px;border-radius:20px;cursor:pointer;
+    margin-top:6px;background:transparent;border:1px solid currentColor;
+    color:inherit;padding:5px 12px;border-radius:20px;cursor:pointer;
     font-size:11px;display:inline-flex;align-items:center;gap:5px;font-family:inherit;
+    opacity:.8;
   }
-  .error-box .retry-btn:hover{background:#3a1c20;}
+  .error-box .retry-btn:hover{opacity:1;}
 
   .results-wrap{display:flex;flex-direction:column;min-height:0;gap:12px;}
-
   .empty-state{
     display:flex;flex-direction:column;align-items:center;justify-content:center;
     flex:1;color:var(--muted);text-align:center;padding:20px;gap:10px;
@@ -202,11 +188,9 @@
   }
   .empty-state svg{opacity:.35;}
   .empty-state p{font-size:12.5px;margin:0;line-height:1.5;}
-
   .results-section{display:none;flex-direction:column;gap:12px;min-height:0;flex:1;}
   .results-section.visible{display:flex;}
   .results-section.visible ~ .empty-state{display:none;}
-
   @media(min-width:1024px){
     .results-section{overflow-y:auto;padding-right:2px;}
     .results-section::-webkit-scrollbar{width:5px;}
@@ -242,14 +226,10 @@
   .mini-card .l{font-size:9.5px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
   .mini-card .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 
-  /* CHART */
   .chart-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:12px 14px;
-    flex-shrink:0;
-    position:relative;   /* tooltip uchun */
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius);padding:12px 14px;
+    flex-shrink:0;position:relative;
   }
   .chart-head{
     display:flex;align-items:center;justify-content:space-between;
@@ -268,37 +248,21 @@
   .chart-legend .cl-3::before{background:#f5c247;}
   .chart-legend .cl-4::before{background:#ff5c5c;}
 
-  .chart-wrap{
-    position:relative;
-    width:100%;
-    height:160px;
-    cursor:crosshair;
-    /* MUHIM: tooltip tashqariga chiqishi uchun overflow:visible */
-    overflow:visible;
-  }
+  .chart-wrap{position:relative;width:100%;height:160px;cursor:crosshair;overflow:visible;}
   #trendChart{width:100%;height:100%;display:block;}
 
-  /* CHART TOOLTIP — endi position absolute, chart-card ichida */
   .chart-tooltip{
-    position:absolute;
-    pointer-events:none;
-    background:rgba(10,10,10,.98);
-    border:1px solid #2a2a2a;
-    border-radius:8px;
-    padding:8px 10px;
-    font-size:11px;
-    color:var(--text);
+    position:absolute;pointer-events:none;
+    background:rgba(10,10,10,.98);border:1px solid #2a2a2a;
+    border-radius:8px;padding:8px 10px;
+    font-size:11px;color:var(--text);
     box-shadow:0 12px 32px rgba(0,0,0,.75);
-    opacity:0;
-    transform:translateY(-4px);
+    opacity:0;transform:translateY(-4px);
     transition:opacity .12s, transform .12s;
-    z-index:1000;                /* butun card ustidan */
-    white-space:nowrap;
-    line-height:1.5;
+    z-index:1000;white-space:nowrap;line-height:1.5;
     font-variant-numeric:tabular-nums;
     backdrop-filter:blur(6px);
     max-width:calc(100% - 20px);
-    /* Hech qachon konteynerdan chiqmasligi uchun */
     will-change:left, top;
   }
   .chart-tooltip.show{opacity:1;transform:translateY(0);}
@@ -307,22 +271,16 @@
     margin-bottom:4px;padding-bottom:3px;
     border-bottom:1px solid #222;font-size:11.5px;
   }
-  .chart-tooltip .ct-row{
-    display:flex;align-items:center;gap:6px;color:var(--muted);
-  }
-  .chart-tooltip .ct-row .dot{
-    width:6px;height:6px;border-radius:50%;flex-shrink:0;
-  }
+  .chart-tooltip .ct-row{display:flex;align-items:center;gap:6px;color:var(--muted);}
+  .chart-tooltip .ct-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
   .chart-tooltip .ct-row b{color:var(--text);font-weight:600;margin-left:auto;}
 
-  /* AI SUMMARY */
   .ai-summary{
     margin-top:10px;padding:10px 12px;
     background:linear-gradient(135deg, rgba(59,169,255,.06), rgba(51,209,122,.04));
     border:1px solid rgba(59,169,255,.2);
     border-radius:10px;font-size:12px;
-    color:var(--text);line-height:1.55;
-    position:relative;
+    color:var(--text);line-height:1.55;position:relative;
   }
   .ai-summary.loading{color:var(--muted);font-style:italic;}
   .ai-summary .as-head{
@@ -424,23 +382,116 @@
   .modal-overlay.active{display:flex;}
   .modal{
     background:var(--card2);border:1px solid var(--border);border-radius:16px;
-    padding:24px 22px;max-width:440px;width:100%;
+    padding:24px 22px;max-width:460px;width:100%;
     box-shadow:0 20px 60px rgba(0,0,0,.7);
     animation:fadeIn .3s ease;margin:auto;
   }
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
   .modal h2{margin:0 0 8px;font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px;}
   .modal h2 svg{color:var(--accent);flex-shrink:0;}
-  .modal p{color:var(--muted);font-size:12.5px;margin:0 0 16px;line-height:1.6;}
-  .modal p a{color:var(--accent);text-decoration:none;}
-  .modal p a:hover{text-decoration:underline;}
+  .modal > p{color:var(--muted);font-size:12.5px;margin:0 0 16px;line-height:1.6;}
+  .modal > p a{color:var(--accent);text-decoration:none;}
+  .modal > p a:hover{text-decoration:underline;}
   .modal code{background:#0a0a0a;padding:1px 5px;border-radius:4px;font-size:11.5px;color:var(--accent2);}
-  .modal input{
-    width:100%;padding:11px 13px;border-radius:9px;border:1px solid #262626;
-    background:#0a0a0a;color:var(--text);font-size:13px;
-    font-family:ui-monospace,Menlo,monospace;outline:none;transition:border-color .2s;
+
+  /* ============ API KEY MANAGER ============ */
+  .key-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+  .key-item{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 12px;
+    background:#0a0a0a;
+    border:1px solid #262626;
+    border-radius:10px;
+    transition:.15s;
   }
-  .modal input:focus{border-color:var(--accent);}
+  .key-item.active{
+    border-color:rgba(51,209,122,.4);
+    background:rgba(51,209,122,.05);
+  }
+  .key-item.empty{
+    opacity:.5;
+    border-style:dashed;
+  }
+  .key-item input[type="radio"]{
+    appearance:none;
+    -webkit-appearance:none;
+    width:16px;height:16px;
+    border-radius:50%;
+    border:2px solid #3a3a3a;
+    background:transparent;
+    cursor:pointer;
+    transition:.15s;
+    position:relative;
+    flex-shrink:0;
+    margin:0;
+  }
+  .key-item input[type="radio"]:checked{
+    border-color:var(--accent2);
+    background:var(--accent2);
+    box-shadow:0 0 8px rgba(51,209,122,.5);
+  }
+  .key-item input[type="radio"]:checked::after{
+    content:'';
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:6px;height:6px;
+    border-radius:50%;
+    background:#000;
+  }
+  .key-item input[type="radio"]:disabled{
+    opacity:.3;
+    cursor:not-allowed;
+  }
+  .key-input{
+    flex:1;
+    padding:8px 10px;
+    border-radius:7px;
+    border:1px solid #262626;
+    background:var(--card2);
+    color:var(--text);
+    font-size:12px;
+    font-family:ui-monospace,Menlo,monospace;
+    outline:none;
+    transition:border-color .2s;
+    min-width:0;
+  }
+  .key-input:focus{border-color:var(--accent);}
+  .key-input::placeholder{color:#3a3a3a;}
+  .key-del{
+    background:none;
+    border:none;
+    color:var(--muted);
+    cursor:pointer;
+    padding:4px;
+    display:flex;
+    border-radius:4px;
+    flex-shrink:0;
+  }
+  .key-del:hover{color:var(--danger);background:#1a1010;}
+  .key-del:disabled{opacity:.2;cursor:not-allowed;}
+  .key-hint{
+    font-size:10.5px;
+    color:var(--muted);
+    margin-top:8px;
+    text-align:center;
+    line-height:1.4;
+  }
+  .key-active-info{
+    display:none;
+    padding:8px 10px;
+    background:rgba(51,209,122,.08);
+    border:1px solid rgba(51,209,122,.25);
+    border-radius:8px;
+    font-size:11.5px;
+    color:var(--accent2);
+    margin-top:10px;
+    align-items:center;
+    gap:6px;
+  }
+  .key-active-info.show{display:flex;}
+  .key-active-info svg{flex-shrink:0;}
+
   .modal-btns{display:flex;gap:8px;margin-top:14px;}
   .modal-btns button{
     flex:1;padding:10px;border-radius:9px;font-size:12.5px;font-weight:600;
@@ -483,7 +534,6 @@
     .btn{font-size:11.5px;padding:9px 12px;}
     .actions{grid-template-columns:1fr;}
   }
-
   @media(min-width:1024px) and (max-height:640px){
     .app{height:auto;min-height:100vh;overflow:visible;}
     .main{overflow:visible;}
@@ -494,18 +544,30 @@
 </head>
 <body>
 
+<!-- ============ API KEY MODAL ============ -->
 <div class="modal-overlay" id="apiModal">
   <div class="modal">
     <h2>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-      Groq API kalitini kiriting
+      Groq API kalitlarini boshqarish
     </h2>
     <p>
-      Rasmni tahlil qilish uchun <b>Groq Vision AI</b>dan foydalaniladi.
-      Bepul kalitni <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> sahifasidan oling.
-      Kalit faqat brauzeringizda (<code>localStorage</code>) saqlanadi.
+      <b>2 tagacha kalit</b> saqlashingiz mumkin. Faqat <b>faol (belgilangan)</b> kalit ishlatiladi.
+      Bepul kalitlarni <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> sahifasidan oling.
     </p>
-    <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off" spellcheck="false">
+
+    <div class="key-list" id="keyList"></div>
+
+    <div class="key-hint">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      Faqat bitta kalit faol bo'lishi mumkin
+    </div>
+
+    <div class="key-active-info" id="keyActiveInfo">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="keyActiveText">Faol kalit: --</span>
+    </div>
+
     <div class="modal-btns">
       <button type="button" class="ghost" id="apiCancelBtn" style="display:none;">Bekor qilish</button>
       <button type="button" class="primary" id="apiSaveBtn">Saqlash</button>
@@ -522,7 +584,7 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Yangi loyiha
     </h2>
-    <p>Loyiha nomini kiriting (masalan: "CS2 yangilanishi", "GTA 6"). Har bir loyiha o'z tarixi va statistikasiga ega bo'ladi.</p>
+    <p>Loyiha nomini kiriting. Har bir loyiha o'z tarixi va statistikasiga ega bo'ladi.</p>
     <input type="text" id="projectNameInput" placeholder="Loyiha nomi..." autocomplete="off" maxlength="40">
     <div class="modal-btns">
       <button type="button" class="ghost" id="projectCancelBtn">Bekor qilish</button>
@@ -626,7 +688,6 @@
           </div>
           <div class="chart-wrap" id="chartWrap">
             <canvas id="trendChart"></canvas>
-            <!-- Tooltip endi chart-wrap ichida, lekin overflow:visible bilan -->
             <div class="chart-tooltip" id="chartTooltip"></div>
           </div>
           <div class="ai-summary loading" id="aiSummary">
@@ -712,15 +773,21 @@
    CONFIG
    ============================================================ */
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_VISION_MODEL = 'qwen/qwen3.8-27b';
+const GROQ_MODELS_URL = 'https://api.groq.com/openai/v1/models';
+const GROQ_VISION_MODELS = [
+  'qwen/qwen3.8-27b',
+  'qwen/qwen3.6-27b',
+  'meta-llama/llama-4-scout-17b-16e-instruct'
+];
 const GROQ_TEXT_MODEL = 'qwen/qwen3.8-27b';
-const API_KEY_STORAGE = 'tln_groq_api_key';
+const API_KEYS_STORAGE = 'tln_api_keys';        // [{ id, key, active }]
 const DEFAULT_TITLE = 'TimeLeftNetwork';
 const DB_NAME = 'TimeLeftNetworkDB';
 const DB_VERSION = 2;
 const STORE_PROJECTS = 'projects';
 const STORE_SESSIONS = 'sessions';
 const HISTORY_MAX = 50;
+const MAX_KEYS = 2;
 
 /* ============================================================
    DOM
@@ -757,7 +824,9 @@ const projectSaveBtn   = document.getElementById('projectSaveBtn');
 const projectCancelBtn = document.getElementById('projectCancelBtn');
 
 const apiModal      = document.getElementById('apiModal');
-const apiKeyInput   = document.getElementById('apiKeyInput');
+const keyListEl     = document.getElementById('keyList');
+const keyActiveInfo = document.getElementById('keyActiveInfo');
+const keyActiveText = document.getElementById('keyActiveText');
 const apiSaveBtn    = document.getElementById('apiSaveBtn');
 const apiCancelBtn  = document.getElementById('apiCancelBtn');
 const apiStatus     = document.getElementById('apiStatus');
@@ -777,9 +846,12 @@ let db = null;
 let chartResizeTimer = null;
 let chartData = [];
 let hoveredIndex = -1;
-let aiSummaryAbort = null;
-/* Nuqta pozitsiyalari (hover uchun) */
 let chartPointPositions = [];
+let aiSummaryAbort = null;
+let faviconInterval = null;
+let faviconAngle = 0;
+/* Modaldagi vaqtinchalik holat */
+let draftKeys = [];
 
 /* ============================================================
    INDEXEDDB
@@ -810,14 +882,12 @@ function openDB(){
     req.onerror = e => reject(e.target.error);
   });
 }
-
 function dbPut(storeName, obj){
   return new Promise((res, rej) => {
     if(!db){ rej(new Error('DB ochilmagan')); return; }
     const tx = db.transaction(storeName, 'readwrite');
     tx.objectStore(storeName).put(obj);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
+    tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
   });
 }
 function dbGet(storeName, key){
@@ -825,8 +895,7 @@ function dbGet(storeName, key){
     if(!db){ rej(new Error('DB ochilmagan')); return; }
     const tx = db.transaction(storeName, 'readonly');
     const req = tx.objectStore(storeName).get(key);
-    req.onsuccess = () => res(req.result || null);
-    req.onerror = () => rej(req.error);
+    req.onsuccess = () => res(req.result || null); req.onerror = () => rej(req.error);
   });
 }
 function dbGetAll(storeName){
@@ -834,8 +903,7 @@ function dbGetAll(storeName){
     if(!db){ rej(new Error('DB ochilmagan')); return; }
     const tx = db.transaction(storeName, 'readonly');
     const req = tx.objectStore(storeName).getAll();
-    req.onsuccess = () => res(req.result || []);
-    req.onerror = () => rej(req.error);
+    req.onsuccess = () => res(req.result || []); req.onerror = () => rej(req.error);
   });
 }
 function dbGetByIndex(storeName, indexName, value){
@@ -844,8 +912,7 @@ function dbGetByIndex(storeName, indexName, value){
     const tx = db.transaction(storeName, 'readonly');
     const idx = tx.objectStore(storeName).index(indexName);
     const req = idx.getAll(value);
-    req.onsuccess = () => res(req.result || []);
-    req.onerror = () => rej(req.error);
+    req.onsuccess = () => res(req.result || []); req.onerror = () => rej(req.error);
   });
 }
 function dbDelete(storeName, key){
@@ -853,8 +920,7 @@ function dbDelete(storeName, key){
     if(!db){ rej(new Error('DB ochilmagan')); return; }
     const tx = db.transaction(storeName, 'readwrite');
     tx.objectStore(storeName).delete(key);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
+    tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
   });
 }
 
@@ -874,9 +940,7 @@ async function createProject(name){
 }
 async function deleteProject(id){
   const sessions = await dbGetByIndex(STORE_SESSIONS, 'projectId', id);
-  for(const s of sessions){
-    await dbDelete(STORE_SESSIONS, s.id);
-  }
+  for(const s of sessions) await dbDelete(STORE_SESSIONS, s.id);
   await dbDelete(STORE_PROJECTS, id);
 }
 async function pruneOldSessions(projectId){
@@ -900,58 +964,207 @@ async function hashImage(dataUrl){
 }
 
 /* ============================================================
-   API KEY
+   API KEY MANAGER
    ============================================================ */
-function getApiKey(){ return localStorage.getItem(API_KEY_STORAGE) || ''; }
-function setApiKey(k){ localStorage.setItem(API_KEY_STORAGE, k); }
-function clearApiKey(){ localStorage.removeItem(API_KEY_STORAGE); }
+function loadKeys(){
+  try{
+    const raw = localStorage.getItem(API_KEYS_STORAGE);
+    if(!raw) return [];
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr)) return [];
+    return arr.filter(k => k && k.key).slice(0, MAX_KEYS);
+  }catch(e){ return []; }
+}
+function saveKeys(keys){
+  try{ localStorage.setItem(API_KEYS_STORAGE, JSON.stringify(keys.slice(0, MAX_KEYS))); }catch(e){}
+}
+function getActiveKey(){
+  const keys = loadKeys();
+  const active = keys.find(k => k.active);
+  return active ? active.key : (keys[0] ? keys[0].key : '');
+}
+function hasActiveKey(){
+  return !!getActiveKey();
+}
+function makeKeyId(){
+  return 'k_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+}
+
+/* Draft — modalda vaqtinchalik */
+function initDraftKeys(){
+  const keys = loadKeys();
+  draftKeys = keys.map(k => ({ id: k.id, key: k.key, active: !!k.active }));
+  // Bo'sh slotlar bilan to'ldirish
+  while(draftKeys.length < MAX_KEYS){
+    draftKeys.push({ id: makeKeyId(), key: '', active: false });
+  }
+  // Faqat bitta faol bo'lishi kafolati
+  let foundActive = false;
+  draftKeys.forEach(k => {
+    if(k.active && !foundActive){ foundActive = true; }
+    else if(k.active && foundActive){ k.active = false; }
+  });
+  // Agar hech biri faol bo'lmasa va kamida bitta kalit bo'lsa
+  if(!foundActive){
+    const firstFilled = draftKeys.find(k => k.key);
+    if(firstFilled) firstFilled.active = true;
+  }
+}
+
+function renderKeyList(){
+  keyListEl.innerHTML = '';
+
+  draftKeys.forEach((k, idx) => {
+    const item = document.createElement('div');
+    item.className = 'key-item' + (k.active ? ' active' : '') + (k.key ? '' : ' empty');
+    item.dataset.idx = idx;
+
+    // Radio checkbox
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'activeKey';
+    radio.checked = !!k.active;
+    radio.disabled = !k.key;
+    radio.onchange = () => {
+      draftKeys.forEach((x, i) => { x.active = (i === idx); });
+      renderKeyList();
+    };
+    item.appendChild(radio);
+
+    // Input
+    const input = document.createElement('input');
+    input.type = 'password';
+    input.className = 'key-input';
+    input.placeholder = idx === 0 ? 'gsk_... (asosiy)' : 'gsk_... (zaxira)';
+    input.value = k.key || '';
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.oninput = () => {
+      const val = input.value.trim();
+      const wasEmpty = !k.key;
+      k.key = val;
+      // Agar birinchi marta to'ldirilsa va hech kim faol bo'lmasa — faollashtirish
+      if(wasEmpty && val && !draftKeys.some(x => x.active)){
+        k.active = true;
+      }
+      // Radio holatini yangilash (keyingi render)
+      updateActiveInfo();
+    };
+    input.onblur = () => {
+      // Bo'sh bo'lsa — active false
+      if(!k.key) k.active = false;
+      renderKeyList();
+    };
+    item.appendChild(input);
+
+    // Delete button
+    const del = document.createElement('button');
+    del.className = 'key-del';
+    del.type = 'button';
+    del.title = 'Tozalash';
+    del.disabled = !k.key;
+    del.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    del.onclick = () => {
+      k.key = '';
+      k.active = false;
+      // Boshqasini faollashtirish
+      const firstFilled = draftKeys.find(x => x.key);
+      if(firstFilled) firstFilled.active = true;
+      renderKeyList();
+    };
+    item.appendChild(del);
+
+    keyListEl.appendChild(item);
+  });
+
+  updateActiveInfo();
+}
+
+function updateActiveInfo(){
+  const active = draftKeys.find(k => k.active && k.key);
+  if(active){
+    const idx = draftKeys.indexOf(active);
+    keyActiveInfo.classList.add('show');
+    keyActiveText.textContent = `Faol kalit: ${idx === 0 ? 'Asosiy' : 'Zaxira'} (${maskKey(active.key)})`;
+  } else {
+    keyActiveInfo.classList.remove('show');
+  }
+}
+
+function maskKey(key){
+  if(!key) return '';
+  if(key.length <= 12) return key;
+  return key.slice(0, 8) + '...' + key.slice(-4);
+}
 
 function openApiModal(isFirstTime){
   apiModal.classList.add('active');
-  apiKeyInput.value = getApiKey();
   apiCancelBtn.style.display = isFirstTime ? 'none' : 'block';
   apiStatus.classList.remove('show');
-  setTimeout(() => apiKeyInput.focus(), 100);
+  initDraftKeys();
+  renderKeyList();
+  setTimeout(() => {
+    const firstInput = keyListEl.querySelector('.key-input');
+    if(firstInput) firstInput.focus();
+  }, 100);
 }
 function closeApiModal(){
   apiModal.classList.remove('active');
-  apiKeyInput.value = '';
   apiStatus.classList.remove('show');
 }
-function refreshFooter(){
-  const has = !!getApiKey();
-  apiDot.classList.toggle('off', !has);
-  apiFooterStatus.textContent = has ? 'API kalit saqlangan' : 'API kalit yo\'q';
-}
 
-async function validateApiKey(key){
-  const res = await fetch('https://api.groq.com/openai/v1/models', {
+async function validateKey(key){
+  const res = await fetch(GROQ_MODELS_URL, {
     headers: { 'Authorization': 'Bearer ' + key }
   });
   if(!res.ok){
     const err = await res.text().catch(() => '');
-    throw new Error('HTTP ' + res.status + (err ? ' — ' + err.slice(0,150) : ''));
+    let msg = 'HTTP ' + res.status;
+    try{
+      const j = JSON.parse(err);
+      if(j.error && j.error.message) msg += ' — ' + j.error.message.slice(0,120);
+    }catch(_){}
+    throw new Error(msg);
   }
   return true;
 }
 
 apiSaveBtn.addEventListener('click', async () => {
-  const key = apiKeyInput.value.trim();
-  if(!key || !key.startsWith('gsk_')){
+  // Draft'dan faqat to'ldirilgan kalitlarni olish
+  const filledKeys = draftKeys.filter(k => k.key.trim());
+
+  if(!filledKeys.length){
     apiStatus.classList.add('show');
     apiDot.classList.add('off');
-    apiStatusText.textContent = 'Kalit "gsk_" bilan boshlanishi kerak.';
+    apiStatusText.textContent = 'Kamida 1 ta kalit kiritilishi kerak.';
     return;
   }
+
+  // Format tekshiruvi
+  for(const k of filledKeys){
+    if(!k.key.startsWith('gsk_')){
+      apiStatus.classList.add('show');
+      apiDot.classList.add('off');
+      apiStatusText.textContent = 'Barcha kalitlar "gsk_" bilan boshlanishi kerak.';
+      return;
+    }
+  }
+
+  // Faol kalitni aniqlash
+  let activeKey = filledKeys.find(k => k.active);
+  if(!activeKey) activeKey = filledKeys[0];
+  filledKeys.forEach(k => { k.active = (k === activeKey); });
+
   apiSaveBtn.disabled = true;
   apiCancelBtn.disabled = true;
   apiStatus.classList.add('show');
   apiDot.classList.remove('off');
-  apiStatusText.textContent = 'Tekshirilmoqda...';
+  apiStatusText.textContent = 'Faol kalit tekshirilmoqda...';
+
   try{
-    await validateApiKey(key);
-    setApiKey(key);
-    apiStatusText.textContent = 'Kalit to\'g\'ri. Saqlandi.';
+    await validateKey(activeKey.key);
+    saveKeys(filledKeys);
+    apiStatusText.textContent = 'Kalit(lar) saqlandi.';
     refreshFooter();
     setTimeout(closeApiModal, 400);
   }catch(e){
@@ -962,8 +1175,48 @@ apiSaveBtn.addEventListener('click', async () => {
     apiCancelBtn.disabled = false;
   }
 });
-apiKeyInput.addEventListener('keydown', e => { if(e.key === 'Enter') apiSaveBtn.click(); });
+
 changeKeyBtn.addEventListener('click', () => openApiModal(false));
+
+function refreshFooter(){
+  const key = getActiveKey();
+  const has = !!key;
+  apiDot.classList.toggle('off', !has);
+  if(has){
+    const keys = loadKeys();
+    const activeIdx = keys.findIndex(k => k.active);
+    apiFooterStatus.textContent = `Faol: ${activeIdx === 1 ? 'Zaxira' : 'Asosiy'} (${maskKey(key)})`;
+  } else {
+    apiFooterStatus.textContent = 'API kalit yo\'q';
+  }
+}
+
+/* ============================================================
+   FETCH WITH RETRY
+   ============================================================ */
+async function fetchWithRetry(url, options, maxRetries, onRetry){
+  let lastError;
+  for(let attempt = 0; attempt < maxRetries; attempt++){
+    try{
+      const res = await fetch(url, options);
+      if(res.status === 503 || res.status === 429){
+        if(attempt === maxRetries - 1) return res; // oxirgi urinish — qaytaramiz
+        const waitTime = Math.pow(2, attempt) * 1000;
+        if(onRetry) onRetry(attempt + 1, maxRetries, waitTime);
+        await new Promise(r => setTimeout(r, waitTime));
+        continue;
+      }
+      return res;
+    }catch(e){
+      lastError = e;
+      if(attempt === maxRetries - 1) throw e;
+      const waitTime = Math.pow(2, attempt) * 1000;
+      if(onRetry) onRetry(attempt + 1, maxRetries, waitTime);
+      await new Promise(r => setTimeout(r, waitTime));
+    }
+  }
+  throw lastError || new Error('Barcha urinishlar tugadi');
+}
 
 /* ============================================================
    PROJECT MODAL
@@ -1076,6 +1329,7 @@ async function switchProject(projectId){
   statusEl.textContent = '';
   errorBox.classList.remove('show');
   document.title = DEFAULT_TITLE;
+  updateFavicon('idle');
 
   chartCard.style.display = 'none';
   aiSummaryBody.textContent = 'Tahlil qilinmoqda...';
@@ -1103,6 +1357,39 @@ function getActiveSessionId(){
 function clearActiveSessionId(){
   if(!currentProjectId) return;
   try{ localStorage.removeItem('tln_active_session_' + currentProjectId); }catch(e){}
+}
+
+/* ============================================================
+   DYNAMIC FAVICON
+   ============================================================ */
+function updateFavicon(state, isDone){
+  if(state === 'running' && !isDone){
+    faviconAngle = (faviconAngle + 30) % 360;
+  }
+  const color = isDone ? '#33d17a' : '#3ba9ff';
+  const handColor = isDone ? '#33d17a' : '#33d17a';
+
+  const rad = (faviconAngle - 90) * Math.PI / 180;
+  const handX = (16 + Math.cos(rad) * 6).toFixed(2);
+  const handY = (18 + Math.sin(rad) * 6).toFixed(2);
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <rect width="32" height="32" fill="#000" rx="6"/>
+    <circle cx="16" cy="18" r="11" fill="#000" stroke="${color}" stroke-width="2.5"/>
+    <line x1="16" y1="18" x2="${handX}" y2="${handY}" stroke="${handColor}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="11" y1="4" x2="21" y2="4" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="16" y1="4" x2="16" y2="8" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="26" y1="8" x2="27.5" y2="9.5" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`;
+
+  let link = document.querySelector('link[rel="icon"]');
+  if(!link){
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.type = 'image/svg+xml';
+  link.href = 'data:image/svg+xml,' + encodeURIComponent(svg.trim());
 }
 
 /* ============================================================
@@ -1135,10 +1422,11 @@ document.addEventListener('paste', e => {
   }
 });
 
-function showError(msg, retryFn){
+function showError(msg, retryFn, isWarn){
   errorBox.innerHTML = '';
+  errorBox.className = 'error-box show' + (isWarn ? ' warn' : '');
   const text = document.createElement('div');
-  text.textContent = 'Xatolik: ' + msg;
+  text.textContent = msg;
   errorBox.appendChild(text);
   if(retryFn){
     const btn = document.createElement('button');
@@ -1147,7 +1435,6 @@ function showError(msg, retryFn){
     btn.onclick = retryFn;
     errorBox.appendChild(btn);
   }
-  errorBox.classList.add('show');
 }
 function clearError(){ errorBox.classList.remove('show'); }
 
@@ -1165,7 +1452,7 @@ async function handleFile(file){
     showError('Iltimos, rasm faylini tanlang (PNG yoki JPG).');
     return;
   }
-  if(!getApiKey()){
+  if(!hasActiveKey()){
     openApiModal(true);
     return;
   }
@@ -1234,12 +1521,12 @@ async function handleFile(file){
 }
 
 /* ============================================================
-   GROQ VISION
+   GROQ VISION — MULTI MODEL FALLBACK
    ============================================================ */
 async function analyzeWithVision(dataUrl, imgHash){
   progressWrap.classList.add('show');
   progressBar.classList.add('indeterminate');
-  statusEl.classList.remove('cached');
+  statusEl.classList.remove('cached', 'retry');
   statusEl.textContent = 'Vision AI rasmni tahlil qilmoqda...';
 
   const systemPrompt = `You are a precise OCR + data extraction assistant. Extract numeric fields from a download/install progress screenshot. Return ONLY valid JSON.
@@ -1255,74 +1542,115 @@ JSON schema:
 }
 Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no markdown.`;
 
-  const body = {
-    model: GROQ_VISION_MODEL,
-    messages: [
-      { role:'system', content: systemPrompt },
-      { role:'user', content: [
-        { type:'text', text:'Extract fields. Return only JSON.' },
-        { type:'image_url', image_url: { url: dataUrl } }
-      ]}
-    ],
-    temperature: 0.1,
-    max_tokens: 400,
-    response_format: { type:'json_object' }
-  };
+  const userContent = [
+    { type:'text', text:'Extract fields. Return only JSON.' },
+    { type:'image_url', image_url: { url: dataUrl } }
+  ];
 
-  const t0 = performance.now();
+  let lastError = null;
+  let usedModel = null;
 
-  try{
-    const res = await fetch(GROQ_API_URL, {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer ' + getApiKey()
-      },
-      body: JSON.stringify(body)
-    });
+  for(const model of GROQ_VISION_MODELS){
+    const body = {
+      model,
+      messages: [
+        { role:'system', content: systemPrompt },
+        { role:'user', content: userContent }
+      ],
+      temperature: 0.1,
+      max_tokens: 400,
+      response_format: { type:'json_object' }
+    };
 
-    if(!res.ok){
-      const errText = await res.text().catch(() => '');
-      if(res.status === 401){
-        clearApiKey();
-        refreshFooter();
-        progressWrap.classList.remove('show');
-        progressBar.classList.remove('indeterminate');
-        statusEl.textContent = '';
-        showError('API kalit qabul qilinmadi.', () => openApiModal(true));
-        openApiModal(true);
-        return;
+    const t0 = performance.now();
+    const modelShort = model.split('/').pop();
+
+    try{
+      statusEl.textContent = `Vision AI tahlil qilmoqda... (${modelShort})`;
+
+      const res = await fetchWithRetry(
+        GROQ_API_URL,
+        {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':'Bearer ' + getActiveKey()
+          },
+          body: JSON.stringify(body)
+        },
+        3,
+        (attempt, max, wait) => {
+          statusEl.classList.add('retry');
+          statusEl.textContent = `Server band (${modelShort}). ${wait/1000}s kutib qayta urinish (${attempt}/${max})...`;
+        }
+      );
+
+      if(!res.ok){
+        const errText = await res.text().catch(() => '');
+
+        // 401 — kalit xato, boshqa modelni sinash befoyda
+        if(res.status === 401){
+          progressWrap.classList.remove('show');
+          progressBar.classList.remove('indeterminate');
+          statusEl.textContent = '';
+          statusEl.classList.remove('retry');
+          showError('Faol API kalit qabul qilinmadi. Iltimos, boshqa kalitni faollashtiring.', () => openApiModal(true), true);
+          openApiModal(false);
+          return;
+        }
+
+        // 503/404/429 — keyingi modelga o'tish
+        if(res.status === 503 || res.status === 404 || res.status === 429){
+          console.warn(`${model}: HTTP ${res.status}, keyingi modelni sinaymiz`);
+          lastError = new Error(`${modelShort}: HTTP ${res.status}`);
+          continue;
+        }
+
+        throw new Error('HTTP ' + res.status + (errText ? ' — ' + errText.slice(0,180) : ''));
       }
-      throw new Error('HTTP ' + res.status + (errText ? ' — ' + errText.slice(0,180) : ''));
+
+      // Muvaffaqiyat
+      const data = await res.json();
+      const content = data?.choices?.[0]?.message?.content || '';
+      const latency = ((performance.now() - t0) / 1000).toFixed(2) + ' s';
+      usedModel = model;
+
+      let parsed;
+      try{ parsed = JSON.parse(content); }
+      catch(e){
+        const m = content.match(/\{[\s\S]*\}/);
+        if(m){ try{ parsed = JSON.parse(m[0]); }catch(_){} }
+        if(!parsed) throw new Error('AI javobini JSON sifatida o\'qib bo\'lmadi.');
+      }
+
+      statusEl.classList.remove('retry');
+      statusEl.textContent = 'Saqlanmoqda...';
+      await createAndStoreSession(parsed, dataUrl, imgHash, content, latency, false, model);
+      return;
+
+    }catch(err){
+      console.error(`${model} xatosi:`, err);
+      lastError = err;
     }
-
-    const data = await res.json();
-    const content = data?.choices?.[0]?.message?.content || '';
-    const latency = ((performance.now() - t0) / 1000).toFixed(2) + ' s';
-
-    let parsed;
-    try{ parsed = JSON.parse(content); }
-    catch(e){
-      const m = content.match(/\{[\s\S]*\}/);
-      if(m){ try{ parsed = JSON.parse(m[0]); }catch(_){} }
-      if(!parsed) throw new Error('AI javobini JSON sifatida o\'qib bo\'lmadi.');
-    }
-
-    statusEl.textContent = 'Saqlanmoqda...';
-    await createAndStoreSession(parsed, dataUrl, imgHash, content, latency, false);
-
-  }catch(err){
-    console.error(err);
-    progressWrap.classList.remove('show');
-    progressBar.classList.remove('indeterminate');
-    statusEl.textContent = '';
-    showError(err.message || 'Vision API xatosi.', () => {
-      if(dataUrl) analyzeWithVision(dataUrl, imgHash);
-    });
   }
+
+  // Barcha modellar ishlamadi
+  progressWrap.classList.remove('show');
+  progressBar.classList.remove('indeterminate');
+  statusEl.textContent = '';
+  statusEl.classList.remove('retry');
+  showError(
+    'Barcha AI modellari band. 30 soniyadan keyin qayta urinib ko\'ring.\n' +
+    (lastError ? lastError.message : ''),
+    () => { if(dataUrl) analyzeWithVision(dataUrl, imgHash); },
+    true
+  );
 }
 
-async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache){
+/* ============================================================
+   SESSION CREATE
+   ============================================================ */
+async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache, usedModel){
   const speedMbps   = toNum(parsed.speed_mbps);
   let downloadedGB  = toNum(parsed.downloaded_gb);
   let totalGB       = toNum(parsed.total_gb);
@@ -1367,15 +1695,9 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
     latency,
     fromCache: !!fromCache,
     data: {
-      speedMbps,
-      downloadedGB,
-      totalGB,
-      percent,
-      installPct,
-      remainingGB,
-      elapsedSeconds,
-      remainingSeconds,
-      model: GROQ_VISION_MODEL
+      speedMbps, downloadedGB, totalGB, percent, installPct,
+      remainingGB, elapsedSeconds, remainingSeconds,
+      model: usedModel || GROQ_VISION_MODELS[0]
     }
   };
 
@@ -1426,7 +1748,7 @@ function renderSession(session, opts){
   document.getElementById('speedVal').textContent      = d.speedMbps ? d.speedMbps.toFixed(1) + ' Mbps' : '--';
   document.getElementById('detRemainSize').textContent = d.remainingGB  !== null ? formatSize(d.remainingGB)  : '--';
   document.getElementById('detInstallPct').textContent = d.installPct   !== null ? d.installPct + '%'         : '--';
-  document.getElementById('detModel').textContent      = d.model || GROQ_VISION_MODEL;
+  document.getElementById('detModel').textContent      = d.model || GROQ_VISION_MODELS[0];
   document.getElementById('detLatency').textContent    = session.latency || '--';
   document.getElementById('detSource').textContent     = session.fromCache ? 'Kesh' : (opts.showBadge ? 'IndexedDB' : 'API');
   if(session.rawJson) document.getElementById('rawText').textContent = session.rawJson;
@@ -1451,15 +1773,18 @@ function renderSession(session, opts){
       if(rem <= 0){
         etaEl.textContent = 'Tugadi';
         etaSubEl.textContent = 'Yuklab olish tugagan bo\'lishi mumkin';
-        document.title = '✓ Tugadi — ' + DEFAULT_TITLE;
+        document.title = 'Tugadi';
+        updateFavicon('running', true);
       } else {
         const fmt = formatTime(rem);
         etaEl.textContent = fmt;
-        document.title = fmt + ' — ' + DEFAULT_TITLE;
+        document.title = fmt;
+        updateFavicon('running');
       }
     } else {
       etaEl.textContent = '--';
       document.title = DEFAULT_TITLE;
+      updateFavicon('idle');
     }
 
     if(d.elapsedSeconds !== null){
@@ -1572,8 +1897,6 @@ function drawChart(recent){
   }
 
   const stepX = n > 1 ? chartW / (n - 1) : 0;
-
-  /* Nuqta pozitsiyalarini saqlash */
   chartPointPositions = [];
 
   ctx.strokeStyle = '#161616';
@@ -1605,14 +1928,10 @@ function drawChart(recent){
       y: PAD.top + chartH - ((v - r.min) / (r.max - r.min)) * chartH
     }));
 
-    // Nuqta pozitsiyalarini yig'ish (birinchi seriya uchun)
     if(key === 'downloaded'){
-      pts.forEach((p, i) => {
-        chartPointPositions[i] = { x: p.x, y: p.y };
-      });
+      pts.forEach((p, i) => { chartPointPositions[i] = { x: p.x, y: p.y }; });
     }
 
-    // Gradient fill
     const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
     grad.addColorStop(0, color + '20');
     grad.addColorStop(1, color + '00');
@@ -1624,7 +1943,6 @@ function drawChart(recent){
     ctx.closePath();
     ctx.fill();
 
-    // Chiziq
     ctx.strokeStyle = color;
     ctx.lineWidth = 1.8;
     ctx.lineJoin = 'round';
@@ -1636,22 +1954,18 @@ function drawChart(recent){
     });
     ctx.stroke();
 
-    // Nuqtalar
     pts.forEach((p, i) => {
       const isHover = i === hoveredIndex;
       const r1 = isHover ? 7 : 5;
       const r2 = isHover ? 5 : 3.5;
-
       ctx.fillStyle = '#000';
       ctx.beginPath();
       ctx.arc(p.x, p.y, r1, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r2, 0, Math.PI * 2);
       ctx.fill();
-
       if(isHover){
         ctx.strokeStyle = color;
         ctx.lineWidth = 2;
@@ -1667,7 +1981,6 @@ function drawChart(recent){
   drawSeries(series.percent,    '#f5c247', 'percent');
   drawSeries(series.etaMin,     '#ff5c5c', 'etaMin');
 
-  // Hover vertikal chiziq
   if(hoveredIndex >= 0 && hoveredIndex < n){
     const x = PAD.left + stepX * hoveredIndex;
     ctx.strokeStyle = 'rgba(255,255,255,0.1)';
@@ -1681,36 +1994,25 @@ function drawChart(recent){
   }
 }
 
-/* ============================================================
-   CHART HOVER
-   ============================================================ */
 chartWrap.addEventListener('mousemove', e => {
   if(!chartData.length || !chartPointPositions.length) return;
-
   const rect = chartWrap.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
 
-  // Eng yaqin nuqtani topish (masofa bo'yicha)
   let closestIdx = 0;
   let minDist = Infinity;
   for(let i = 0; i < chartPointPositions.length; i++){
     const p = chartPointPositions[i];
     if(!p) continue;
-    const dx = p.x - x;
-    const dy = p.y - y;
+    const dx = p.x - x, dy = p.y - y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    if(dist < minDist){
-      minDist = dist;
-      closestIdx = i;
-    }
+    if(dist < minDist){ minDist = dist; closestIdx = i; }
   }
 
-  // Nuqta yaqinida bo'lsa (50px radius) — tooltip ko'rsatish
   if(minDist < 50){
     hoveredIndex = closestIdx;
-    const p = chartPointPositions[closestIdx];
-    showTooltip(p.x, p.y, chartData[closestIdx]);
+    showTooltip(chartPointPositions[closestIdx].x, chartPointPositions[closestIdx].y, chartData[closestIdx]);
     drawChart(chartData);
   } else {
     hoveredIndex = -1;
@@ -1731,7 +2033,6 @@ function showTooltip(px, py, session){
   const hh = String(t.getHours()).padStart(2,'0');
   const mm = String(t.getMinutes()).padStart(2,'0');
   const ss = String(t.getSeconds()).padStart(2,'0');
-
   const eta = d.remainingSeconds !== null ? formatTimeShort(d.remainingSeconds) : '--';
 
   chartTooltip.innerHTML = `
@@ -1742,27 +2043,17 @@ function showTooltip(px, py, session){
     <div class="ct-row"><span class="dot" style="background:#ff5c5c"></span>Qolgan <b>${eta}</b></div>
   `;
 
-  // Ko'rsatish va o'lchash
   chartTooltip.classList.add('show');
   const tipRect = chartTooltip.getBoundingClientRect();
   const wrapRect = chartWrap.getBoundingClientRect();
 
-  const tipW = tipRect.width;
-  const tipH = tipRect.height;
+  const tipW = tipRect.width, tipH = tipRect.height;
   const wrapW = wrapRect.width;
-  const wrapH = wrapRect.height;
 
-  // Standart: nuqtadan chapga yarim eni
   let left = px - tipW / 2;
-  // Standart: nuqtadan yuqorida, tooltip height + 12px bo'sh joy
   let top = py - tipH - 12;
+  if(top < 4) top = py + 14;
 
-  // Agar tepadan chiqib ketsa — pastga tushirish
-  if(top < 4){
-    top = py + 14;
-  }
-
-  // Chetdan chiqmaslik uchun clamp
   const PADDING = 6;
   if(left < PADDING) left = PADDING;
   if(left + tipW > wrapW - PADDING) left = wrapW - tipW - PADDING;
@@ -1770,10 +2061,7 @@ function showTooltip(px, py, session){
   chartTooltip.style.left = left + 'px';
   chartTooltip.style.top = top + 'px';
 }
-
-function hideTooltip(){
-  chartTooltip.classList.remove('show');
-}
+function hideTooltip(){ chartTooltip.classList.remove('show'); }
 
 /* ============================================================
    AI SUMMARY
@@ -1809,7 +2097,6 @@ async function renderAISummary(recent){
 function computeLocalVerdict(recent){
   const first = recent[0].data;
   const last  = recent[recent.length - 1].data;
-
   const dlDelta = (last.downloadedGB || 0) - (first.downloadedGB || 0);
   const spFirst = first.speedMbps || 0;
   const spLast  = last.speedMbps || 0;
@@ -1818,15 +2105,10 @@ function computeLocalVerdict(recent){
   const absPct = Math.abs(pctChange);
 
   let cls = '', txt = '';
-  if(dlDelta > 0 && spDelta > 2){
-    cls = 'ok'; txt = `Tezlik ${pctChange.toFixed(0)}% oshgan`;
-  } else if(dlDelta > 0 && spDelta < -2){
-    cls = 'danger'; txt = `Tezlik ${absPct.toFixed(0)}% pasaygan`;
-  } else if(dlDelta > 0){
-    cls = 'warn'; txt = `Tezlik barqaror`;
-  } else {
-    cls = 'warn'; txt = `O'zgarish yo'q`;
-  }
+  if(dlDelta > 0 && spDelta > 2){ cls = 'ok'; txt = `Tezlik ${pctChange.toFixed(0)}% oshgan`; }
+  else if(dlDelta > 0 && spDelta < -2){ cls = 'danger'; txt = `Tezlik ${absPct.toFixed(0)}% pasaygan`; }
+  else if(dlDelta > 0){ cls = 'warn'; txt = `Tezlik barqaror`; }
+  else { cls = 'warn'; txt = `O'zgarish yo'q`; }
 
   return `<span class="${cls}">${txt}</span> — yuklandi <b>+${dlDelta.toFixed(1)} GB</b>, tezlik <b>${spFirst.toFixed(1)} → ${spLast.toFixed(1)} Mbps</b>`;
 }
@@ -1870,14 +2152,13 @@ Javob (faqat matn):`;
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + getApiKey()
+      'Authorization': 'Bearer ' + getActiveKey()
     },
     body: JSON.stringify(body),
     signal
   });
 
   if(!res.ok) throw new Error('AI summary HTTP ' + res.status);
-
   const data = await res.json();
   return (data?.choices?.[0]?.message?.content || '').trim();
 }
@@ -1969,13 +2250,9 @@ async function loadSessionFromHistory(item){
   await renderHistory();
 }
 
-/* ============================================================
-   RESTORE
-   ============================================================ */
 async function tryRestoreActiveSession(){
   const activeId = getActiveSessionId();
   if(!activeId || !db) return;
-
   try{
     const session = await dbGet(STORE_SESSIONS, activeId);
     if(session && session.projectId === currentProjectId){
@@ -1998,13 +2275,14 @@ async function tryRestoreActiveSession(){
 resetBtn.addEventListener('click', async () => {
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
   document.title = DEFAULT_TITLE;
+  updateFavicon('idle');
   clearActiveSessionId();
   currentSession = null;
   results.classList.remove('visible');
   if(emptyState) emptyState.style.display = '';
   clearError();
   statusEl.textContent = '';
-  statusEl.classList.remove('cached');
+  statusEl.classList.remove('cached', 'retry');
   progressWrap.classList.remove('show');
   preview.src = '';
   preview.style.display = 'none';
@@ -2037,6 +2315,7 @@ historyClear.addEventListener('click', async () => {
   dropZone.classList.remove('has-image');
   sessionBadge.classList.remove('show', 'cached');
   document.title = DEFAULT_TITLE;
+  updateFavicon('idle');
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
   await renderHistory();
   await renderTrendChart();
@@ -2071,12 +2350,14 @@ async function init(){
   }
 
   refreshFooter();
+  updateFavicon('idle');
   await loadProjects();
   await renderHistory();
   await tryRestoreActiveSession();
   await renderTrendChart();
 
-  if(!getApiKey()){
+  // Kalit yo'q bo'lsa modal
+  if(!hasActiveKey()){
     window.addEventListener('load', () => setTimeout(() => openApiModal(true), 300));
   }
 }
