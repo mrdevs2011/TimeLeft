@@ -13,6 +13,7 @@
     --card2:#121212;
     --accent:#3ba9ff;
     --accent2:#33d17a;
+    --warn:#f5c247;
     --text:#e6edf3;
     --muted:#8b96a5;
     --danger:#ff5c5c;
@@ -232,6 +233,66 @@
   .mini-card .l{font-size:9.5px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
   .mini-card .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 
+  /* ============ TREND CHART ============ */
+  .chart-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    flex-shrink:0;
+  }
+  .chart-head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:10px;margin-bottom:10px;flex-wrap:wrap;
+  }
+  .chart-head h3{
+    font-size:12.5px;font-weight:600;margin:0;
+    display:flex;align-items:center;gap:6px;
+    color:var(--text);
+  }
+  .chart-head h3 svg{color:var(--accent);}
+  .chart-legend{
+    display:flex;gap:8px;flex-wrap:wrap;
+    font-size:10px;color:var(--muted);
+  }
+  .chart-legend .cl{
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .chart-legend .cl::before{
+    content:'';display:inline-block;
+    width:10px;height:2px;border-radius:1px;
+  }
+  .chart-legend .cl-1::before{background:#33d17a;}
+  .chart-legend .cl-2::before{background:#3ba9ff;}
+  .chart-legend .cl-3::before{background:#f5c247;}
+  .chart-legend .cl-4::before{background:#ff5c5c;}
+  .chart-wrap{
+    position:relative;
+    width:100%;
+    height:160px;
+  }
+  #trendChart{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .chart-summary{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:10px;
+    padding:8px 10px;
+    background:var(--card2);
+    border-radius:8px;
+    line-height:1.5;
+    border-left:2px solid var(--accent2);
+  }
+  .chart-summary.warn{border-left-color:var(--warn);}
+  .chart-summary.danger{border-left-color:var(--danger);}
+  .chart-summary b{color:var(--text);}
+  .chart-summary .up{color:var(--accent2);font-weight:600;}
+  .chart-summary .down{color:var(--danger);font-weight:600;}
+  .chart-summary .flat{color:var(--muted);font-weight:600;}
+
   .details-collapsed{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-shrink:0;}
   .details-collapsed summary{
     padding:11px 14px;cursor:pointer;color:var(--muted);font-size:12.5px;
@@ -370,6 +431,7 @@
     .history-item .hi-time{min-width:38px;font-size:10px;}
     .history-item{font-size:11.5px;padding:6px 6px;}
     .empty-state{min-height:160px;}
+    .chart-wrap{height:130px;}
   }
   @media(max-width:380px){
     .app{padding:10px;gap:8px;}
@@ -488,6 +550,26 @@
           <div class="mini-card"><div class="l">Tezlik</div><div class="v" id="speedVal">--</div></div>
         </div>
 
+        <!-- 📊 TREND CHART -->
+        <div class="chart-card" id="chartCard" style="display:none;">
+          <div class="chart-head">
+            <h3>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+              Dinamika (oxirgi 10 ta tahlil)
+            </h3>
+            <div class="chart-legend">
+              <span class="cl cl-1">Yuklandi (GB)</span>
+              <span class="cl cl-2">Tezlik (Mbps)</span>
+              <span class="cl cl-3">Foiz (%)</span>
+              <span class="cl cl-4">Qolgan vaqt (min)</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="trendChart"></canvas>
+          </div>
+          <div class="chart-summary" id="chartSummary"></div>
+        </div>
+
         <details class="details-collapsed">
           <summary>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -592,6 +674,9 @@ const historyClear = document.getElementById('historyClear');
 const sessionBadge = document.getElementById('sessionBadge');
 const sessionBadgeText = document.getElementById('sessionBadgeText');
 const sessionBadgeClose = document.getElementById('sessionBadgeClose');
+const chartCard    = document.getElementById('chartCard');
+const trendChart   = document.getElementById('trendChart');
+const chartSummary = document.getElementById('chartSummary');
 
 const apiModal      = document.getElementById('apiModal');
 const apiKeyInput   = document.getElementById('apiKeyInput');
@@ -609,6 +694,7 @@ const changeKeyBtn  = document.getElementById('changeKeyBtn');
 let countdownInterval = null;
 let currentSession = null;
 let db = null;
+let chartResizeTimer = null;
 
 /* ============================================================
    INDEXEDDB
@@ -628,77 +714,50 @@ function openDB(){
     req.onerror = e => reject(e.target.error);
   });
 }
-
-function dbPut(session){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-    tx.objectStore(STORE_SESSIONS).put(session);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-
-function dbGet(id){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readonly');
-    const req = tx.objectStore(STORE_SESSIONS).get(id);
-    req.onsuccess = () => resolve(req.result || null);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbGetAll(){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readonly');
-    const req = tx.objectStore(STORE_SESSIONS).getAll();
-    req.onsuccess = () => resolve(req.result || []);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbGetByHash(hash){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readonly');
-    const idx = tx.objectStore(STORE_SESSIONS).index('imageHash');
-    const req = idx.get(hash);
-    req.onsuccess = () => resolve(req.result || null);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function dbDelete(id){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-    tx.objectStore(STORE_SESSIONS).delete(id);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-
-function dbClear(){
-  return new Promise((resolve, reject) => {
-    if(!db){ reject(new Error('DB ochilmagan')); return; }
-    const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-    tx.objectStore(STORE_SESSIONS).clear();
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
+function dbPut(s){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+  tx.objectStore(STORE_SESSIONS).put(s);
+  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
+});}
+function dbGet(id){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readonly');
+  const req = tx.objectStore(STORE_SESSIONS).get(id);
+  req.onsuccess = () => res(req.result || null); req.onerror = () => rej(req.error);
+});}
+function dbGetAll(){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readonly');
+  const req = tx.objectStore(STORE_SESSIONS).getAll();
+  req.onsuccess = () => res(req.result || []); req.onerror = () => rej(req.error);
+});}
+function dbGetByHash(h){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readonly');
+  const idx = tx.objectStore(STORE_SESSIONS).index('imageHash');
+  const req = idx.get(h);
+  req.onsuccess = () => res(req.result || null); req.onerror = () => rej(req.error);
+});}
+function dbDelete(id){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+  tx.objectStore(STORE_SESSIONS).delete(id);
+  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
+});}
+function dbClear(){ return new Promise((res, rej) => {
+  if(!db){ rej(new Error('DB ochilmagan')); return; }
+  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
+  tx.objectStore(STORE_SESSIONS).clear();
+  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
+});}
 
 async function pruneOldSessions(){
   try{
     const all = await dbGetAll();
     if(all.length <= HISTORY_MAX) return;
     all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
-    const toDelete = all.slice(HISTORY_MAX);
-    for(const s of toDelete){
-      await dbDelete(s.id);
-    }
+    for(const s of all.slice(HISTORY_MAX)) await dbDelete(s.id);
   }catch(e){ console.warn('prune error', e); }
 }
 
@@ -865,27 +924,17 @@ async function handleFile(file){
   if(emptyState) emptyState.style.display = '';
 
   let dataUrl;
-  try{
-    dataUrl = await fileToDataURL(file);
-  }catch(e){
-    showError(e.message);
-    return;
-  }
+  try{ dataUrl = await fileToDataURL(file); }
+  catch(e){ showError(e.message); return; }
 
-  // 1. Rasmning hash'ini hisoblash
   let imgHash = null;
-  try{
-    imgHash = await hashImage(dataUrl);
-  }catch(e){
-    console.warn('Hash xatosi:', e);
-  }
+  try{ imgHash = await hashImage(dataUrl); }
+  catch(e){ console.warn('Hash xatosi:', e); }
 
-  // 2. Keshni tekshirish (IndexedDB'dan bir xil rasm qidirish)
   if(imgHash && db){
     try{
       const existing = await dbGetByHash(imgHash);
       if(existing){
-        // ⚡️ TOPILDI! Model'ga yubormaymiz
         statusEl.classList.add('cached');
         statusEl.textContent = 'Keshdan olindi (0 ms)';
         setTimeout(() => {
@@ -893,20 +942,18 @@ async function handleFile(file){
           statusEl.classList.remove('cached');
         }, 2500);
 
-        // Eski tarix yozuvini o'chirish
         await dbDelete(existing.id);
 
-        // Yangi sessiya yaratish — BUGUNGI vaqt bilan
         const newSession = {
           id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
-          ts: Date.now(),                                       // yangi vaqt
-          startedAt: Date.now(),                                // countdown bugundan
-          imageDataUrl: dataUrl,                                // yangi rasm
+          ts: Date.now(),
+          startedAt: Date.now(),
+          imageDataUrl: dataUrl,
           imageHash: imgHash,
-          rawJson: existing.rawJson,                            // eski AI javobi
+          rawJson: existing.rawJson,
           latency: '0 s (kesh)',
           fromCache: true,
-          data: JSON.parse(JSON.stringify(existing.data))      // eski hisoblangan ma'lumotlar
+          data: JSON.parse(JSON.stringify(existing.data))
         };
 
         await dbPut(newSession);
@@ -915,23 +962,18 @@ async function handleFile(file){
         setActiveSessionId(newSession.id);
         currentSession = newSession;
 
-        // Badge ko'rsatish
         sessionBadge.classList.add('show', 'cached');
         sessionBadgeText.textContent = 'Keshdan olindi — bugungi vaqtga o\'tkazildi';
-        setTimeout(() => {
-          sessionBadge.classList.remove('cached');
-        }, 3000);
+        setTimeout(() => sessionBadge.classList.remove('cached'), 3000);
 
         renderSession(newSession, { showBadge: false });
         await renderHistory();
+        await renderTrendChart();
         return;
       }
-    }catch(e){
-      console.warn('Kesh qidirishda xatolik:', e);
-    }
+    }catch(e){ console.warn('Kesh qidirishda xatolik:', e); }
   }
 
-  // 3. Keshda topilmadi — API'ga yuborish
   await analyzeWithVision(dataUrl, imgHash);
 }
 
@@ -1025,7 +1067,7 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
 }
 
 /* ============================================================
-   SESSION YARATISH VA SAQLASH
+   SESSION YARATISH
    ============================================================ */
 async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache){
   const speedMbps   = toNum(parsed.speed_mbps);
@@ -1086,9 +1128,7 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
   try{
     await dbPut(session);
     await pruneOldSessions();
-  }catch(e){
-    console.warn('Session saqlashda xatolik:', e);
-  }
+  }catch(e){ console.warn('Session saqlashda xatolik:', e); }
 
   setActiveSessionId(session.id);
   currentSession = session;
@@ -1099,6 +1139,7 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
   renderSession(session, { showBadge: false });
 
   await renderHistory();
+  await renderTrendChart();
 }
 
 /* ============================================================
@@ -1106,21 +1147,15 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
    ============================================================ */
 function renderSession(session, opts){
   opts = opts || {};
-
-  if(countdownInterval){
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
+  if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
 
   const d = session.data;
 
-  // Rasm
   if(session.imageDataUrl){
     preview.src = session.imageDataUrl;
     dropZone.classList.add('has-image');
   }
 
-  // Badge
   if(opts.showBadge){
     sessionBadge.classList.add('show');
     const t = new Date(session.ts);
@@ -1131,7 +1166,6 @@ function renderSession(session, opts){
     sessionBadge.classList.remove('show');
   }
 
-  // Statik ma'lumotlar
   document.getElementById('downloadedVal').textContent = d.downloadedGB !== null ? formatSize(d.downloadedGB) : '--';
   document.getElementById('totalVal').textContent      = d.totalGB      !== null ? formatSize(d.totalGB)      : '--';
   document.getElementById('percentVal').textContent    = d.percent      !== null ? d.percent + '%'            : '--';
@@ -1141,11 +1175,8 @@ function renderSession(session, opts){
   document.getElementById('detModel').textContent      = d.model || GROQ_VISION_MODEL;
   document.getElementById('detLatency').textContent    = session.latency || '--';
   document.getElementById('detSource').textContent     = session.fromCache ? 'Kesh' : (opts.showBadge ? 'IndexedDB' : 'API');
-  if(session.rawJson){
-    document.getElementById('rawText').textContent = session.rawJson;
-  }
+  if(session.rawJson) document.getElementById('rawText').textContent = session.rawJson;
 
-  // Realtime countdown
   const etaEl        = document.getElementById('etaValue');
   const etaSubEl     = document.getElementById('etaSub');
   const elapsedEl    = document.getElementById('elapsedValue');
@@ -1199,7 +1230,6 @@ function toNum(v){
   const n = typeof v === 'number' ? v : parseFloat(v);
   return isNaN(n) ? null : n;
 }
-
 function formatTime(seconds){
   if(seconds === null || seconds === undefined || isNaN(seconds) || seconds < 0) return '--';
   const s = Math.floor(seconds);
@@ -1207,12 +1237,9 @@ function formatTime(seconds){
   const hrs = Math.floor(s / 3600);
   const min = Math.floor((s % 3600) / 60);
   const sec = s % 60;
-  if(hrs > 0){
-    return hrs + ' soat ' + String(min).padStart(2,'0') + ' daq ' + String(sec).padStart(2,'0') + ' soniya';
-  }
-  return min + ' daq ' + String(sec).padStart(2,'0') + ' soniya';
+  if(hrs > 0) return hrs + ' soat ' + String(min).padStart(2,'0') + ' daq ' + String(sec).padStart(2,'0') + ' son';
+  return min + ' daq ' + String(sec).padStart(2,'0') + ' son';
 }
-
 function formatSize(gb){
   if(gb === null || gb === undefined) return '--';
   if(gb < 1) return Math.round(gb*1024) + ' MB';
@@ -1220,15 +1247,196 @@ function formatSize(gb){
 }
 
 /* ============================================================
+   TREND CHART — 4 chiziqli dinamika
+   ============================================================ */
+async function renderTrendChart(){
+  let all;
+  try{ all = await dbGetAll(); }
+  catch(e){ all = []; }
+
+  const withData = all.filter(s => s.data && s.data.speedMbps !== null && s.data.downloadedGB !== null);
+  if(withData.length < 2){
+    chartCard.style.display = 'none';
+    return;
+  }
+
+  withData.sort((a,b) => (a.ts || 0) - (b.ts || 0));
+  const recent = withData.slice(-10);
+
+  chartCard.style.display = '';
+
+  // Canvas o'lchamlari
+  const dpr = window.devicePixelRatio || 1;
+  const wrap = trendChart.parentElement;
+  const W = wrap.clientWidth;
+  const H = wrap.clientHeight;
+  if(W === 0 || H === 0) return;
+
+  trendChart.width = Math.floor(W * dpr);
+  trendChart.height = Math.floor(H * dpr);
+  trendChart.style.width = W + 'px';
+  trendChart.style.height = H + 'px';
+
+  const ctx = trendChart.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+
+  const PAD = { top: 14, right: 12, bottom: 22, left: 34 };
+  const chartW = W - PAD.left - PAD.right;
+  const chartH = H - PAD.top - PAD.bottom;
+  const n = recent.length;
+
+  // 4 seriya
+  const series = {
+    downloaded: recent.map(s => s.data.downloadedGB || 0),
+    speed:      recent.map(s => s.data.speedMbps || 0),
+    percent:    recent.map(s => s.data.percent || 0),
+    etaMin:     recent.map(s => (s.data.remainingSeconds || 0) / 60)
+  };
+
+  // Har bir seriya uchun min/max
+  function getRange(arr){
+    const min = Math.min(...arr);
+    const max = Math.max(...arr);
+    return { min, max: max === min ? min + 1 : max };
+  }
+
+  const stepX = n > 1 ? chartW / (n - 1) : 0;
+
+  // Grid chiziqlar (gorizontal)
+  ctx.strokeStyle = '#161616';
+  ctx.lineWidth = 1;
+  for(let i = 0; i <= 4; i++){
+    const y = PAD.top + (chartH / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + chartW, y);
+    ctx.stroke();
+  }
+
+  // X o'qi (vaqt belgilari)
+  ctx.fillStyle = '#5a6470';
+  ctx.font = '9px -apple-system, "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  recent.forEach((s, i) => {
+    const x = PAD.left + stepX * i;
+    const d = new Date(s.ts);
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    ctx.fillText(hh + ':' + mm, x, PAD.top + chartH + 4);
+  });
+
+  // Seriyani chizish
+  function drawSeries(values, color, fillGrad){
+    const r = getRange(values);
+    const pts = values.map((v, i) => ({
+      x: PAD.left + stepX * i,
+      y: PAD.top + chartH - ((v - r.min) / (r.max - r.min)) * chartH
+    }));
+
+    // Gradient fill
+    if(fillGrad && pts.length > 1){
+      const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
+      grad.addColorStop(0, fillGrad + '25');
+      grad.addColorStop(1, fillGrad + '00');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, PAD.top + chartH);
+      pts.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.lineTo(pts[pts.length-1].x, PAD.top + chartH);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // Chiziq
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.8;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    pts.forEach((p, i) => {
+      if(i === 0) ctx.moveTo(p.x, p.y);
+      else ctx.lineTo(p.x, p.y);
+    });
+    ctx.stroke();
+
+    // Nuqtalar
+    pts.forEach(p => {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  drawSeries(series.downloaded, '#33d17a', '#33d17a');
+  drawSeries(series.speed,      '#3ba9ff', '#3ba9ff');
+  drawSeries(series.percent,    '#f5c247', '#f5c247');
+  drawSeries(series.etaMin,     '#ff5c5c', '#ff5c5c');
+
+  // Xulosa
+  renderChartSummary(recent);
+}
+
+function renderChartSummary(recent){
+  if(!recent || recent.length < 2){
+    chartSummary.textContent = '';
+    return;
+  }
+
+  const first = recent[0].data;
+  const last = recent[recent.length - 1].data;
+
+  const dlDelta = (last.downloadedGB || 0) - (first.downloadedGB || 0);
+  const spDelta = (last.speedMbps || 0) - (first.speedMbps || 0);
+  const spFirst = first.speedMbps || 0;
+  const spLast  = last.speedMbps || 0;
+
+  // Foiz
+  const pctChange = spFirst > 0 ? ((spDelta / spFirst) * 100) : 0;
+  const absPct = Math.abs(pctChange);
+
+  // Umumiy
+  const firstTime = new Date(recent[0].ts);
+  const lastTime = new Date(recent[recent.length-1].ts);
+  const hh = String(firstTime.getHours()).padStart(2,'0') + ':' + String(firstTime.getMinutes()).padStart(2,'0');
+  const hh2 = String(lastTime.getHours()).padStart(2,'0') + ':' + String(lastTime.getMinutes()).padStart(2,'0');
+
+  let verdict = '';
+  let cls = '';
+
+  if(dlDelta > 0 && spDelta > 2){
+    verdict = `<span class="up">Yaxshi ketyapti</span> — tezlik ${pctChange.toFixed(0)}% oshgan`;
+    cls = '';
+  } else if(dlDelta > 0 && spDelta < -2){
+    verdict = `<span class="down">Sekinlashdi</span> — tezlik ${absPct.toFixed(0)}% pasaygan`;
+    cls = 'danger';
+  } else if(dlDelta > 0 && absPct <= 5){
+    verdict = `<span class="flat">Barqaror</span> — tezlik o'zgarmagan`;
+    cls = 'warn';
+  } else if(dlDelta === 0){
+    verdict = `<span class="flat">O'zgarish yo'q</span> — yuklash to'xtagan bo'lishi mumkin`;
+    cls = 'warn';
+  } else {
+    verdict = `<span class="up">Yuklanmoqda</span> — ${dlDelta.toFixed(1)} GB o'sish`;
+  }
+
+  chartSummary.className = 'chart-summary ' + cls;
+  chartSummary.innerHTML =
+    `${verdict}<br>` +
+    `${hh} → ${hh2} davomida: ` +
+    `yuklandi <b>+${dlDelta.toFixed(1)} GB</b>, ` +
+    `tezlik <b>${spFirst.toFixed(1)} → ${spLast.toFixed(1)} Mbps</b>`;
+}
+
+/* ============================================================
    HISTORY
    ============================================================ */
 async function renderHistory(){
   let all;
-  try{
-    all = await dbGetAll();
-  }catch(e){
-    all = [];
-  }
+  try{ all = await dbGetAll(); }
+  catch(e){ all = []; }
   all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
 
   if(!all.length){
@@ -1237,7 +1445,6 @@ async function renderHistory(){
   }
   historySection.classList.add('visible');
   historyList.innerHTML = '';
-
   const activeId = currentSession ? currentSession.id : null;
 
   all.forEach(item => {
@@ -1275,10 +1482,9 @@ async function renderHistory(){
     del.onclick = async (ev) => {
       ev.stopPropagation();
       await dbDelete(item.id);
-      if(currentSession && currentSession.id === item.id){
-        resetBtn.click();
-      }
+      if(currentSession && currentSession.id === item.id) resetBtn.click();
       await renderHistory();
+      await renderTrendChart();
     };
 
     el.appendChild(timeEl);
@@ -1291,19 +1497,12 @@ async function renderHistory(){
 
 async function loadSessionFromHistory(item){
   let full;
-  try{
-    full = await dbGet(item.id);
-  }catch(e){
-    full = null;
-  }
-  if(!full){
-    showError('Sessiya topilmadi.');
-    return;
-  }
+  try{ full = await dbGet(item.id); }
+  catch(e){ full = null; }
+  if(!full){ showError('Sessiya topilmadi.'); return; }
 
   setActiveSessionId(full.id);
   currentSession = full;
-
   renderSession(full, { showBadge: true });
   await renderHistory();
 }
@@ -1311,7 +1510,7 @@ async function loadSessionFromHistory(item){
 /* ============================================================
    BUTTONS
    ============================================================ */
-resetBtn.addEventListener('click', () => {
+resetBtn.addEventListener('click', async () => {
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
   document.title = DEFAULT_TITLE;
   clearActiveSessionId();
@@ -1327,7 +1526,7 @@ resetBtn.addEventListener('click', () => {
   dropZone.classList.remove('has-image');
   sessionBadge.classList.remove('show', 'cached');
   fileInput.value = '';
-  renderHistory();
+  await renderHistory();
 });
 
 refreshBtn.addEventListener('click', () => {
@@ -1342,9 +1541,7 @@ refreshBtn.addEventListener('click', () => {
 
 historyClear.addEventListener('click', async () => {
   if(!confirm('Barcha tahlillarni o\'chirishni tasdiqlaysizmi?')) return;
-  try{
-    await dbClear();
-  }catch(e){}
+  try{ await dbClear(); }catch(e){}
   clearActiveSessionId();
   currentSession = null;
   results.classList.remove('visible');
@@ -1356,10 +1553,23 @@ historyClear.addEventListener('click', async () => {
   document.title = DEFAULT_TITLE;
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
   await renderHistory();
+  await renderTrendChart();
 });
 
 sessionBadgeClose.addEventListener('click', () => {
   sessionBadge.classList.remove('show', 'cached');
+});
+
+/* ============================================================
+   RESIZE — chart qayta chizish
+   ============================================================ */
+window.addEventListener('resize', () => {
+  if(chartResizeTimer) clearTimeout(chartResizeTimer);
+  chartResizeTimer = setTimeout(() => {
+    if(chartCard.style.display !== 'none'){
+      renderTrendChart();
+    }
+  }, 150);
 });
 
 /* ============================================================
@@ -1393,6 +1603,8 @@ async function init(){
       }
     }catch(e){ console.warn('restore error', e); }
   }
+
+  await renderTrendChart();
 
   if(!getApiKey()){
     window.addEventListener('load', () => setTimeout(() => openApiModal(true), 300));
