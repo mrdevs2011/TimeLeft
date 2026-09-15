@@ -45,11 +45,80 @@
     overflow:hidden;
   }
 
-  .header{flex-shrink:0;text-align:center;padding-bottom:4px;}
+  .header{flex-shrink:0;text-align:center;padding-bottom:2px;}
   .brand{display:inline-flex;align-items:center;gap:9px;margin:0 0 4px;}
   .brand h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.2px;}
   .brand-accent{color:var(--accent2);}
   .subtitle{color:var(--muted);font-size:12px;margin:0;line-height:1.4;max-width:520px;margin-inline:auto;}
+
+  /* PROJECT BAR */
+  .project-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 10px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    flex-shrink:0;
+    font-size:12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+  }
+  .project-bar::-webkit-scrollbar{height:3px;}
+  .project-bar::-webkit-scrollbar-thumb{background:#222;border-radius:2px;}
+  .project-bar .pb-label{
+    color:var(--muted);font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.5px;
+    white-space:nowrap;
+    display:flex;align-items:center;gap:5px;
+    padding-right:6px;
+    border-right:1px solid var(--border);
+  }
+  .project-bar .pb-label svg{color:var(--accent);}
+  .project-tab{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:4px 10px;
+    border-radius:6px;
+    background:transparent;
+    color:var(--muted);
+    border:1px solid transparent;
+    cursor:pointer;
+    font-size:11.5px;
+    white-space:nowrap;
+    transition:.15s;
+    font-family:inherit;
+    flex-shrink:0;
+  }
+  .project-tab:hover{background:#0f0f0f;color:var(--text);}
+  .project-tab.active{
+    background:rgba(59,169,255,.12);
+    color:var(--accent);
+    border-color:rgba(59,169,255,.35);
+  }
+  .project-tab .pt-del{
+    opacity:.5;
+    display:none;
+    padding:0;margin:0;
+    background:none;border:none;
+    color:inherit;cursor:pointer;
+    display:inline-flex;align-items:center;
+  }
+  .project-tab.active .pt-del{display:inline-flex;}
+  .project-tab .pt-del:hover{opacity:1;color:var(--danger);}
+  .project-add{
+    display:inline-flex;align-items:center;gap:4px;
+    padding:4px 10px;
+    border-radius:6px;
+    background:rgba(51,209,122,.1);
+    color:var(--accent2);
+    border:1px dashed rgba(51,209,122,.35);
+    cursor:pointer;
+    font-size:11.5px;
+    white-space:nowrap;
+    transition:.15s;
+    font-family:inherit;
+    flex-shrink:0;
+  }
+  .project-add:hover{background:rgba(51,209,122,.18);}
 
   .main{display:grid;flex:1;min-height:0;gap:14px;overflow:hidden;}
 
@@ -233,7 +302,7 @@
   .mini-card .l{font-size:9.5px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
   .mini-card .v{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 
-  /* ============ TREND CHART ============ */
+  /* CHART */
   .chart-card{
     background:var(--card);
     border:1px solid var(--border);
@@ -255,13 +324,8 @@
     display:flex;gap:8px;flex-wrap:wrap;
     font-size:10px;color:var(--muted);
   }
-  .chart-legend .cl{
-    display:inline-flex;align-items:center;gap:4px;
-  }
-  .chart-legend .cl::before{
-    content:'';display:inline-block;
-    width:10px;height:2px;border-radius:1px;
-  }
+  .chart-legend .cl{display:inline-flex;align-items:center;gap:4px;}
+  .chart-legend .cl::before{content:'';display:inline-block;width:10px;height:2px;border-radius:1px;}
   .chart-legend .cl-1::before{background:#33d17a;}
   .chart-legend .cl-2::before{background:#3ba9ff;}
   .chart-legend .cl-3::before{background:#f5c247;}
@@ -270,28 +334,79 @@
     position:relative;
     width:100%;
     height:160px;
+    cursor:crosshair;
   }
-  #trendChart{
-    width:100%;
-    height:100%;
-    display:block;
-  }
-  .chart-summary{
-    font-size:11.5px;
-    color:var(--muted);
-    margin-top:10px;
-    padding:8px 10px;
-    background:var(--card2);
+  #trendChart{width:100%;height:100%;display:block;}
+
+  /* CHART TOOLTIP */
+  .chart-tooltip{
+    position:absolute;
+    pointer-events:none;
+    background:rgba(10,10,10,.97);
+    border:1px solid #2a2a2a;
     border-radius:8px;
+    padding:8px 10px;
+    font-size:11px;
+    color:var(--text);
+    box-shadow:0 8px 24px rgba(0,0,0,.6);
+    opacity:0;
+    transform:translate(-50%, -110%);
+    transition:opacity .12s;
+    z-index:10;
+    white-space:nowrap;
     line-height:1.5;
-    border-left:2px solid var(--accent2);
+    font-variant-numeric:tabular-nums;
+    backdrop-filter:blur(4px);
   }
-  .chart-summary.warn{border-left-color:var(--warn);}
-  .chart-summary.danger{border-left-color:var(--danger);}
-  .chart-summary b{color:var(--text);}
-  .chart-summary .up{color:var(--accent2);font-weight:600;}
-  .chart-summary .down{color:var(--danger);font-weight:600;}
-  .chart-summary .flat{color:var(--muted);font-weight:600;}
+  .chart-tooltip.show{opacity:1;}
+  .chart-tooltip .ct-time{
+    font-weight:600;
+    color:var(--accent);
+    margin-bottom:4px;
+    padding-bottom:3px;
+    border-bottom:1px solid #222;
+    font-size:11.5px;
+  }
+  .chart-tooltip .ct-row{
+    display:flex;align-items:center;gap:6px;
+    color:var(--muted);
+  }
+  .chart-tooltip .ct-row .dot{
+    width:6px;height:6px;border-radius:50%;flex-shrink:0;
+  }
+  .chart-tooltip .ct-row b{color:var(--text);font-weight:600;margin-left:auto;}
+
+  /* AI SUMMARY */
+  .ai-summary{
+    margin-top:10px;
+    padding:10px 12px;
+    background:linear-gradient(135deg, rgba(59,169,255,.06), rgba(51,209,122,.04));
+    border:1px solid rgba(59,169,255,.2);
+    border-radius:10px;
+    font-size:12px;
+    color:var(--text);
+    line-height:1.55;
+    position:relative;
+  }
+  .ai-summary.loading{
+    color:var(--muted);
+    font-style:italic;
+  }
+  .ai-summary .as-head{
+    display:flex;align-items:center;gap:6px;
+    font-size:10.5px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .ai-summary .as-head svg{flex-shrink:0;}
+  .ai-summary .as-body{color:var(--text);}
+  .ai-summary .as-body b{color:var(--accent2);font-weight:600;}
+  .ai-summary .as-body .warn{color:var(--warn);font-weight:600;}
+  .ai-summary .as-body .danger{color:var(--danger);font-weight:600;}
+  .ai-summary .as-body .ok{color:var(--accent2);font-weight:600;}
 
   .details-collapsed{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;flex-shrink:0;}
   .details-collapsed summary{
@@ -363,13 +478,8 @@
   .history-item .hi-info{flex:1;color:var(--text);line-height:1.4;}
   .history-item .hi-info b{color:var(--accent2);font-weight:600;}
   .history-item .hi-tag{
-    display:inline-block;
-    padding:1px 5px;
-    border-radius:4px;
-    font-size:9.5px;
-    background:rgba(51,209,122,.15);
-    color:var(--accent2);
-    margin-left:4px;
+    display:inline-block;padding:1px 5px;border-radius:4px;font-size:9.5px;
+    background:rgba(51,209,122,.15);color:var(--accent2);margin-left:4px;
   }
   .history-item .hi-arrow{color:var(--muted);flex-shrink:0;opacity:.5;display:flex;align-items:center;}
   .history-item:hover .hi-arrow{opacity:1;color:var(--accent);}
@@ -432,6 +542,7 @@
     .history-item{font-size:11.5px;padding:6px 6px;}
     .empty-state{min-height:160px;}
     .chart-wrap{height:130px;}
+    .project-bar{font-size:11px;}
   }
   @media(max-width:380px){
     .app{padding:10px;gap:8px;}
@@ -477,6 +588,21 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="projectModal">
+  <div class="modal">
+    <h2>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Yangi loyiha
+    </h2>
+    <p>Loyiha nomini kiriting (masalan: "CS2 yangilanishi", "GTA 6"). Har bir loyiha o'z tarixi va statistikasiga ega bo'ladi.</p>
+    <input type="text" id="projectNameInput" placeholder="Loyiha nomi..." autocomplete="off" maxlength="40">
+    <div class="modal-btns">
+      <button type="button" class="ghost" id="projectCancelBtn">Bekor qilish</button>
+      <button type="button" class="primary" id="projectSaveBtn">Yaratish</button>
+    </div>
+  </div>
+</div>
+
 <div class="app">
 
   <header class="header">
@@ -489,6 +615,15 @@
     </div>
     <p class="subtitle">Skrinshot yuklang — Vision AI tezlik va progressni o'qib, qolgan vaqtni hisoblab beradi.</p>
   </header>
+
+  <!-- PROJECT BAR -->
+  <div class="project-bar" id="projectBar">
+    <div class="pb-label">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Loyihalar
+    </div>
+    <!-- Project tabs shu yerga -->
+  </div>
 
   <div class="main">
 
@@ -550,12 +685,11 @@
           <div class="mini-card"><div class="l">Tezlik</div><div class="v" id="speedVal">--</div></div>
         </div>
 
-        <!-- 📊 TREND CHART -->
         <div class="chart-card" id="chartCard" style="display:none;">
           <div class="chart-head">
             <h3>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
-              Dinamika (oxirgi 10 ta tahlil)
+              Dinamika <span id="chartCount" style="color:var(--muted);font-weight:400;"></span>
             </h3>
             <div class="chart-legend">
               <span class="cl cl-1">Yuklandi (GB)</span>
@@ -564,10 +698,17 @@
               <span class="cl cl-4">Qolgan vaqt (min)</span>
             </div>
           </div>
-          <div class="chart-wrap">
+          <div class="chart-wrap" id="chartWrap">
             <canvas id="trendChart"></canvas>
+            <div class="chart-tooltip" id="chartTooltip"></div>
           </div>
-          <div class="chart-summary" id="chartSummary"></div>
+          <div class="ai-summary loading" id="aiSummary">
+            <div class="as-head">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+              AI xulosasi
+            </div>
+            <div class="as-body" id="aiSummaryBody">Tahlil qilinmoqda...</div>
+          </div>
         </div>
 
         <details class="details-collapsed">
@@ -578,7 +719,6 @@
           <div class="details-body">
             <div class="row"><span>Qolgan hajm</span><b id="detRemainSize">--</b></div>
             <div class="row"><span>O'rnatish foizi</span><b id="detInstallPct">--</b></div>
-            <div class="row"><span>Formula (qolgan)</span><b>hajm ÷ tezlik</b></div>
             <div class="row"><span>AI model</span><b id="detModel">--</b></div>
             <div class="row"><span>Javob vaqti</span><b id="detLatency">--</b></div>
             <div class="row"><span>Manba</span><b id="detSource">--</b></div>
@@ -646,13 +786,14 @@
    ============================================================ */
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_VISION_MODEL = 'qwen/qwen3.8-27b';
+const GROQ_TEXT_MODEL = 'qwen/qwen3.8-27b';
 const API_KEY_STORAGE = 'tln_groq_api_key';
-const SESSION_ACTIVE_KEY = 'tln_active_session';
 const DEFAULT_TITLE = 'TimeLeftNetwork';
 const DB_NAME = 'TimeLeftNetworkDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
+const STORE_PROJECTS = 'projects';
 const STORE_SESSIONS = 'sessions';
-const HISTORY_MAX = 20;
+const HISTORY_MAX = 50;
 
 /* ============================================================
    DOM
@@ -676,7 +817,17 @@ const sessionBadgeText = document.getElementById('sessionBadgeText');
 const sessionBadgeClose = document.getElementById('sessionBadgeClose');
 const chartCard    = document.getElementById('chartCard');
 const trendChart   = document.getElementById('trendChart');
-const chartSummary = document.getElementById('chartSummary');
+const chartWrap    = document.getElementById('chartWrap');
+const chartTooltip = document.getElementById('chartTooltip');
+const chartCount   = document.getElementById('chartCount');
+const aiSummary    = document.getElementById('aiSummary');
+const aiSummaryBody = document.getElementById('aiSummaryBody');
+const projectBar   = document.getElementById('projectBar');
+
+const projectModal     = document.getElementById('projectModal');
+const projectNameInput = document.getElementById('projectNameInput');
+const projectSaveBtn   = document.getElementById('projectSaveBtn');
+const projectCancelBtn = document.getElementById('projectCancelBtn');
 
 const apiModal      = document.getElementById('apiModal');
 const apiKeyInput   = document.getElementById('apiKeyInput');
@@ -693,80 +844,122 @@ const changeKeyBtn  = document.getElementById('changeKeyBtn');
    ============================================================ */
 let countdownInterval = null;
 let currentSession = null;
+let currentProjectId = null;
+let allProjects = [];
 let db = null;
 let chartResizeTimer = null;
+let chartData = [];  // chart uchun
+let hoveredIndex = -1;
+let aiSummaryAbort = null;
 
 /* ============================================================
-   INDEXEDDB
+   INDEXEDDB — 2 store: projects + sessions
    ============================================================ */
 function openDB(){
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, DB_VERSION);
     req.onupgradeneeded = e => {
       const d = e.target.result;
+      if(!d.objectStoreNames.contains(STORE_PROJECTS)){
+        const p = d.createObjectStore(STORE_PROJECTS, { keyPath: 'id' });
+        p.createIndex('createdAt', 'createdAt', { unique: false });
+      }
       if(!d.objectStoreNames.contains(STORE_SESSIONS)){
-        const store = d.createObjectStore(STORE_SESSIONS, { keyPath: 'id' });
-        store.createIndex('ts', 'ts', { unique: false });
-        store.createIndex('imageHash', 'imageHash', { unique: false });
+        const s = d.createObjectStore(STORE_SESSIONS, { keyPath: 'id' });
+        s.createIndex('projectId', 'projectId', { unique: false });
+        s.createIndex('ts', 'ts', { unique: false });
+        s.createIndex('imageHash', 'imageHash', { unique: false });
+      } else {
+        // Migratsiya: eski sessions uchun projectId indeksini qo'shish
+        const tx = e.target.transaction;
+        const store = tx.objectStore(STORE_SESSIONS);
+        if(!store.indexNames.contains('projectId')){
+          store.createIndex('projectId', 'projectId', { unique: false });
+        }
       }
     };
     req.onsuccess = e => resolve(e.target.result);
     req.onerror = e => reject(e.target.error);
   });
 }
-function dbPut(s){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-  tx.objectStore(STORE_SESSIONS).put(s);
-  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
-});}
-function dbGet(id){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readonly');
-  const req = tx.objectStore(STORE_SESSIONS).get(id);
-  req.onsuccess = () => res(req.result || null); req.onerror = () => rej(req.error);
-});}
-function dbGetAll(){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readonly');
-  const req = tx.objectStore(STORE_SESSIONS).getAll();
-  req.onsuccess = () => res(req.result || []); req.onerror = () => rej(req.error);
-});}
-function dbGetByHash(h){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readonly');
-  const idx = tx.objectStore(STORE_SESSIONS).index('imageHash');
-  const req = idx.get(h);
-  req.onsuccess = () => res(req.result || null); req.onerror = () => rej(req.error);
-});}
-function dbDelete(id){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-  tx.objectStore(STORE_SESSIONS).delete(id);
-  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
-});}
-function dbClear(){ return new Promise((res, rej) => {
-  if(!db){ rej(new Error('DB ochilmagan')); return; }
-  const tx = db.transaction(STORE_SESSIONS, 'readwrite');
-  tx.objectStore(STORE_SESSIONS).clear();
-  tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error);
-});}
 
-async function pruneOldSessions(){
-  try{
-    const all = await dbGetAll();
-    if(all.length <= HISTORY_MAX) return;
-    all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
-    for(const s of all.slice(HISTORY_MAX)) await dbDelete(s.id);
-  }catch(e){ console.warn('prune error', e); }
+/* Generic helpers */
+function dbPut(storeName, obj){
+  return new Promise((res, rej) => {
+    if(!db){ rej(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(storeName, 'readwrite');
+    tx.objectStore(storeName).put(obj);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+function dbGet(storeName, key){
+  return new Promise((res, rej) => {
+    if(!db){ rej(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(storeName, 'readonly');
+    const req = tx.objectStore(storeName).get(key);
+    req.onsuccess = () => res(req.result || null);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGetAll(storeName){
+  return new Promise((res, rej) => {
+    if(!db){ rej(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(storeName, 'readonly');
+    const req = tx.objectStore(storeName).getAll();
+    req.onsuccess = () => res(req.result || []);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbGetByIndex(storeName, indexName, value){
+  return new Promise((res, rej) => {
+    if(!db){ rej(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(storeName, 'readonly');
+    const idx = tx.objectStore(storeName).index(indexName);
+    const req = idx.getAll(value);
+    req.onsuccess = () => res(req.result || []);
+    req.onerror = () => rej(req.error);
+  });
+}
+function dbDelete(storeName, key){
+  return new Promise((res, rej) => {
+    if(!db){ rej(new Error('DB ochilmagan')); return; }
+    const tx = db.transaction(storeName, 'readwrite');
+    tx.objectStore(storeName).delete(key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
 }
 
-/* ============================================================
-   ACTIVE SESSION
-   ============================================================ */
-function setActiveSessionId(id){ try{ localStorage.setItem(SESSION_ACTIVE_KEY, id); }catch(e){} }
-function getActiveSessionId(){ try{ return localStorage.getItem(SESSION_ACTIVE_KEY) || null; }catch(e){ return null; } }
-function clearActiveSessionId(){ try{ localStorage.removeItem(SESSION_ACTIVE_KEY); }catch(e){} }
+/* Project helpers */
+async function getAllProjects(){
+  const list = await dbGetAll(STORE_PROJECTS);
+  list.sort((a,b) => (a.createdAt || 0) - (b.createdAt || 0));
+  return list;
+}
+async function createProject(name){
+  const proj = {
+    id: 'proj_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    name: name.trim() || 'Nomsiz loyiha',
+    createdAt: Date.now()
+  };
+  await dbPut(STORE_PROJECTS, proj);
+  return proj;
+}
+async function deleteProject(id){
+  // Project'ni o'chirish + uning sessiyalarini o'chirish
+  const sessions = await dbGetByIndex(STORE_SESSIONS, 'projectId', id);
+  for(const s of sessions){
+    await dbDelete(STORE_SESSIONS, s.id);
+  }
+  await dbDelete(STORE_PROJECTS, id);
+}
+async function pruneOldSessions(projectId){
+  const all = await dbGetByIndex(STORE_SESSIONS, 'projectId', projectId);
+  if(all.length <= HISTORY_MAX) return;
+  all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
+  for(const s of all.slice(HISTORY_MAX)) await dbDelete(STORE_SESSIONS, s.id);
+}
 
 /* ============================================================
    HASH
@@ -833,7 +1026,6 @@ apiSaveBtn.addEventListener('click', async () => {
   try{
     await validateApiKey(key);
     setApiKey(key);
-    apiDot.classList.remove('off');
     apiStatusText.textContent = 'Kalit to\'g\'ri. Saqlandi.';
     refreshFooter();
     setTimeout(closeApiModal, 400);
@@ -845,9 +1037,161 @@ apiSaveBtn.addEventListener('click', async () => {
     apiCancelBtn.disabled = false;
   }
 });
-
 apiKeyInput.addEventListener('keydown', e => { if(e.key === 'Enter') apiSaveBtn.click(); });
 changeKeyBtn.addEventListener('click', () => openApiModal(false));
+
+/* ============================================================
+   PROJECT MODAL
+   ============================================================ */
+function openProjectModal(){
+  projectModal.classList.add('active');
+  projectNameInput.value = '';
+  setTimeout(() => projectNameInput.focus(), 100);
+}
+function closeProjectModal(){
+  projectModal.classList.remove('active');
+  projectNameInput.value = '';
+}
+projectCancelBtn.addEventListener('click', closeProjectModal);
+projectSaveBtn.addEventListener('click', async () => {
+  const name = projectNameInput.value.trim();
+  if(!name) return;
+  const proj = await createProject(name);
+  await loadProjects();
+  await switchProject(proj.id);
+  closeProjectModal();
+});
+projectNameInput.addEventListener('keydown', e => {
+  if(e.key === 'Enter') projectSaveBtn.click();
+});
+
+/* ============================================================
+   PROJECT BAR RENDER
+   ============================================================ */
+async function loadProjects(){
+  allProjects = await getAllProjects();
+
+  // Hech bo'lmasa bitta default loyiha
+  if(!allProjects.length){
+    const p = await createProject('Mening yuklashlarim');
+    allProjects = [p];
+  }
+
+  // Saqlangan aktiv loyiha
+  const savedActive = localStorage.getItem('tln_active_project');
+  if(savedActive && allProjects.find(p => p.id === savedActive)){
+    currentProjectId = savedActive;
+  } else {
+    currentProjectId = allProjects[0].id;
+    localStorage.setItem('tln_active_project', currentProjectId);
+  }
+
+  renderProjectBar();
+}
+
+function renderProjectBar(){
+  // Tugmalardan tashqari hammasini tozalash
+  projectBar.innerHTML = `
+    <div class="pb-label">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Loyihalar
+    </div>
+  `;
+
+  allProjects.forEach(proj => {
+    const tab = document.createElement('button');
+    tab.className = 'project-tab' + (proj.id === currentProjectId ? ' active' : '');
+    tab.type = 'button';
+
+    const span = document.createElement('span');
+    span.textContent = proj.name;
+
+    tab.appendChild(span);
+
+    // Faqat aktiv bo'lmagan loyihalarni o'chirish mumkin emas, balki ko'p bo'lsa
+    if(allProjects.length > 1){
+      const del = document.createElement('span');
+      del.className = 'pt-del';
+      del.title = 'O\'chirish';
+      del.innerHTML = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+      del.onclick = async (ev) => {
+        ev.stopPropagation();
+        if(!confirm(`"${proj.name}" loyihasini va uning barcha tahlillarini o'chirishni tasdiqlaysizmi?`)) return;
+        const wasActive = proj.id === currentProjectId;
+        await deleteProject(proj.id);
+        await loadProjects();
+        if(wasActive){
+          await switchProject(allProjects[0].id);
+        } else {
+          renderProjectBar();
+        }
+      };
+      tab.appendChild(del);
+    }
+
+    tab.onclick = async () => {
+      if(proj.id === currentProjectId) return;
+      await switchProject(proj.id);
+    };
+
+    projectBar.appendChild(tab);
+  });
+
+  // Add button
+  const addBtn = document.createElement('button');
+  addBtn.className = 'project-add';
+  addBtn.type = 'button';
+  addBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Yangi loyiha';
+  addBtn.onclick = openProjectModal;
+  projectBar.appendChild(addBtn);
+}
+
+async function switchProject(projectId){
+  currentProjectId = projectId;
+  localStorage.setItem('tln_active_project', projectId);
+
+  // Aktiv sessiyani tozalash
+  currentSession = null;
+  localStorage.removeItem('tln_active_session_' + projectId);
+
+  // UI tozalash
+  if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
+  results.classList.remove('visible');
+  if(emptyState) emptyState.style.display = '';
+  preview.src = '';
+  preview.style.display = 'none';
+  dropZone.classList.remove('has-image');
+  sessionBadge.classList.remove('show', 'cached');
+  statusEl.textContent = '';
+  errorBox.classList.remove('show');
+  document.title = DEFAULT_TITLE;
+
+  // Chart va AI summary yashirish
+  chartCard.style.display = 'none';
+  aiSummaryBody.textContent = 'Tahlil qilinmoqda...';
+  aiSummary.classList.add('loading');
+
+  renderProjectBar();
+  await renderHistory();
+  await tryRestoreActiveSession();
+  await renderTrendChart();
+}
+
+/* ============================================================
+   SESSION ACTIVE ID (per project)
+   ============================================================ */
+function setActiveSessionId(id){
+  if(!currentProjectId) return;
+  try{ localStorage.setItem('tln_active_session_' + currentProjectId, id); }catch(e){}
+}
+function getActiveSessionId(){
+  if(!currentProjectId) return null;
+  try{ return localStorage.getItem('tln_active_session_' + currentProjectId) || null; }catch(e){ return null; }
+}
+function clearActiveSessionId(){
+  if(!currentProjectId) return;
+  try{ localStorage.removeItem('tln_active_session_' + currentProjectId); }catch(e){}
+}
 
 /* ============================================================
    FILE HANDLING
@@ -919,6 +1263,10 @@ async function handleFile(file){
     openApiModal(true);
     return;
   }
+  if(!currentProjectId){
+    showError('Loyiha tanlanmagan.');
+    return;
+  }
   clearError();
   results.classList.remove('visible');
   if(emptyState) emptyState.style.display = '';
@@ -931,9 +1279,11 @@ async function handleFile(file){
   try{ imgHash = await hashImage(dataUrl); }
   catch(e){ console.warn('Hash xatosi:', e); }
 
+  // Kesh — faqat shu loyiha ichida
   if(imgHash && db){
     try{
-      const existing = await dbGetByHash(imgHash);
+      const sameProj = await dbGetByIndex(STORE_SESSIONS, 'projectId', currentProjectId);
+      const existing = sameProj.find(s => s.imageHash === imgHash);
       if(existing){
         statusEl.classList.add('cached');
         statusEl.textContent = 'Keshdan olindi (0 ms)';
@@ -942,10 +1292,11 @@ async function handleFile(file){
           statusEl.classList.remove('cached');
         }, 2500);
 
-        await dbDelete(existing.id);
+        await dbDelete(STORE_SESSIONS, existing.id);
 
         const newSession = {
           id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+          projectId: currentProjectId,
           ts: Date.now(),
           startedAt: Date.now(),
           imageDataUrl: dataUrl,
@@ -956,8 +1307,8 @@ async function handleFile(file){
           data: JSON.parse(JSON.stringify(existing.data))
         };
 
-        await dbPut(newSession);
-        await pruneOldSessions();
+        await dbPut(STORE_SESSIONS, newSession);
+        await pruneOldSessions(currentProjectId);
 
         setActiveSessionId(newSession.id);
         currentSession = newSession;
@@ -978,7 +1329,7 @@ async function handleFile(file){
 }
 
 /* ============================================================
-   GROQ VISION API
+   GROQ VISION
    ============================================================ */
 async function analyzeWithVision(dataUrl, imgHash){
   progressWrap.classList.add('show');
@@ -1067,7 +1418,7 @@ Rules: If a value is not visible, use null. Do NOT guess. Return ONLY JSON, no m
 }
 
 /* ============================================================
-   SESSION YARATISH
+   SESSION CREATE
    ============================================================ */
 async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, latency, fromCache){
   const speedMbps   = toNum(parsed.speed_mbps);
@@ -1105,6 +1456,7 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
 
   const session = {
     id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+    projectId: currentProjectId,
     ts: Date.now(),
     startedAt: Date.now(),
     imageDataUrl,
@@ -1126,8 +1478,8 @@ async function createAndStoreSession(parsed, imageDataUrl, imgHash, rawJson, lat
   };
 
   try{
-    await dbPut(session);
-    await pruneOldSessions();
+    await dbPut(STORE_SESSIONS, session);
+    await pruneOldSessions(currentProjectId);
   }catch(e){ console.warn('Session saqlashda xatolik:', e); }
 
   setActiveSessionId(session.id);
@@ -1247,14 +1599,14 @@ function formatSize(gb){
 }
 
 /* ============================================================
-   TREND CHART — 4 chiziqli dinamika
+   TREND CHART
    ============================================================ */
 async function renderTrendChart(){
-  let all;
-  try{ all = await dbGetAll(); }
-  catch(e){ all = []; }
+  let sessions;
+  try{ sessions = await dbGetByIndex(STORE_SESSIONS, 'projectId', currentProjectId); }
+  catch(e){ sessions = []; }
 
-  const withData = all.filter(s => s.data && s.data.speedMbps !== null && s.data.downloadedGB !== null);
+  const withData = sessions.filter(s => s.data && s.data.speedMbps !== null && s.data.downloadedGB !== null);
   if(withData.length < 2){
     chartCard.style.display = 'none';
     return;
@@ -1264,10 +1616,20 @@ async function renderTrendChart(){
   const recent = withData.slice(-10);
 
   chartCard.style.display = '';
+  chartCount.textContent = `(${recent.length} ta tahlil)`;
 
-  // Canvas o'lchamlari
+  // Chart data saqlash (tooltip uchun)
+  chartData = recent;
+
+  drawChart(recent);
+
+  // AI xulosa
+  renderAISummary(recent);
+}
+
+function drawChart(recent){
   const dpr = window.devicePixelRatio || 1;
-  const wrap = trendChart.parentElement;
+  const wrap = chartWrap;
   const W = wrap.clientWidth;
   const H = wrap.clientHeight;
   if(W === 0 || H === 0) return;
@@ -1286,7 +1648,6 @@ async function renderTrendChart(){
   const chartH = H - PAD.top - PAD.bottom;
   const n = recent.length;
 
-  // 4 seriya
   const series = {
     downloaded: recent.map(s => s.data.downloadedGB || 0),
     speed:      recent.map(s => s.data.speedMbps || 0),
@@ -1294,7 +1655,6 @@ async function renderTrendChart(){
     etaMin:     recent.map(s => (s.data.remainingSeconds || 0) / 60)
   };
 
-  // Har bir seriya uchun min/max
   function getRange(arr){
     const min = Math.min(...arr);
     const max = Math.max(...arr);
@@ -1303,7 +1663,7 @@ async function renderTrendChart(){
 
   const stepX = n > 1 ? chartW / (n - 1) : 0;
 
-  // Grid chiziqlar (gorizontal)
+  // Grid
   ctx.strokeStyle = '#161616';
   ctx.lineWidth = 1;
   for(let i = 0; i <= 4; i++){
@@ -1314,7 +1674,7 @@ async function renderTrendChart(){
     ctx.stroke();
   }
 
-  // X o'qi (vaqt belgilari)
+  // X o'qi vaqt
   ctx.fillStyle = '#5a6470';
   ctx.font = '9px -apple-system, "Segoe UI", Arial, sans-serif';
   ctx.textAlign = 'center';
@@ -1327,7 +1687,6 @@ async function renderTrendChart(){
     ctx.fillText(hh + ':' + mm, x, PAD.top + chartH + 4);
   });
 
-  // Seriyani chizish
   function drawSeries(values, color, fillGrad){
     const r = getRange(values);
     const pts = values.map((v, i) => ({
@@ -1335,10 +1694,9 @@ async function renderTrendChart(){
       y: PAD.top + chartH - ((v - r.min) / (r.max - r.min)) * chartH
     }));
 
-    // Gradient fill
     if(fillGrad && pts.length > 1){
       const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + chartH);
-      grad.addColorStop(0, fillGrad + '25');
+      grad.addColorStop(0, fillGrad + '20');
       grad.addColorStop(1, fillGrad + '00');
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -1349,7 +1707,6 @@ async function renderTrendChart(){
       ctx.fill();
     }
 
-    // Chiziq
     ctx.strokeStyle = color;
     ctx.lineWidth = 1.8;
     ctx.lineJoin = 'round';
@@ -1361,12 +1718,31 @@ async function renderTrendChart(){
     });
     ctx.stroke();
 
-    // Nuqtalar
-    pts.forEach(p => {
+    // Nuqtalar — kattaroq, oq border
+    pts.forEach((p, i) => {
+      const isHover = i === hoveredIndex;
+      const r1 = isHover ? 7 : 5;
+      const r2 = isHover ? 5 : 3.5;
+
+      // Oq/tashqi halqa
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r1, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Rangli nuqta
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, r2, 0, Math.PI * 2);
       ctx.fill();
+
+      if(isHover){
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r1, 0, Math.PI * 2);
+        ctx.stroke();
+      }
     });
   }
 
@@ -1375,59 +1751,218 @@ async function renderTrendChart(){
   drawSeries(series.percent,    '#f5c247', '#f5c247');
   drawSeries(series.etaMin,     '#ff5c5c', '#ff5c5c');
 
-  // Xulosa
-  renderChartSummary(recent);
+  // Hover vertikal chiziq
+  if(hoveredIndex >= 0 && hoveredIndex < n){
+    const x = PAD.left + stepX * hoveredIndex;
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath();
+    ctx.moveTo(x, PAD.top);
+    ctx.lineTo(x, PAD.top + chartH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
 }
 
-function renderChartSummary(recent){
+/* ============================================================
+   CHART HOVER
+   ============================================================ */
+chartWrap.addEventListener('mousemove', e => {
+  if(!chartData.length) return;
+  const rect = chartWrap.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const W = rect.width;
+  const PAD = { left: 34, right: 12 };
+
+  const chartW = W - PAD.left - PAD.right;
+  const n = chartData.length;
+  if(n < 2) return;
+  const stepX = chartW / (n - 1);
+
+  // Eng yaqin nuqtani topish
+  let closestIdx = 0;
+  let minDist = Infinity;
+  for(let i = 0; i < n; i++){
+    const px = PAD.left + stepX * i;
+    const dist = Math.abs(px - x);
+    if(dist < minDist){
+      minDist = dist;
+      closestIdx = i;
+    }
+  }
+
+  // Nuqta yaqinida bo'lsa — tooltip ko'rsatish
+  const px = PAD.left + stepX * closestIdx;
+  if(minDist < 40){
+    hoveredIndex = closestIdx;
+    showTooltip(closestIdx, px, chartData[closestIdx]);
+    drawChart(chartData);
+  } else {
+    hoveredIndex = -1;
+    hideTooltip();
+    drawChart(chartData);
+  }
+});
+
+chartWrap.addEventListener('mouseleave', () => {
+  hoveredIndex = -1;
+  hideTooltip();
+  if(chartData.length) drawChart(chartData);
+});
+
+function showTooltip(idx, x, session){
+  const d = session.data;
+  const t = new Date(session.ts);
+  const hh = String(t.getHours()).padStart(2,'0');
+  const mm = String(t.getMinutes()).padStart(2,'0');
+  const ss = String(t.getSeconds()).padStart(2,'0');
+
+  const eta = d.remainingSeconds !== null ? formatTime(d.remainingSeconds) : '--';
+
+  chartTooltip.innerHTML = `
+    <div class="ct-time">${hh}:${mm}:${ss}</div>
+    <div class="ct-row"><span class="dot" style="background:#33d17a"></span>Yuklandi <b>${d.downloadedGB?.toFixed(2) || '--'} GB</b></div>
+    <div class="ct-row"><span class="dot" style="background:#3ba9ff"></span>Tezlik <b>${d.speedMbps?.toFixed(1) || '--'} Mbps</b></div>
+    <div class="ct-row"><span class="dot" style="background:#f5c247"></span>Foiz <b>${d.percent || '--'}%</b></div>
+    <div class="ct-row"><span class="dot" style="background:#ff5c5c"></span>Qolgan <b>${eta}</b></div>
+  `;
+  chartTooltip.style.left = x + 'px';
+  chartTooltip.style.top = '20px';
+  chartTooltip.classList.add('show');
+}
+
+function hideTooltip(){
+  chartTooltip.classList.remove('show');
+}
+
+/* ============================================================
+   AI SUMMARY — oldingi barcha tahlillardan xulosa
+   ============================================================ */
+async function renderAISummary(recent){
   if(!recent || recent.length < 2){
-    chartSummary.textContent = '';
+    aiSummaryBody.textContent = 'Kamida 2 ta tahlil kerak.';
+    aiSummary.classList.add('loading');
     return;
   }
 
+  // Lokal xulosa (tez, AI'siz)
+  const localVerdict = computeLocalVerdict(recent);
+
+  // AI'ga yuborish
+  aiSummary.classList.add('loading');
+  aiSummaryBody.textContent = 'AI tahlil qilmoqda...';
+
+  // Oldingi so'rovni bekor qilish
+  if(aiSummaryAbort) aiSummaryAbort.abort();
+  aiSummaryAbort = new AbortController();
+
+  try{
+    const aiText = await generateAISummary(recent, aiSummaryAbort.signal);
+    if(!aiText) throw new Error('Bo\'sh javob');
+    aiSummaryBody.innerHTML = sanitizeAIHtml(aiText);
+    aiSummary.classList.remove('loading');
+  }catch(e){
+    if(e.name === 'AbortError') return;
+    console.warn('AI summary xatosi:', e);
+    // Fallback: lokal xulosa
+    aiSummaryBody.innerHTML = localVerdict;
+    aiSummary.classList.remove('loading');
+  }
+}
+
+function computeLocalVerdict(recent){
   const first = recent[0].data;
-  const last = recent[recent.length - 1].data;
+  const last  = recent[recent.length - 1].data;
 
   const dlDelta = (last.downloadedGB || 0) - (first.downloadedGB || 0);
-  const spDelta = (last.speedMbps || 0) - (first.speedMbps || 0);
   const spFirst = first.speedMbps || 0;
   const spLast  = last.speedMbps || 0;
-
-  // Foiz
-  const pctChange = spFirst > 0 ? ((spDelta / spFirst) * 100) : 0;
+  const spDelta = spLast - spFirst;
+  const pctChange = spFirst > 0 ? (spDelta / spFirst) * 100 : 0;
   const absPct = Math.abs(pctChange);
 
-  // Umumiy
-  const firstTime = new Date(recent[0].ts);
-  const lastTime = new Date(recent[recent.length-1].ts);
-  const hh = String(firstTime.getHours()).padStart(2,'0') + ':' + String(firstTime.getMinutes()).padStart(2,'0');
-  const hh2 = String(lastTime.getHours()).padStart(2,'0') + ':' + String(lastTime.getMinutes()).padStart(2,'0');
-
-  let verdict = '';
-  let cls = '';
-
+  let cls = '', txt = '';
   if(dlDelta > 0 && spDelta > 2){
-    verdict = `<span class="up">Yaxshi ketyapti</span> — tezlik ${pctChange.toFixed(0)}% oshgan`;
-    cls = '';
+    cls = 'ok'; txt = `Tezlik ${pctChange.toFixed(0)}% oshgan`;
   } else if(dlDelta > 0 && spDelta < -2){
-    verdict = `<span class="down">Sekinlashdi</span> — tezlik ${absPct.toFixed(0)}% pasaygan`;
-    cls = 'danger';
-  } else if(dlDelta > 0 && absPct <= 5){
-    verdict = `<span class="flat">Barqaror</span> — tezlik o'zgarmagan`;
-    cls = 'warn';
-  } else if(dlDelta === 0){
-    verdict = `<span class="flat">O'zgarish yo'q</span> — yuklash to'xtagan bo'lishi mumkin`;
-    cls = 'warn';
+    cls = 'danger'; txt = `Tezlik ${absPct.toFixed(0)}% pasaygan`;
+  } else if(dlDelta > 0){
+    cls = 'warn'; txt = `Tezlik barqaror`;
   } else {
-    verdict = `<span class="up">Yuklanmoqda</span> — ${dlDelta.toFixed(1)} GB o'sish`;
+    cls = 'warn'; txt = `O'zgarish yo'q`;
   }
 
-  chartSummary.className = 'chart-summary ' + cls;
-  chartSummary.innerHTML =
-    `${verdict}<br>` +
-    `${hh} → ${hh2} davomida: ` +
-    `yuklandi <b>+${dlDelta.toFixed(1)} GB</b>, ` +
-    `tezlik <b>${spFirst.toFixed(1)} → ${spLast.toFixed(1)} Mbps</b>`;
+  return `<span class="${cls}">${txt}</span> — yuklandi <b>+${dlDelta.toFixed(1)} GB</b>, tezlik <b>${spFirst.toFixed(1)} → ${spLast.toFixed(1)} Mbps</b>`;
+}
+
+async function generateAISummary(recent, signal){
+  // Oldingi 10 ta tahlilni matn shaklida tayyorlaymiz
+  const lines = recent.map((s, i) => {
+    const t = new Date(s.ts);
+    const hh = String(t.getHours()).padStart(2,'0');
+    const mm = String(t.getMinutes()).padStart(2,'0');
+    const d = s.data;
+    return `${i+1}. ${hh}:${mm} — yuklandi ${d.downloadedGB?.toFixed(2)} GB / ${d.totalGB?.toFixed(2)} GB (${d.percent}%), tezlik ${d.speedMbps?.toFixed(1)} Mbps, qolgan vaqt ${d.remainingSeconds ? Math.round(d.remainingSeconds/60) + ' daq' : '--'}`;
+  }).join('\n');
+
+  const prompt = `Sen yuklab olish jarayonini tahlil qiluvchi AI yordamchisisan. Foydalanuvchi bir nechta skrinshotlar yukladi. Ularning ma'lumotlari:
+
+${lines}
+
+Vazifa: O'zbek tilida 2-3 ta gapda xulosa yoz. Faqat quyidagi jihatlarga e'tibor ber:
+1. Internet tezligi tendentsiyasi (oshmoqdami, pasaymoqdami, barqarormi?)
+2. Yuklab olish qancha tez ketmoqda (GB/daqiqa)?
+3. Biror muammo bormi? (tezlik keskin pasayishi, to'xtab qolish)
+4. Qolgan vaqt qanday o'zgarmoqda?
+
+QOIDALAR:
+- Faqat o'zbek tilida yoz
+- 2-3 ta gap, ortiq emas
+- Raqamlarni aniq keltir (masalan "34.7 dan 31.5 Mbps ga pasaydi")
+- Umumiy gaplar yozma ("yaxshi ketyapti" kabi) — aniq kuzatishlar yoz
+- Agar tezlik o'sayotgan bo'lsa — maqtash, pasayotgan bo'lsa — sababini taxmin qilish
+- HTML ishlatish mumkin: <b>qalin</b>, <span class="ok">yaxshi</span>, <span class="warn">ogohlantirish</span>, <span class="danger">yomon</span>
+- Faqat 1 ta xulosa — takrorlama
+
+Javob (faqat matn, JSON emas):`;
+
+  const body = {
+    model: GROQ_TEXT_MODEL,
+    messages: [
+      { role: 'user', content: prompt }
+    ],
+    temperature: 0.4,
+    max_tokens: 300
+  };
+
+  const res = await fetch(GROQ_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getApiKey()
+    },
+    body: JSON.stringify(body),
+    signal
+  });
+
+  if(!res.ok) throw new Error('AI summary HTTP ' + res.status);
+
+  const data = await res.json();
+  return (data?.choices?.[0]?.message?.content || '').trim();
+}
+
+function sanitizeAIHtml(text){
+  // Faqat ruxsat etilgan teglar
+  const allowed = /<(?!\/?(b|span|br)\b)[^>]*>/gi;
+  let safe = text.replace(allowed, '');
+  // class'larni cheklash
+  safe = safe.replace(/<span\s+class="([^"]*)"/gi, (m, cls) => {
+    const ok = ['ok','warn','danger'].includes(cls);
+    return ok ? `<span class="${cls}"` : '<span';
+  });
+  return safe;
 }
 
 /* ============================================================
@@ -1435,7 +1970,7 @@ function renderChartSummary(recent){
    ============================================================ */
 async function renderHistory(){
   let all;
-  try{ all = await dbGetAll(); }
+  try{ all = await dbGetByIndex(STORE_SESSIONS, 'projectId', currentProjectId); }
   catch(e){ all = []; }
   all.sort((a,b) => (b.ts || 0) - (a.ts || 0));
 
@@ -1481,7 +2016,7 @@ async function renderHistory(){
     del.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     del.onclick = async (ev) => {
       ev.stopPropagation();
-      await dbDelete(item.id);
+      await dbDelete(STORE_SESSIONS, item.id);
       if(currentSession && currentSession.id === item.id) resetBtn.click();
       await renderHistory();
       await renderTrendChart();
@@ -1497,7 +2032,7 @@ async function renderHistory(){
 
 async function loadSessionFromHistory(item){
   let full;
-  try{ full = await dbGet(item.id); }
+  try{ full = await dbGet(STORE_SESSIONS, item.id); }
   catch(e){ full = null; }
   if(!full){ showError('Sessiya topilmadi.'); return; }
 
@@ -1505,6 +2040,29 @@ async function loadSessionFromHistory(item){
   currentSession = full;
   renderSession(full, { showBadge: true });
   await renderHistory();
+}
+
+/* ============================================================
+   RESTORE
+   ============================================================ */
+async function tryRestoreActiveSession(){
+  const activeId = getActiveSessionId();
+  if(!activeId || !db) return;
+
+  try{
+    const session = await dbGet(STORE_SESSIONS, activeId);
+    if(session && session.projectId === currentProjectId){
+      const ageHours = (Date.now() - session.startedAt) / 1000 / 3600;
+      if(ageHours < 24){
+        currentSession = session;
+        renderSession(session, { showBadge: false });
+      } else {
+        clearActiveSessionId();
+      }
+    } else {
+      clearActiveSessionId();
+    }
+  }catch(e){ console.warn('restore error', e); }
 }
 
 /* ============================================================
@@ -1540,8 +2098,9 @@ refreshBtn.addEventListener('click', () => {
 });
 
 historyClear.addEventListener('click', async () => {
-  if(!confirm('Barcha tahlillarni o\'chirishni tasdiqlaysizmi?')) return;
-  try{ await dbClear(); }catch(e){}
+  if(!confirm('Bu loyihadagi barcha tahlillarni o\'chirishni tasdiqlaysizmi?')) return;
+  const sessions = await dbGetByIndex(STORE_SESSIONS, 'projectId', currentProjectId);
+  for(const s of sessions) await dbDelete(STORE_SESSIONS, s.id);
   clearActiveSessionId();
   currentSession = null;
   results.classList.remove('visible');
@@ -1561,13 +2120,13 @@ sessionBadgeClose.addEventListener('click', () => {
 });
 
 /* ============================================================
-   RESIZE — chart qayta chizish
+   RESIZE
    ============================================================ */
 window.addEventListener('resize', () => {
   if(chartResizeTimer) clearTimeout(chartResizeTimer);
   chartResizeTimer = setTimeout(() => {
-    if(chartCard.style.display !== 'none'){
-      renderTrendChart();
+    if(chartCard.style.display !== 'none' && chartData.length){
+      drawChart(chartData);
     }
   }, 150);
 });
@@ -1580,30 +2139,14 @@ async function init(){
     db = await openDB();
   }catch(e){
     console.error('IndexedDB ochilmadi:', e);
-    showError('Brauzer IndexedDB\'ni qo\'llab-quvvatlamayapti. Ma\'lumotlar saqlanmaydi.');
+    showError('Brauzer IndexedDB\'ni qo\'llab-quvvatlamayapti.');
+    return;
   }
 
   refreshFooter();
+  await loadProjects();
   await renderHistory();
-
-  const activeId = getActiveSessionId();
-  if(activeId && db){
-    try{
-      const session = await dbGet(activeId);
-      if(session){
-        const ageHours = (Date.now() - session.startedAt) / 1000 / 3600;
-        if(ageHours < 24){
-          currentSession = session;
-          renderSession(session, { showBadge: false });
-        } else {
-          clearActiveSessionId();
-        }
-      } else {
-        clearActiveSessionId();
-      }
-    }catch(e){ console.warn('restore error', e); }
-  }
-
+  await tryRestoreActiveSession();
   await renderTrendChart();
 
   if(!getApiKey()){
