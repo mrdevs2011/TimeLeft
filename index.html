@@ -335,6 +335,8 @@
     width:100%;
     height:160px;
     cursor:crosshair;
+    overflow:hidden;
+    border-radius:8px;
   }
   #trendChart{width:100%;height:100%;display:block;}
 
@@ -350,13 +352,14 @@
     color:var(--text);
     box-shadow:0 8px 24px rgba(0,0,0,.6);
     opacity:0;
-    transform:translate(-50%, -110%);
+    transform:translateY(-100%);
     transition:opacity .12s;
     z-index:10;
     white-space:nowrap;
     line-height:1.5;
     font-variant-numeric:tabular-nums;
     backdrop-filter:blur(4px);
+    max-width:calc(100% - 12px);
   }
   .chart-tooltip.show{opacity:1;}
   .chart-tooltip .ct-time{
@@ -616,13 +619,11 @@
     <p class="subtitle">Skrinshot yuklang — Vision AI tezlik va progressni o'qib, qolgan vaqtni hisoblab beradi.</p>
   </header>
 
-  <!-- PROJECT BAR -->
   <div class="project-bar" id="projectBar">
     <div class="pb-label">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Loyihalar
     </div>
-    <!-- Project tabs shu yerga -->
   </div>
 
   <div class="main">
@@ -848,12 +849,12 @@ let currentProjectId = null;
 let allProjects = [];
 let db = null;
 let chartResizeTimer = null;
-let chartData = [];  // chart uchun
+let chartData = [];
 let hoveredIndex = -1;
 let aiSummaryAbort = null;
 
 /* ============================================================
-   INDEXEDDB — 2 store: projects + sessions
+   INDEXEDDB
    ============================================================ */
 function openDB(){
   return new Promise((resolve, reject) => {
@@ -870,7 +871,6 @@ function openDB(){
         s.createIndex('ts', 'ts', { unique: false });
         s.createIndex('imageHash', 'imageHash', { unique: false });
       } else {
-        // Migratsiya: eski sessions uchun projectId indeksini qo'shish
         const tx = e.target.transaction;
         const store = tx.objectStore(STORE_SESSIONS);
         if(!store.indexNames.contains('projectId')){
@@ -883,7 +883,6 @@ function openDB(){
   });
 }
 
-/* Generic helpers */
 function dbPut(storeName, obj){
   return new Promise((res, rej) => {
     if(!db){ rej(new Error('DB ochilmagan')); return; }
@@ -931,7 +930,6 @@ function dbDelete(storeName, key){
   });
 }
 
-/* Project helpers */
 async function getAllProjects(){
   const list = await dbGetAll(STORE_PROJECTS);
   list.sort((a,b) => (a.createdAt || 0) - (b.createdAt || 0));
@@ -947,7 +945,6 @@ async function createProject(name){
   return proj;
 }
 async function deleteProject(id){
-  // Project'ni o'chirish + uning sessiyalarini o'chirish
   const sessions = await dbGetByIndex(STORE_SESSIONS, 'projectId', id);
   for(const s of sessions){
     await dbDelete(STORE_SESSIONS, s.id);
@@ -1066,18 +1063,14 @@ projectNameInput.addEventListener('keydown', e => {
 });
 
 /* ============================================================
-   PROJECT BAR RENDER
+   PROJECT BAR
    ============================================================ */
 async function loadProjects(){
   allProjects = await getAllProjects();
-
-  // Hech bo'lmasa bitta default loyiha
   if(!allProjects.length){
     const p = await createProject('Mening yuklashlarim');
     allProjects = [p];
   }
-
-  // Saqlangan aktiv loyiha
   const savedActive = localStorage.getItem('tln_active_project');
   if(savedActive && allProjects.find(p => p.id === savedActive)){
     currentProjectId = savedActive;
@@ -1085,30 +1078,24 @@ async function loadProjects(){
     currentProjectId = allProjects[0].id;
     localStorage.setItem('tln_active_project', currentProjectId);
   }
-
   renderProjectBar();
 }
 
 function renderProjectBar(){
-  // Tugmalardan tashqari hammasini tozalash
   projectBar.innerHTML = `
     <div class="pb-label">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       Loyihalar
     </div>
   `;
-
   allProjects.forEach(proj => {
     const tab = document.createElement('button');
     tab.className = 'project-tab' + (proj.id === currentProjectId ? ' active' : '');
     tab.type = 'button';
-
     const span = document.createElement('span');
     span.textContent = proj.name;
-
     tab.appendChild(span);
 
-    // Faqat aktiv bo'lmagan loyihalarni o'chirish mumkin emas, balki ko'p bo'lsa
     if(allProjects.length > 1){
       const del = document.createElement('span');
       del.className = 'pt-del';
@@ -1133,11 +1120,9 @@ function renderProjectBar(){
       if(proj.id === currentProjectId) return;
       await switchProject(proj.id);
     };
-
     projectBar.appendChild(tab);
   });
 
-  // Add button
   const addBtn = document.createElement('button');
   addBtn.className = 'project-add';
   addBtn.type = 'button';
@@ -1150,11 +1135,9 @@ async function switchProject(projectId){
   currentProjectId = projectId;
   localStorage.setItem('tln_active_project', projectId);
 
-  // Aktiv sessiyani tozalash
   currentSession = null;
   localStorage.removeItem('tln_active_session_' + projectId);
 
-  // UI tozalash
   if(countdownInterval){ clearInterval(countdownInterval); countdownInterval = null; }
   results.classList.remove('visible');
   if(emptyState) emptyState.style.display = '';
@@ -1166,10 +1149,11 @@ async function switchProject(projectId){
   errorBox.classList.remove('show');
   document.title = DEFAULT_TITLE;
 
-  // Chart va AI summary yashirish
   chartCard.style.display = 'none';
   aiSummaryBody.textContent = 'Tahlil qilinmoqda...';
   aiSummary.classList.add('loading');
+  hideTooltip();
+  hoveredIndex = -1;
 
   renderProjectBar();
   await renderHistory();
@@ -1178,7 +1162,7 @@ async function switchProject(projectId){
 }
 
 /* ============================================================
-   SESSION ACTIVE ID (per project)
+   SESSION ACTIVE ID
    ============================================================ */
 function setActiveSessionId(id){
   if(!currentProjectId) return;
@@ -1279,7 +1263,6 @@ async function handleFile(file){
   try{ imgHash = await hashImage(dataUrl); }
   catch(e){ console.warn('Hash xatosi:', e); }
 
-  // Kesh — faqat shu loyiha ichida
   if(imgHash && db){
     try{
       const sameProj = await dbGetByIndex(STORE_SESSIONS, 'projectId', currentProjectId);
@@ -1592,6 +1575,16 @@ function formatTime(seconds){
   if(hrs > 0) return hrs + ' soat ' + String(min).padStart(2,'0') + ' daq ' + String(sec).padStart(2,'0') + ' son';
   return min + ' daq ' + String(sec).padStart(2,'0') + ' son';
 }
+/* Tooltip uchun qisqa format */
+function formatTimeShort(seconds){
+  if(seconds === null || seconds === undefined || isNaN(seconds) || seconds < 0) return '--';
+  const s = Math.floor(seconds);
+  if(s < 60) return s + ' son';
+  const hrs = Math.floor(s / 3600);
+  const min = Math.floor((s % 3600) / 60);
+  if(hrs > 0) return hrs + ' soat ' + min + ' daq';
+  return min + ' daq';
+}
 function formatSize(gb){
   if(gb === null || gb === undefined) return '--';
   if(gb < 1) return Math.round(gb*1024) + ' MB';
@@ -1618,12 +1611,11 @@ async function renderTrendChart(){
   chartCard.style.display = '';
   chartCount.textContent = `(${recent.length} ta tahlil)`;
 
-  // Chart data saqlash (tooltip uchun)
   chartData = recent;
+  hoveredIndex = -1;
+  hideTooltip();
 
   drawChart(recent);
-
-  // AI xulosa
   renderAISummary(recent);
 }
 
@@ -1663,7 +1655,6 @@ function drawChart(recent){
 
   const stepX = n > 1 ? chartW / (n - 1) : 0;
 
-  // Grid
   ctx.strokeStyle = '#161616';
   ctx.lineWidth = 1;
   for(let i = 0; i <= 4; i++){
@@ -1674,7 +1665,6 @@ function drawChart(recent){
     ctx.stroke();
   }
 
-  // X o'qi vaqt
   ctx.fillStyle = '#5a6470';
   ctx.font = '9px -apple-system, "Segoe UI", Arial, sans-serif';
   ctx.textAlign = 'center';
@@ -1718,19 +1708,16 @@ function drawChart(recent){
     });
     ctx.stroke();
 
-    // Nuqtalar — kattaroq, oq border
     pts.forEach((p, i) => {
       const isHover = i === hoveredIndex;
       const r1 = isHover ? 7 : 5;
       const r2 = isHover ? 5 : 3.5;
 
-      // Oq/tashqi halqa
       ctx.fillStyle = '#000';
       ctx.beginPath();
       ctx.arc(p.x, p.y, r1, 0, Math.PI * 2);
       ctx.fill();
 
-      // Rangli nuqta
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r2, 0, Math.PI * 2);
@@ -1751,7 +1738,6 @@ function drawChart(recent){
   drawSeries(series.percent,    '#f5c247', '#f5c247');
   drawSeries(series.etaMin,     '#ff5c5c', '#ff5c5c');
 
-  // Hover vertikal chiziq
   if(hoveredIndex >= 0 && hoveredIndex < n){
     const x = PAD.left + stepX * hoveredIndex;
     ctx.strokeStyle = 'rgba(255,255,255,0.08)';
@@ -1766,13 +1752,12 @@ function drawChart(recent){
 }
 
 /* ============================================================
-   CHART HOVER
+   CHART HOVER — tooltip chetdan chiqmaydi
    ============================================================ */
 chartWrap.addEventListener('mousemove', e => {
   if(!chartData.length) return;
   const rect = chartWrap.getBoundingClientRect();
   const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
   const W = rect.width;
   const PAD = { left: 34, right: 12 };
 
@@ -1781,7 +1766,6 @@ chartWrap.addEventListener('mousemove', e => {
   if(n < 2) return;
   const stepX = chartW / (n - 1);
 
-  // Eng yaqin nuqtani topish
   let closestIdx = 0;
   let minDist = Infinity;
   for(let i = 0; i < n; i++){
@@ -1793,7 +1777,6 @@ chartWrap.addEventListener('mousemove', e => {
     }
   }
 
-  // Nuqta yaqinida bo'lsa — tooltip ko'rsatish
   const px = PAD.left + stepX * closestIdx;
   if(minDist < 40){
     hoveredIndex = closestIdx;
@@ -1819,7 +1802,7 @@ function showTooltip(idx, x, session){
   const mm = String(t.getMinutes()).padStart(2,'0');
   const ss = String(t.getSeconds()).padStart(2,'0');
 
-  const eta = d.remainingSeconds !== null ? formatTime(d.remainingSeconds) : '--';
+  const eta = d.remainingSeconds !== null ? formatTimeShort(d.remainingSeconds) : '--';
 
   chartTooltip.innerHTML = `
     <div class="ct-time">${hh}:${mm}:${ss}</div>
@@ -1828,9 +1811,25 @@ function showTooltip(idx, x, session){
     <div class="ct-row"><span class="dot" style="background:#f5c247"></span>Foiz <b>${d.percent || '--'}%</b></div>
     <div class="ct-row"><span class="dot" style="background:#ff5c5c"></span>Qolgan <b>${eta}</b></div>
   `;
-  chartTooltip.style.left = x + 'px';
-  chartTooltip.style.top = '20px';
+
+  // Avval ko'rsatamiz, keyin o'lchamlarni o'lchaymiz
   chartTooltip.classList.add('show');
+  const tipRect = chartTooltip.getBoundingClientRect();
+  const wrapRect = chartWrap.getBoundingClientRect();
+
+  const tipW = tipRect.width;
+  const wrapW = wrapRect.width;
+
+  // Ideal: nuqta markazida (yarim eni chapga, yarim eni o'ngga)
+  let left = x - tipW / 2;
+
+  // Chetdan chiqmaslik uchun clamp
+  const PADDING = 6;
+  if(left < PADDING) left = PADDING;
+  if(left + tipW > wrapW - PADDING) left = wrapW - tipW - PADDING;
+
+  chartTooltip.style.left = left + 'px';
+  chartTooltip.style.top = '8px';
 }
 
 function hideTooltip(){
@@ -1838,7 +1837,7 @@ function hideTooltip(){
 }
 
 /* ============================================================
-   AI SUMMARY — oldingi barcha tahlillardan xulosa
+   AI SUMMARY
    ============================================================ */
 async function renderAISummary(recent){
   if(!recent || recent.length < 2){
@@ -1847,14 +1846,11 @@ async function renderAISummary(recent){
     return;
   }
 
-  // Lokal xulosa (tez, AI'siz)
   const localVerdict = computeLocalVerdict(recent);
 
-  // AI'ga yuborish
   aiSummary.classList.add('loading');
   aiSummaryBody.textContent = 'AI tahlil qilmoqda...';
 
-  // Oldingi so'rovni bekor qilish
   if(aiSummaryAbort) aiSummaryAbort.abort();
   aiSummaryAbort = new AbortController();
 
@@ -1866,7 +1862,6 @@ async function renderAISummary(recent){
   }catch(e){
     if(e.name === 'AbortError') return;
     console.warn('AI summary xatosi:', e);
-    // Fallback: lokal xulosa
     aiSummaryBody.innerHTML = localVerdict;
     aiSummary.classList.remove('loading');
   }
@@ -1898,7 +1893,6 @@ function computeLocalVerdict(recent){
 }
 
 async function generateAISummary(recent, signal){
-  // Oldingi 10 ta tahlilni matn shaklida tayyorlaymiz
   const lines = recent.map((s, i) => {
     const t = new Date(s.ts);
     const hh = String(t.getHours()).padStart(2,'0');
@@ -1930,9 +1924,7 @@ Javob (faqat matn, JSON emas):`;
 
   const body = {
     model: GROQ_TEXT_MODEL,
-    messages: [
-      { role: 'user', content: prompt }
-    ],
+    messages: [{ role: 'user', content: prompt }],
     temperature: 0.4,
     max_tokens: 300
   };
@@ -1954,10 +1946,8 @@ Javob (faqat matn, JSON emas):`;
 }
 
 function sanitizeAIHtml(text){
-  // Faqat ruxsat etilgan teglar
   const allowed = /<(?!\/?(b|span|br)\b)[^>]*>/gi;
   let safe = text.replace(allowed, '');
-  // class'larni cheklash
   safe = safe.replace(/<span\s+class="([^"]*)"/gi, (m, cls) => {
     const ok = ['ok','warn','danger'].includes(cls);
     return ok ? `<span class="${cls}"` : '<span';
